@@ -1,0 +1,30 @@
+{
+  "audit": "unused-imports-cleanup",
+  "date": "2026-06-15",
+  "before": {
+    "ts_tsx_files": 404,
+    "total_lines_ts_tsx": 66831,
+    "src_files_total": 554,
+    "page_files": 99,
+    "component_files": 127,
+    "api_route_files": 74,
+    "unused_imports": 191,
+    "unused_react_imports": 101,
+    "instrumentation_ts_lines": 66
+  },
+  "after": {
+    "ts_tsx_files": 404,
+    "total_lines_ts_tsx": 66655,
+    "src_files_total": 554,
+    "page_files": 99,
+    "component_files": 127,
+    "api_route_files": 74,
+    "unused_imports": 0,
+    "unused_react_imports": 0,
+    "instrumentation_ts_lines": 64
+  },
+  "delta": {
+    "lines_removed": 176,
+    "imports_removed": 191
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "/": {
+    "project-cover": "/image-theunpartyapp-cover.png",
+    "alt": "unpartyapp cover",
+    "title": "theunpartyapp",
+    "tag": "Build It Yourself",
+    "steps": ["upload", "create", "party"],
+    "project-description": "upload your starting point. create your next step. party if you want to.",
+    "project-brand": "/image-theunpartybrand-cover.png",
+    "project-brand-alt": "theunpartybrand",
+    "project-core": "/image-theunpartycore-cover.png",
+    "project-core-alt": "theunpartycore",
+    "project-founder": "/image-theunpartyfounder-cover.png",
+    "project-founder-alt": "theunpartyfounder",
+    "project-vision": "/image-theunpartyvision-cover.png",
+    "project-vision-alt": "theunpartyvision"
+
+  }
+}

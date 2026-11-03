@@ -1,0 +1,2 @@
+declare const data: { "summary": { "total": number; "chatgpt": number; "claude": number; "dateRange": { "start": string; "end": string }; "spanDays": number }; "hourly": ({ "hour": number; "chatgpt": number; "claude": number; "total": number })[]; "topDays": ({ "date": string; "chatgpt": number; "claude": number })[]; "weekday": ({ "day": string; "chatgpt": number; "claude": number })[]; "daily": ({ "date": string; "chatgpt": number; "claude": number })[] };
+export default data;

@@ -1,0 +1,12 @@
+{
+  "published": [
+    "what-you-start-with"
+  ],
+  "slugToCoverId": {
+    "what-you-start-with": "cover-001"
+  },
+  "coverIdToSlug": {
+    "cover-001": "what-you-start-with"
+  },
+  "generatedAt": "2026-11-03T20:40:46.890Z"
+}

@@ -1,0 +1,161 @@
+{
+  "published": true,
+  "title": "FAQ.",
+  "subtitle": "the questions people ask before they build.",
+  "description": "Answers for non-technical founders and small business owners: what unparty.app is, what it costs to run, whether you need to code or use AI, what you own, and how data is handled.",
+  "groups": [
+    {
+      "id": "basics",
+      "label": "the basics.",
+      "icon": "HelpCircle"
+    },
+    {
+      "id": "owning",
+      "label": "owning it.",
+      "icon": "KeyRound"
+    },
+    {
+      "id": "cost",
+      "label": "cost.",
+      "icon": "DollarSign"
+    },
+    {
+      "id": "building",
+      "label": "building.",
+      "icon": "Hammer"
+    },
+    {
+      "id": "visitors",
+      "label": "your visitors.",
+      "icon": "ShieldCheck"
+    }
+  ],
+  "questions": [
+    {
+      "id": "what-is-it",
+      "q": "what is unparty.app?",
+      "a": "a website and app you build for your own business, hobby, or goal you want to achieve, designed step by step: your name, your colors, your stories and your projects, on accounts you own. it's built for non-technical founders and small business owners starting somewhere.",
+      "link": {
+        "label": "start here",
+        "href": "/article/setup-start-here"
+      },
+      "group": "basics"
+    },
+    {
+      "id": "vs-website-builder",
+      "q": "how is this different from a website builder?",
+      "a": "a website builder is you building your idea to fit their service. unparty.app is simply just code, make it your own, your way, with or without ai.",
+      "link": {
+        "label": "what you own",
+        "href": "/article/setup-start-here"
+      },
+      "group": "basics"
+    },
+    {
+      "id": "do-i-own-it",
+      "q": "do i own what i build?",
+      "a": "yes. the code lives in your own GitHub, your app runs on your own Vercel account, and any data sits in your own database.",
+      "link": {
+        "label": "what you own",
+        "href": "/article/setup-start-here"
+      },
+      "group": "owning"
+    },
+    {
+      "id": "why-did-you-build-this",
+      "q": "why did you build this?",
+      "a": "i wanted to.",
+      "link": {
+        "label": "what you own",
+        "href": "/article/setup-start-here"
+      },
+      "group": "owning"
+    },
+    {
+      "id": "if-unparty-goes-away",
+      "q": "what happens to my site if unparty.app goes away?",
+      "a": "nothing. unparty is built as software you own. once you download and start building your unparty, it is yours as in it runs on your own accounts, and nothing calls back to unparty.",
+      "group": "owning"
+    },
+    {
+      "id": "what-it-runs-on",
+      "q": "what does it run on?",
+      "a": "GitHub for your code and Vercel to host it. add Neon for a database and Clerk for sign-in when you want them. each one connects in its own setup step.",
+      "link": {
+        "label": "the setup steps",
+        "href": "/article/setup-start-here"
+      },
+      "group": "owning"
+    },
+    {
+      "id": "make-it-mine",
+      "q": "how do i make it look like my business?",
+      "a": "one file holds your name, your founder profile and your brand colors. try your colors on the page before you save them, and every page, link preview and button follows.",
+      "link": {
+        "label": "make it yours",
+        "href": "/article/setup-identity"
+      },
+      "group": "owning"
+    },
+    {
+      "id": "cost",
+      "q": "what does it cost to run?",
+      "a": "it can start at $0 a month: every service it needs has a free plan. you choose what to add as you grow, like a domain, email or payments, and see the cost before you add it.",
+      "link": {
+        "label": "build your stack",
+        "href": "/article/setup-start-here"
+      },
+      "group": "cost"
+    },
+    {
+      "id": "need-to-code",
+      "q": "do i need to know how to code?",
+      "a": "no. 34 setup steps walk you through it in plain words, 12 to get your site running and 22 more when you want them. each step is an article with exactly what to click and type.",
+      "link": {
+        "label": "the setup steps",
+        "href": "/article/setup-start-here"
+      },
+      "group": "building"
+    },
+    {
+      "id": "made-of",
+      "q": "what is my site made of?",
+      "a": "components, each one listed with an article on what it does and how to connect it. every project page ends with the parts it's built from, so nothing is hidden. your words, pictures and projects are kept apart from the parts that show them, so you change your site by changing what you write, not the code.",
+      "link": {
+        "label": "the components",
+        "href": "/build"
+      },
+      "group": "building"
+    },
+    {
+      "id": "need-accounts",
+      "q": "do i need a database or sign-in?",
+      "a": "no. your site runs and goes live without them, and everything you write shows. add them when you want people to sign in, leave thoughts or save their progress. until then, /admin and /party stay locked.",
+      "link": {
+        "label": "first run",
+        "href": "/article/setup-first-run"
+      },
+      "group": "building"
+    },
+    {
+      "id": "need-ai",
+      "q": "do i have to use AI?",
+      "a": "no. unparty works without large language models. if you want one, you connect your own key, so you decide what it costs and what it sees.",
+      "link": {
+        "label": "get your claude",
+        "href": "/article/setup-get-your-claude"
+      },
+      "group": "building"
+    },
+    {
+      "id": "visitor-data",
+      "q": "what happens to my visitors' data?",
+      "a": "it stays in your accounts. analytics only run after a visitor accepts cookies, and your privacy policy lists every service the site uses.",
+      "link": {
+        "label": "privacy policy",
+        "href": "/privacy"
+      },
+      "group": "visitors"
+    }
+  ]
+}

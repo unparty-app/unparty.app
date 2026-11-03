@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonder </title>
+    <style>
+        :root {
+            --brand-color-1: #DEB193;
+            --brand-color-2: #BC5D38;
+            --brand-color-3: #7F5333;
+            --brand-color-4: #432512;
+            --brand-color-5: #0E0502;
+            --bg-dark: #000108;
+            --bg-darker: #000605;
+            --text-white: #FFF1D6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+            color: var(--text-white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--brand-color-1) 0%, var(--brand-color-2) 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .brand-name {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+        
+        /* Color Palette Section */
+        .color-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .color-card {
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .color-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+        
+        .color-card-1 { background-color: var(--brand-color-1); }
+        .color-card-2 { background-color: var(--brand-color-2); }
+        .color-card-3 { background-color: var(--brand-color-3); }
+        .color-card-4 { background-color: var(--brand-color-4); }
+        .color-card-5 { background-color: var(--brand-color-5); }
+        
+        .color-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .color-hex {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        /* Description Section */
+        .description-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--brand-color-1);
+        }
+        
+        .description-section h2 {
+            color: var(--brand-color-1);
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .description-section p {
+            color: var(--text-white);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        /* Interactive Elements */
+        .interactive-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .button {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--brand-color-1);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--brand-color-2);
+            color: white;
+        }
+        
+        .btn-accent {
+            background: var(--brand-color-3);
+            color: white;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Typography Showcase */
+        .typography-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .typography-section h1 {
+            color: var(--brand-color-1);
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+        
+        .typography-section h2 {
+            color: var(--brand-color-2);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .typography-section h3 {
+            color: var(--brand-color-3);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .typography-section p {
+            color: var(--text-white);
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight {
+            background: var(--brand-color-4);
+            color: var(--bg-darker);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+        
+        .footer-accent {
+            color: var(--brand-color-5);
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 32px;
+            }
+            
+            .color-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .interactive-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with gradient using colors 1 & 2 -->
+        <div class="header">
+            <h1 class="brand-name">Wonder </h1>
+            <p class="tagline">Bringing color to life</p>
+        </div>
+        
+        <!-- COLOR. -->
+        <div class="color-showcase">
+            <div class="color-card color-card-1">
+                <div class="color-name">Primary</div>
+                <div class="color-hex">#DEB193</div>
+            </div>
+            <div class="color-card color-card-2">
+                <div class="color-name">Secondary</div>
+                <div class="color-hex">#BC5D38</div>
+            </div>
+            <div class="color-card color-card-3">
+                <div class="color-name">Accent</div>
+                <div class="color-hex">#7F5333</div>
+            </div>
+            <div class="color-card color-card-4">
+                <div class="color-name">Additional 1</div>
+                <div class="color-hex">#432512</div>
+            </div>
+            <div class="color-card color-card-5">
+                <div class="color-name">Additional 2</div>
+                <div class="color-hex">#0E0502</div>
+            </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="description-section">
+            <h2>About This Brand</h2>
+            <p>This is your brand's color palette in action. See how your colors work together across different design elements.</p>
+        </div>
+        
+        <!-- Interactive Buttons -->
+        <div class="interactive-section">
+            <button class="button btn-primary">Primary Action</button>
+            <button class="button btn-secondary">Secondary Action</button>
+            <button class="button btn-accent">Accent Action</button>
+        </div>
+        
+        <!-- Typography Showcase -->
+        <div class="typography-section">
+            <h1>Heading Level 1</h1>
+            <h2>Heading Level 2</h2>
+            <h3>Heading Level 3</h3>
+            <p>This is body text demonstrating how your colors work in a typical content layout. Your Wonder  colors create <span class="highlight">visual hierarchy</span> and help guide the user's attention.</p>
+            <p>The color palette creates a cohesive design system that can be applied across all your Wonder   touchpoints.</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>created with <span class="footer-accent">theunpartydtla</span> • COLOR.</p>
+        </div>
+    </div>
+</body>
+</html>

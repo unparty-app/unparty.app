@@ -1,0 +1,162 @@
+name: Spellcheck
+
+# Spelling + grammar on everything this PR publishes. See docs/guides/SPELLCHECK.md.
+#
+# This check NEVER fails the build. It writes what it found to the job summary
+# and to a single PR comment it keeps up to date. The whole point of the issue
+# behind it (#553) was "capturing spelling/grammar errors and fixing without too
+# much overhead" — a red X on a typo in a draft is exactly the overhead that
+# stops people shipping, so this reports and gets out of the way.
+#
+# Deliberately no `paths:` filter, for the same reason as validate-articles.yml:
+# a check that never runs on an unrelated PR can leave that PR pending forever.
+# The job exits in seconds when no prose changed.
+#
+# Also has workflow_dispatch: PRs opened by the theunpartybuilder GitHub App do
+# not reliably trigger pull_request-event workflows in this org.
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  spellcheck:
+    name: spellcheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # `|| true` is load-bearing: ./spellcheck exits 1 when it finds something,
+      # and finding something must not turn this check red.
+      - name: Check spelling and grammar on changed prose
+        id: check
+        continue-on-error: true
+        run: |
+          set +e
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$BASE_SHA" ]; then
+            # workflow_dispatch (no pull_request context) — diff against main.
+            # fetch-depth: 0 above already fetched origin/main along with this ref.
+            BASE_SHA=$(git merge-base origin/main HEAD)
+          fi
+          ./spellcheck --base "$BASE_SHA" --no-color > spellcheck-report.txt 2>&1
+          STATUS=$?
+          cat spellcheck-report.txt
+          if [ "$STATUS" -eq 0 ]; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Write job summary
+        run: |
+          {
+            echo '## Spellcheck'
+            echo
+            echo '```'
+            cat spellcheck-report.txt
+            echo '```'
+            echo
+            echo 'Nothing here blocks the merge. Fix it, or ignore it and ship.'
+            echo "Guide: [docs/guides/SPELLCHECK.md](${{ github.server_url }}/${{ github.repository }}/blob/main/docs/guides/SPELLCHECK.md)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # One comment per PR, edited in place. A new comment on every push would
+      # be its own kind of bottleneck.
+      - name: Comment on the PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v9
+        env:
+          SPELLCHECK_FOUND: ${{ steps.check.outputs.found }}
+        with:
+          script: |
+            const fs = require('fs');
+            const MARKER = '<!-- unparty-spellcheck -->';
+            const found = process.env.SPELLCHECK_FOUND === 'true';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.body && c.body.includes(MARKER));
+
+            // Clean run: tidy up a previous report if there is one, but never
+            // open a new comment just to say nothing is wrong.
+            if (!found) {
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: existing.id,
+                  body: `${MARKER}\n### Spellcheck\n\n✅ No spelling or grammar issues in the prose this PR touches.`,
+                });
+              }
+              return;
+            }
+
+            // Backticks can't be allowed to escape the fenced block below.
+            let report = fs.readFileSync('spellcheck-report.txt', 'utf8').trimEnd().replace(/`/g, "'");
+            const LIMIT = 8000;
+            if (report.length > LIMIT) {
+              report = `${report.slice(0, LIMIT)}\n…truncated — run \`npm run spellcheck\` locally for the rest.`;
+            }
+
+            const body = [
+              MARKER,
+              '### Spellcheck',
+              '',
+              'Found something in the prose this PR changes. **This does not block the merge** — fix what matters and ship.',
+              '',
+              '```',
+              report,
+              '```',
+              '',
+              '<details><summary>How to clear these</summary>',
+              '',
+              '| Situation | Do this |',
+              '| --- | --- |',
+              '| Marked `✎` | `npm run spellcheck:fix` — rewrites the mechanical ones, nothing else |',
+              '| It was spelled right | `./spellcheck add <word>`, then commit `.cspell-words.txt` |',
+              '| Rather not do it by hand | Comment `@claude fix the spelling and grammar issues on this branch` |',
+              '| It is a quote / raw transcript | Leave it. Reporting it is not the same as having to change it |',
+              '',
+              'Full guide: [docs/guides/SPELLCHECK.md](https://github.com/' +
+                `${context.repo.owner}/${context.repo.repo}/blob/main/docs/guides/SPELLCHECK.md)`,
+              '</details>',
+            ].join('\n');
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }

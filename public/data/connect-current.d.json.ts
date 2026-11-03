@@ -1,0 +1,2 @@
+declare const data: { "generated_at": string; "window_days": number; "stats": { "story": { "vercel": number; "ga": number }; "article": { "vercel": number; "ga": number } }; "months": ({ "month": string; "views": { "article": number; "story": number }; "search": { "article": number; "story": number }; "ga": { "story": number; "article": number }; "top": ({ "path": string; "views": number; "search": number })[]; "next": (never)[] })[] };
+export default data;

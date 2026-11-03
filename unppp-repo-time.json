@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "analysis_date": "",
+    "total_repos": 0,
+    "repos_analyzed": 0,
+    "repos_not_cloned": 0,
+    "repos_error": 0,
+    "total_commits": 0,
+    "total_sessions": 0,
+    "total_hours": 0,
+    "total_hours_formatted": "",
+    "total_hours_budget": 0,
+    "total_hours_budget_formatted": "",
+    "utilization_rate": 0,
+    "config_path": "",
+    "base_repo_dir": ""
+  },
+  "repositories": []
+}

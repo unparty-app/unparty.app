@@ -1,0 +1,155 @@
+name: OG Metadata Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+  schedule:
+    # Nightly full validation of every route (push/PR runs only validate a
+    # fast subset — see scripts/validate-og-tags.ts). After the snapshot
+    # cron routes' 6:00-6:15 window.
+    - cron: '0 7 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  validate-og:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: '24'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Generate Prisma Client
+      run: npx prisma generate
+      
+    # No secrets: the build needs no live database or Clerk keys. Pages that
+    # read the database while prerendering fall back to empty data, and the OG
+    # tags this job checks never depend on it (#761). A placeholder URL keeps
+    # Prisma's config valid; nothing ever connects to it
+    - name: Build application
+      run: npm run build:validate
+      env:
+        DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+        NODE_OPTIONS: --max-old-space-size=4096
+        
+    - name: Validate OG Tags
+      id: validate
+      run: |
+        npx tsx scripts/validate-og-tags.ts ${{ github.event_name == 'schedule' && '--full' || '' }} > og-validation-report.txt 2>&1
+        echo "VALIDATION_EXIT_CODE=$?" >> $GITHUB_OUTPUT
+      continue-on-error: true
+        
+    - name: Upload validation report
+      uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: og-validation-report
+        path: og-validation-report.txt
+        retention-days: 30
+        
+    - name: Create or Update GitHub Issue
+      if: steps.validate.outputs.VALIDATION_EXIT_CODE != '0'
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('og-validation-report.txt', 'utf8');
+          
+          const issueTitle = `[OG Validation] Missing or Invalid Open Graph Tags`;
+          const issueBody = `## 🔍 Open Graph Validation Failed
+          
+          The automated OG tag validation detected issues that could impact SEO and social media sharing.
+          
+          ### 📋 Validation Report:
+          \`\`\`
+          ${report}
+          \`\`\`
+          
+          ### ⚠️ Impact:
+          - ❌ Social media shares may show generic previews
+          - ❌ Search engines may not properly categorize content
+          - ❌ Reduced click-through rates on shared links
+          - ❌ Poor brand perception on social platforms
+          
+          ### 🔧 How to Fix:
+          1. Review the validation report above
+          2. Add missing OG tags using \`generatePageMetadata\` utility
+          3. Ensure pages are Server Components (remove \`"use client"\` if exporting metadata)
+          4. Test locally: \`npm run validate:og:local\`
+          
+          ### 📚 Resources:
+          - [OG Metadata Utility](./src/app/utils/ogMetadata.ts)
+          - [OG Image API](./src/app/api/og/route.tsx)
+          - [Server/Client Split Guide](./docs/reports/OG_IMAGE_FIX_SUMMARY.md)
+          
+          ### 🔗 Workflow Details:
+          - **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - **Commit:** \`${{ github.sha }}\`
+          - **Branch:** \`${{ github.ref_name }}\`
+          - **Triggered by:** ${{ github.event_name }}`;
+          
+          // Search for existing open issue
+          const issues = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            labels: 'og-validation,seo'
+          });
+          
+          if (issues.data.length > 0) {
+            // Update existing issue with new comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issues.data[0].number,
+              body: `## 🔄 New Validation Failure Detected\n\n${issueBody}`
+            });
+            console.log(`Updated existing issue #${issues.data[0].number}`);
+          } else {
+            // Create new issue
+            const newIssue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['og-validation', 'seo', 'bug', 'priority:high']
+            });
+            console.log(`Created new issue #${newIssue.data.number}`);
+          }
+          
+    - name: Comment on PR
+      if: github.event_name == 'pull_request' && steps.validate.outputs.VALIDATION_EXIT_CODE != '0'
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('og-validation-report.txt', 'utf8');
+          
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: `## ⚠️ OG Metadata Validation Failed
+            
+            This PR introduces changes that affect Open Graph metadata. Please review:
+            
+            \`\`\`
+            ${report.substring(0, 1000)}${report.length > 1000 ? '\n...(truncated)' : ''}
+            \`\`\`
+            
+            Run \`npm run validate:og:local\` to test locally.`
+          });

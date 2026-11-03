@@ -1,0 +1,4830 @@
+{
+  "metadata": {
+    "generatedAt": "2025-09-10T20:07:06.275Z",
+    "totalComponents": 83,
+    "analysisVersion": "1.0.0",
+    "repository": "unparty-app/theunpartyapp"
+  },
+  "summary": {
+    "averageHealthScore": 38,
+    "healthDistribution": {
+      "poor": 34,
+      "fair": 36,
+      "good": 5,
+      "critical": 6,
+      "excellent": 2
+    },
+    "compliance": {
+      "designSystem": 16,
+      "accessibility": 2,
+      "performance": 12,
+      "typeScript": 94
+    },
+    "componentCounts": {
+      "total": 83,
+      "withGitHistory": 83,
+      "recentlyUpdated": 83,
+      "needsAttention": 40,
+      "excellent": 2
+    },
+    "recommendations": [
+      {
+        "priority": "high",
+        "category": "Critical Components",
+        "description": "40 components have critical health scores (<40%) and need immediate attention",
+        "components": [
+          "about",
+          "alterego",
+          "article",
+          "articletable",
+          "clerkthemeprovider"
+        ],
+        "action": "Update to use design system patterns from globals.css"
+      },
+      {
+        "priority": "medium",
+        "category": "Design System Compliance",
+        "description": "44 components don't follow design system patterns",
+        "components": [
+          "about",
+          "article",
+          "articlelist",
+          "articletable",
+          "chat"
+        ],
+        "action": "Add CSS variables, visual hierarchy classes, and brand colors"
+      },
+      {
+        "priority": "medium",
+        "category": "Accessibility",
+        "description": "59 components need accessibility improvements",
+        "components": [
+          "about",
+          "aboutcomponent",
+          "article",
+          "articlelist",
+          "articlemodal"
+        ],
+        "action": "Add semantic HTML, ARIA attributes, and focus management"
+      },
+      {
+        "priority": "low",
+        "category": "Performance",
+        "description": "73 components could benefit from performance optimizations",
+        "components": [
+          "about",
+          "aboutcomponent",
+          "article",
+          "articlelist",
+          "articlemodal"
+        ],
+        "action": "Use Next.js Image component and lazy loading"
+      },
+      {
+        "priority": "info",
+        "category": "Examples to Follow",
+        "description": "2 components demonstrate excellent practices",
+        "components": [
+          "header",
+          "signin"
+        ],
+        "action": "Use these as templates for updating other components"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "about",
+      "name": "About",
+      "path": "src/app/components/About.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "aboutcomponent",
+      "name": "AboutComponent",
+      "path": "src/app/components/AboutComponent.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "article",
+      "name": "Article",
+      "path": "src/app/components/Article.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "articlelist",
+      "name": "ArticleList",
+      "path": "src/app/components/ArticleList.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "articlemodal",
+      "name": "ArticleModal",
+      "path": "src/app/components/ArticleModal.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "articletable",
+      "name": "ArticleTable",
+      "path": "src/app/components/ArticleTable.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "path": "src/app/components/Badge.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "banner",
+      "name": "Banner",
+      "path": "src/app/components/Banner.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "blog",
+      "name": "Blog",
+      "path": "src/app/components/Blog.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "booksection-old",
+      "name": "BookSection-old",
+      "path": "src/app/components/BookSection-old.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "booksection",
+      "name": "BookSection",
+      "path": "src/app/components/BookSection.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "cta",
+      "name": "CTA",
+      "path": "src/app/components/CTA.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "chat",
+      "name": "Chat",
+      "path": "src/app/components/Chat.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "clerkthemeprovider",
+      "name": "ClerkThemeProvider",
+      "path": "src/app/components/ClerkThemeProvider.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "clientform",
+      "name": "ClientForm",
+      "path": "src/app/components/ClientForm.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "coloricon",
+      "name": "ColorIcon",
+      "path": "src/app/components/ColorIcon.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "colormatchinggame",
+      "name": "ColorMatchingGame",
+      "path": "src/app/components/ColorMatchingGame.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "colorpicker",
+      "name": "ColorPicker",
+      "path": "src/app/components/ColorPicker.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "communicationstylegame",
+      "name": "CommunicationStyleGame",
+      "path": "src/app/components/CommunicationStyleGame.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "componentcontainer",
+      "name": "ComponentContainer",
+      "path": "src/app/components/ComponentContainer.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "coverphoto",
+      "name": "CoverPhoto",
+      "path": "src/app/components/CoverPhoto.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "coverpreviewmodal",
+      "name": "CoverPreviewModal",
+      "path": "src/app/components/CoverPreviewModal.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "creativityscoredemo",
+      "name": "CreativityScoreDemo",
+      "path": "src/app/components/CreativityScoreDemo.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "defintions",
+      "name": "Defintions",
+      "path": "src/app/components/Defintions.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "emailtracker",
+      "name": "EmailTracker",
+      "path": "src/app/components/EmailTracker.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "expensd",
+      "name": "Expensd",
+      "path": "src/app/components/Expensd.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "exploreresilience",
+      "name": "ExploreResilience",
+      "path": "src/app/components/ExploreResilience.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "fab",
+      "name": "Fab",
+      "path": "src/app/components/Fab.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "featurevote",
+      "name": "FeatureVote",
+      "path": "src/app/components/FeatureVote.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "featurewrapper",
+      "name": "FeatureWrapper",
+      "path": "src/app/components/FeatureWrapper.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "font",
+      "name": "Font",
+      "path": "src/app/components/Font.mdx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "footer",
+      "name": "Footer",
+      "path": "src/app/components/Footer.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "founderprofiler",
+      "name": "FounderProfiler",
+      "path": "src/app/components/FounderProfiler.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "hstack",
+      "name": "HStack",
+      "path": "src/app/components/HStack.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "header",
+      "name": "Header",
+      "path": "src/app/components/Header.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "hope",
+      "name": "Hope",
+      "path": "src/app/components/Hope.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "htmlrenderer",
+      "name": "HtmlRenderer",
+      "path": "src/app/components/HtmlRenderer.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "iconbutton",
+      "name": "IconButton",
+      "path": "src/app/components/IconButton.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "invite",
+      "name": "Invite",
+      "path": "src/app/components/Invite.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "languagevisualization",
+      "name": "LanguageVisualization",
+      "path": "src/app/components/LanguageVisualization.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "livescale",
+      "name": "LiveScale",
+      "path": "src/app/components/LiveScale.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "logo3d",
+      "name": "Logo3d",
+      "path": "src/app/components/Logo3d.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "mazeinstructions",
+      "name": "MazeInstructions",
+      "path": "src/app/components/MazeInstructions.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "minimaze",
+      "name": "MiniMaze",
+      "path": "src/app/components/MiniMaze.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "modal",
+      "name": "Modal",
+      "path": "src/app/components/Modal.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "navrow",
+      "name": "NavRow",
+      "path": "src/app/components/NavRow.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pageasterick",
+      "name": "PageAsterick",
+      "path": "src/app/components/PageAsterick.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pageheader",
+      "name": "PageHeader",
+      "path": "src/app/components/PageHeader.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pagemedia",
+      "name": "PageMedia",
+      "path": "src/app/components/PageMedia.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pagenavigation",
+      "name": "PageNavigation",
+      "path": "src/app/components/PageNavigation.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pagerow",
+      "name": "PageRow",
+      "path": "src/app/components/PageRow.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pagetable",
+      "name": "PageTable",
+      "path": "src/app/components/PageTable.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "pagetitle",
+      "name": "PageTitle",
+      "path": "src/app/components/PageTitle.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "paymentmodal",
+      "name": "PaymentModal",
+      "path": "src/app/components/PaymentModal.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "photogallery",
+      "name": "PhotoGallery",
+      "path": "src/app/components/PhotoGallery.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "problemworksheet",
+      "name": "ProblemWorksheet",
+      "path": "src/app/components/ProblemWorksheet.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "progresstracker",
+      "name": "ProgressTracker",
+      "path": "src/app/components/ProgressTracker.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "repopreview",
+      "name": "RepoPreview",
+      "path": "src/app/components/RepoPreview.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "repostats",
+      "name": "RepoStats",
+      "path": "src/app/components/RepoStats.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "repositorymanager",
+      "name": "RepositoryManager",
+      "path": "src/app/components/RepositoryManager.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "resiliencebuildactivity",
+      "name": "ResilienceBuildActivity",
+      "path": "src/app/components/ResilienceBuildActivity.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "resiliencereflection",
+      "name": "ResilienceReflection",
+      "path": "src/app/components/ResilienceReflection.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "svg",
+      "name": "SVG",
+      "path": "src/app/components/SVG.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "svgcolor",
+      "name": "SVGColor",
+      "path": "src/app/components/SVGColor.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "svgupload",
+      "name": "SVGUpload",
+      "path": "src/app/components/SVGUpload.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "search",
+      "name": "Search",
+      "path": "src/app/components/Search.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "path": "src/app/components/Sidebar.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "signin",
+      "name": "SignIn",
+      "path": "src/app/components/SignIn.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "stackexample",
+      "name": "StackExample",
+      "path": "src/app/components/StackExample.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "index",
+      "name": "index",
+      "path": "src/app/components/Stacks/index.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "unpartycolorpicker",
+      "name": "UnpartyColorPicker",
+      "path": "src/app/components/UnpartyColorPicker.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "unpartyheader",
+      "name": "UnpartyHeader",
+      "path": "src/app/components/UnpartyHeader.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "unppparticledisplay",
+      "name": "UnpppArticleDisplay",
+      "path": "src/app/components/UnpppArticleDisplay.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "unppplayoutwrapper",
+      "name": "UnpppLayoutWrapper",
+      "path": "src/app/components/UnpppLayoutWrapper.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "vstack",
+      "name": "VStack",
+      "path": "src/app/components/VStack.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "zstack",
+      "name": "ZStack",
+      "path": "src/app/components/ZStack.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "alterego",
+      "name": "alterego",
+      "path": "src/app/components/alterego.mdx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "editorialarticle",
+      "name": "EditorialArticle",
+      "path": "src/app/components/editorial/EditorialArticle.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "editorialsection",
+      "name": "EditorialSection",
+      "path": "src/app/components/editorial/EditorialSection.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "svgmedia",
+      "name": "SVGMedia",
+      "path": "src/app/components/editorial/SVGMedia.tsx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "nextstepengineer",
+      "name": "nextstepengineer",
+      "path": "src/app/components/nextstepengineer.mdx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "tailwindcss",
+      "name": "tailwindcss",
+      "path": "src/app/components/tailwindcss.mdx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    },
+    {
+      "id": "unkey",
+      "name": "unkey",
+      "path": "src/app/components/unkey.mdx",
+      "firstCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "firstCommitDate": "2025-09-10 12:49:11 -0700",
+      "firstCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "lastCommit": "62bde367fee1d32131deb6c91e850cec86a44ddd",
+      "lastCommitDate": "2025-09-10 12:49:11 -0700",
+      "lastCommitSubject": "Merge pull request #150 from unparty-app/copilot/fix-149",
+      "commitCount": 1
+    }
+  ],
+  "health": [
+    {
+      "component": "about",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 126,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "aboutcomponent",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 255,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "article",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 86,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "articlelist",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 135,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "articlemodal",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 79,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "articletable",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 44,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "badge",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 100
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 48,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "banner",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 46,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "blog",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 75
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 182,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "booksection-old",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 236,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "booksection",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 283,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "cta",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 55,
+        "healthStatus": "fair",
+        "linesOfCode": 270,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "chat",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 55,
+        "healthStatus": "fair",
+        "linesOfCode": 298,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "clerkthemeprovider",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 272,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "clientform",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 119,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "coloricon",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 19,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "colormatchinggame",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 318,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "colorpicker",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 190,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "communicationstylegame",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 151,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "componentcontainer",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 127,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "coverphoto",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 75,
+        "healthStatus": "good",
+        "linesOfCode": 192,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "coverpreviewmodal",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 70,
+        "healthStatus": "good",
+        "linesOfCode": 368,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "creativityscoredemo",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 158,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "defintions",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 159,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "emailtracker",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 495,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "expensd",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 298,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "exploreresilience",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 99,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "fab",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 100
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 70,
+        "healthStatus": "good",
+        "linesOfCode": 95,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "featurevote",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 40,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "featurewrapper",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 108,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "font",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 15,
+        "healthStatus": "critical",
+        "linesOfCode": 116,
+        "hasTypeScript": false,
+        "hasMDX": true
+      }
+    },
+    {
+      "component": "footer",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 15,
+        "healthStatus": "critical",
+        "linesOfCode": 13,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "founderprofiler",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 55,
+        "healthStatus": "fair",
+        "linesOfCode": 404,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "hstack",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 63,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "header",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 100
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 85,
+        "healthStatus": "excellent",
+        "linesOfCode": 244,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "hope",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 16,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "htmlrenderer",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 52,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "iconbutton",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 39,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "invite",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 29,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "languagevisualization",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 332,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "livescale",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 68,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "logo3d",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 5,
+        "healthStatus": "critical",
+        "linesOfCode": 12,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "mazeinstructions",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 31,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "minimaze",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": true,
+          "score": 75
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 75,
+        "healthStatus": "good",
+        "linesOfCode": 458,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "modal",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 73,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "navrow",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": false,
+          "score": 75
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 56,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pageasterick",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 71,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pageheader",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 46,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pagemedia",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": false,
+          "score": 75
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 49,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pagenavigation",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 141,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pagerow",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 35,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pagetable",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": false,
+          "score": 75
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 25
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 75,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "pagetitle",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 152,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "paymentmodal",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 55,
+        "healthStatus": "fair",
+        "linesOfCode": 260,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "photogallery",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 29,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "problemworksheet",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 55,
+        "healthStatus": "fair",
+        "linesOfCode": 171,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "progresstracker",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 75,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "repopreview",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 228,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "repostats",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 303,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "repositorymanager",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 463,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "resiliencebuildactivity",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 127,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "resiliencereflection",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 74,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "svg",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 305,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "svgcolor",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 84,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "svgupload",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 167,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "search",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 75
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 95,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "sidebar",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 35,
+        "healthStatus": "poor",
+        "linesOfCode": 157,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "signin",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": true,
+          "usesVisualHierarchyClasses": true,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 100
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": true,
+          "score": 100
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": true,
+          "score": 100
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 75
+        },
+        "overallScore": 85,
+        "healthStatus": "excellent",
+        "linesOfCode": 172,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "stackexample",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 58,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "index",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 0,
+        "healthStatus": "critical",
+        "linesOfCode": 9,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "unpartycolorpicker",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": true,
+          "hasAltText": false,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 50
+        },
+        "overallScore": 50,
+        "healthStatus": "fair",
+        "linesOfCode": 124,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "unpartyheader",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 25,
+        "healthStatus": "poor",
+        "linesOfCode": 100,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "unppparticledisplay",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 31,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "unppplayoutwrapper",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 64,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "vstack",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 64,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "zstack",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 75,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "alterego",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 15,
+        "healthStatus": "critical",
+        "linesOfCode": 41,
+        "hasTypeScript": false,
+        "hasMDX": true
+      }
+    },
+    {
+      "component": "editorialarticle",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": true,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 25
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": true,
+          "score": 25
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 45,
+        "healthStatus": "fair",
+        "linesOfCode": 280,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "editorialsection",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": true,
+          "hasLazyLoading": true,
+          "hasOptimizedImages": true,
+          "avoidsDOMQueries": false,
+          "score": 75
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 75
+        },
+        "overallScore": 60,
+        "healthStatus": "good",
+        "linesOfCode": 232,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "svgmedia",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": true,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": true,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 75
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 30,
+        "healthStatus": "poor",
+        "linesOfCode": 42,
+        "hasTypeScript": true,
+        "hasMDX": false
+      }
+    },
+    {
+      "component": "nextstepengineer",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": false,
+          "followsTailwindPatterns": false,
+          "score": 0
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": false,
+          "hasBreakpoints": false,
+          "score": 0
+        },
+        "overallScore": 0,
+        "healthStatus": "critical",
+        "linesOfCode": 38,
+        "hasTypeScript": false,
+        "hasMDX": true
+      }
+    },
+    {
+      "component": "tailwindcss",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": true,
+          "score": 50
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": false,
+          "hasFocusManagement": false,
+          "hasAltText": false,
+          "score": 0
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": true,
+          "hasProperTypes": false,
+          "usesModernReact": true,
+          "hasErrorHandling": false,
+          "score": 50
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": true,
+          "hasMobileFirst": true,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": true,
+          "score": 100
+        },
+        "overallScore": 40,
+        "healthStatus": "fair",
+        "linesOfCode": 217,
+        "hasTypeScript": false,
+        "hasMDX": true
+      }
+    },
+    {
+      "component": "unkey",
+      "metrics": {
+        "designSystemCompliance": {
+          "usesCSSVariables": false,
+          "usesVisualHierarchyClasses": false,
+          "usesBrandColors": true,
+          "followsTailwindPatterns": false,
+          "score": 25
+        },
+        "accessibility": {
+          "hasSemanticHTML": false,
+          "hasARIAAttributes": true,
+          "hasFocusManagement": false,
+          "hasAltText": true,
+          "score": 50
+        },
+        "performance": {
+          "usesNextImage": false,
+          "hasLazyLoading": false,
+          "hasOptimizedImages": false,
+          "avoidsDOMQueries": false,
+          "score": 0
+        },
+        "codeQuality": {
+          "hasTypeScript": false,
+          "hasProperTypes": false,
+          "usesModernReact": false,
+          "hasErrorHandling": false,
+          "score": 0
+        },
+        "responsiveDesign": {
+          "hasResponsiveClasses": false,
+          "hasMobileFirst": false,
+          "usesFlexboxGrid": true,
+          "hasBreakpoints": false,
+          "score": 25
+        },
+        "overallScore": 20,
+        "healthStatus": "poor",
+        "linesOfCode": 26,
+        "hasTypeScript": false,
+        "hasMDX": true
+      }
+    }
+  ]
+}

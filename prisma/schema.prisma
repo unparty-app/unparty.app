@@ -1,0 +1,674 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+model Step {
+  id             String             @id @default(cuid())
+  title          String
+  description    String
+  category       String
+  optional       Boolean            @default(false)
+  link           String?
+  cover          String?
+  icon           String?
+  status         StepStatus         @default(PENDING)
+  priority       Priority           @default(MEDIUM)
+  dueDate        DateTime?
+  organizationId String?
+  visibility     StepVisibility     @default(ALL_USERS)
+  metadata       Json?
+  unpppId        String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  StepCategories StepCategories[]
+  questions      Question[]
+  userProgress   UserStepProgress[]
+
+  @@index([unpppId])
+  @@map("steps")
+}
+
+model Question {
+  id        String                 @id
+  stepId    String
+  text      String
+  type      QuestionType
+  choices   String[]               @default([])
+  model     String
+  audience  String
+  order     Int                    @default(0)
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+  step      Step                   @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  responses UserQuestionResponse[]
+
+  @@map("questions")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  category    String
+  content     String
+  published   Boolean  @default(false)
+  author      String
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("articles")
+}
+
+model Book {
+  id              String        @id @default(cuid())
+  sku             String        @unique
+  title           String
+  author          String
+  quote           String?
+  page            Int?
+  publisher       String?
+  publisherLink   String?
+  inStock         Boolean       @default(true)
+  claimedBy       String?
+  claimedAt       DateTime?
+  shippingFee     Float?
+  condition       String?
+  paymentStatus   PaymentStatus @default(PENDING)
+  shippingAddress Json?
+  stripePaymentId String?
+  polarOrderId    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("books")
+}
+
+model UserSubmission {
+  id            String           @id @default(cuid())
+  userId        String
+  type          SubmissionType
+  content       String?
+  filePath      String?
+  status        SubmissionStatus @default(PENDING)
+  submittedAt   DateTime         @default(now())
+  adminResponse String?
+  processedAt   DateTime?
+  discussionId  String?
+  approvedVia   String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@map("user_submissions")
+}
+
+// Tracks which /theunparty* unppp pages (UnpppsConfig.json ids) a signed-in
+// user has visited, one row per (userId, unpppId) ever seen — see
+// POST /api/analytics/unppp-visit. Once a user has a row for every id in
+// UnpppsConfig.json, that route awards the ALL_UNPPPS_VISITED milestone and
+// a point in the About pillar. `visitedAt` is the FIRST visit (upsert is a
+// no-op on repeat visits), so it doubles as an activity-feed timestamp.
+model UserUnpppVisit {
+  id        String   @id @default(cuid())
+  userId    String
+  unpppId   String
+  visitedAt DateTime @default(now())
+
+  @@unique([userId, unpppId])
+  @@index([userId])
+  @@map("user_unppp_visits")
+}
+
+model ConnectMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  message   String
+  email     String?
+  firstName String?
+  context   String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("connect_messages")
+}
+
+model UserStepProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  stepId      String
+  completed   Boolean   @default(false)
+  userAnswer  String?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  step        Step      @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stepId])
+  @@map("user_step_progress")
+}
+
+model StepCategory {
+  id             String               @id @default(cuid())
+  name           String               @unique
+  description    String?
+  color          String?              @default("#6B7280")
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  StepCategories StepCategories[]
+  userAccess     UserCategoryAccess[]
+
+  @@map("step_categories")
+}
+
+model UserCategoryAccess {
+  id         String       @id @default(cuid())
+  userId     String
+  categoryId String
+  createdAt  DateTime     @default(now())
+  category   StepCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, categoryId])
+  @@map("user_category_access")
+}
+
+model UserQuestionResponse {
+  id             String        @id @default(cuid())
+  userId         String
+  questionId     String
+  categoryId     String?
+  questionType   QuestionType?
+  responseData   Json
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organizationId String?
+  question       Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId, organizationId])
+  @@map("user_question_responses")
+}
+
+model Repository {
+  id          String   @id @default(cuid())
+  name        String
+  url         String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  addedBy     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("repositories")
+}
+
+model StepCategories {
+  A               String
+  B               String
+  steps           Step         @relation(fields: [A], references: [id], onDelete: Cascade)
+  step_categories StepCategory @relation(fields: [B], references: [id], onDelete: Cascade)
+
+  @@id([A, B], map: "_StepCategories_AB_pkey")
+  @@index([B], map: "_StepCategories_B_index")
+  @@map("_StepCategories")
+}
+
+enum StepStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum SubmissionType {
+  FORM
+  UPLOAD
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum StepVisibility {
+  ALL_USERS
+  ORGANIZATION_ONLY
+  SPECIFIC_USERS
+  CATEGORY_RESTRICTED
+}
+
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  RANKING
+  SCALE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Ticket {
+  id        String       @id @default(cuid())
+  token     String       @unique
+  shortNo   Int          @unique
+  status    TicketStatus @default(WAITING)
+  createdAt DateTime     @default(now())
+  readyAt   DateTime?
+  invitedAt DateTime?
+  doneAt    DateTime?
+  updatedAt DateTime     @updatedAt
+
+  @@map("tickets")
+}
+
+model BoardState {
+  id            Int      @id @default(1)
+  nowServingMin Int      @default(1)
+  nowServingMax Int      @default(1)
+  message       String?
+  updatedAt     DateTime @updatedAt
+
+  @@map("board_state")
+}
+
+enum TicketStatus {
+  WAITING
+  READY
+  INVITED
+  DONE
+}
+
+// Enhanced User Tracking Models for Idea Progression and Retention
+
+model UserProfile {
+  id                   String            @id @default(cuid())
+  userId               String            @unique
+  userType             UserType          @default(NON_TECHNICAL_FOUNDER)
+  onboardingCompleted  Boolean           @default(false)
+  aboutPillarProgress  Json?             // Track progress through ABOUT pillar
+  buildPillarProgress  Json?             // Track progress through BUILD pillar  
+  connectPillarProgress Json?            // Track progress through CONNECT pillar
+  brandColors          Json?             // { primary, secondary, accent, additional1, additional2, brandName?, brandTagline?, brandDescription?, source, savedAt } — saved from ImportColorsCssModal's UNCOLOR .css import
+  firstIdeaStartedAt   DateTime?
+  firstIdeaCompletedAt DateTime?
+  lastActiveAt         DateTime          @default(now())
+  retentionScore       Float?            @default(0)
+  totalIdeasStarted    Int               @default(0)
+  totalIdeasCompleted  Int               @default(0)
+  milestones           UserMilestone[]
+  sessions             UserSession[]
+  ideaProgression      IdeaProgression[]
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  @@map("user_profiles")
+}
+
+model IdeaProgression {
+  id                String              @id @default(cuid())
+  userId            String
+  userProfile       UserProfile         @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  ideaTitle         String
+  currentStage      IdeaStage           @default(CONCEPTION)
+  pillarProgress    Json                // Track which pillars have been used
+  stepsCompleted    Int                 @default(0)
+  totalSteps        Int                 @default(0)
+  completionRate    Float               @default(0)
+  startedAt         DateTime            @default(now())
+  completedAt       DateTime?
+  status            IdeaStatus          @default(IN_PROGRESS)
+  metadata          Json?               // Store additional tracking data
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@unique([userId, ideaTitle])
+  @@map("idea_progressions")
+}
+
+model UserMilestone {
+  id          String        @id @default(cuid())
+  userId      String
+  userProfile UserProfile   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  milestone   MilestoneType
+  achievedAt  DateTime      @default(now())
+  metadata    Json?         // Store milestone-specific data
+  
+  @@unique([userId, milestone])
+  @@map("user_milestones")
+}
+
+model UserSession {
+  id          String      @id @default(cuid())
+  userId      String
+  userProfile UserProfile @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  startedAt   DateTime    @default(now())
+  endedAt     DateTime?
+  duration    Int?        // Duration in seconds
+  pillarsUsed String[]    @default([])  // Which pillars were accessed
+  pageViews   Int         @default(1)
+  actions     Json?       // Track specific actions taken
+  
+  @@map("user_sessions")
+}
+
+enum UserType {
+  NON_TECHNICAL_FOUNDER
+  TECHNICAL_FOUNDER  
+  CREATIVE
+  ENTREPRENEUR
+  STUDENT
+  OTHER
+}
+
+enum IdeaStage {
+  CONCEPTION
+  RESEARCH
+  PLANNING
+  DEVELOPMENT
+  TESTING
+  LAUNCH
+  COMPLETED
+}
+
+enum IdeaStatus {
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  ABANDONED
+}
+
+enum MilestoneType {
+  FIRST_LOGIN
+  ONBOARDING_COMPLETED
+  FIRST_IDEA_STARTED
+  ALL_UNPPPS_VISITED
+  ABOUT_PILLAR_EXPLORED
+  BUILD_PILLAR_EXPLORED
+  CONNECT_PILLAR_EXPLORED
+  ALL_PILLARS_USED
+  FIRST_IDEA_COMPLETED
+  COMMUNITY_ENGAGEMENT
+  RESOURCE_USAGE
+  RETENTION_7_DAYS
+  RETENTION_30_DAYS
+  RETENTION_90_DAYS
+}
+
+model ChallengeResponse {
+  id             String   @id @default(cuid())
+  userId         String
+  challengeId    String   // maps to section.id from editorial articles
+  articleSlug    String   // the article containing the challenge
+  selectedOption String   // stepOne, stepTwo, or stepThree
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, challengeId])
+  @@index([challengeId])
+  @@index([articleSlug])
+  @@map("challenge_responses")
+}
+
+model Thought {
+  id          String        @id @default(cuid())
+  articleSlug String        // editorial article slug (TS registry, no FK)
+  body        String        // plain text, app-enforced max 1000 chars
+  author      String        // display label: "you via unseen" | Clerk-derived name
+  userId      String?       // Clerk userId when source = WEB; null for UNSEEN
+  source      ThoughtSource
+  status      ThoughtStatus @default(VISIBLE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([articleSlug, status, createdAt])
+  @@index([userId])
+  @@map("thoughts")
+}
+
+enum ThoughtSource {
+  WEB
+  UNSEEN
+}
+
+enum ThoughtStatus {
+  VISIBLE
+  HIDDEN
+  DELETED
+}
+
+// Vercel Analytics Drain Models
+// Stores pageview events from Vercel Web Analytics
+model VercelPageview {
+  id                    String   @id @default(cuid())
+  schema                String   // vercel.analytics.v2
+  timestamp             BigInt   // Unix timestamp in milliseconds
+  projectId             String
+  ownerId               String
+  sessionId             BigInt
+  deviceId              BigInt
+
+  // URL Information
+  origin                String
+  path                  String
+  referrer              String?
+  queryParams           String?
+  route                 String?
+
+  // Geographic Data
+  country               String?
+  region                String?
+  city                  String?
+
+  // Device/Browser Data
+  osName                String?
+  osVersion             String?
+  clientName            String?
+  clientType            String?
+  clientVersion         String?
+  deviceType            String?
+  deviceBrand           String?
+  deviceModel           String?
+  browserEngine         String?
+  browserEngineVersion  String?
+
+  // SDK Information
+  sdkVersion            String?
+  sdkName               String?
+  sdkVersionFull        String?
+
+  // Vercel-specific
+  vercelEnvironment     String?
+  vercelUrl             String?
+  deployment            String?
+  flags                 String?  // JSON string
+
+  createdAt             DateTime @default(now())
+
+  @@index([projectId, timestamp])
+  @@index([sessionId])
+  @@index([deviceId])
+  @@index([path])
+  @@index([createdAt])
+  @@map("vercel_pageviews")
+}
+
+// Stores custom events from Vercel Web Analytics
+model VercelEvent {
+  id                    String   @id @default(cuid())
+  schema                String   // vercel.analytics.v2
+  eventName             String   // button_click, form_submit, etc.
+  eventData             String?  // JSON string with event-specific data
+  timestamp             BigInt   // Unix timestamp in milliseconds
+  projectId             String
+  ownerId               String
+  sessionId             BigInt
+  deviceId              BigInt
+
+  // URL Information
+  origin                String
+  path                  String
+  referrer              String?
+  queryParams           String?
+  route                 String?
+
+  // Geographic Data
+  country               String?
+  region                String?
+  city                  String?
+
+  // Device/Browser Data
+  osName                String?
+  osVersion             String?
+  clientName            String?
+  clientType            String?
+  clientVersion         String?
+  deviceType            String?
+  deviceBrand           String?
+  deviceModel           String?
+  browserEngine         String?
+  browserEngineVersion  String?
+
+  // SDK Information
+  sdkVersion            String?
+  sdkName               String?
+  sdkVersionFull        String?
+
+  // Vercel-specific
+  vercelEnvironment     String?
+  vercelUrl             String?
+  deployment            String?
+  flags                 String?  // JSON string
+
+  createdAt             DateTime @default(now())
+
+  @@index([projectId, timestamp])
+  @@index([sessionId])
+  @@index([deviceId])
+  @@index([eventName])
+  @@index([path])
+  @@index([createdAt])
+  @@map("vercel_events")
+}
+
+// 404s counted on the server by src/app/not-found.tsx (one row per day, path
+// and referring page, incremented). No personal data: no IP, user agent,
+// query string or cookies; referrerPath is only kept for links from this site.
+// Pruned with the analytics tables by /api/cron/db-cleanup
+model NotFoundHit {
+  id           String   @id @default(cuid())
+  day          DateTime @db.Date
+  path         String   // The missing path, normalized (no query string, max 200 chars)
+  referrerPath String   @default("") // Path of the page on this site that linked here, or ""
+  kind         String   // page | scanner (.php, .env, wp-admin and other probes)
+  count        Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([day, path, referrerPath])
+  @@index([day])
+  @@map("not_found_hits")
+}
+
+// Vercel Trace Drain Models
+// Stores trace data from Vercel's trace drains for performance monitoring
+
+model VercelTrace {
+  id              String            @id @default(cuid())
+  traceId         String            @unique
+  rootSpanId      String
+  startTime       BigInt            // Unix timestamp in nanoseconds
+  endTime         BigInt
+  totalDuration   BigInt            // Duration in nanoseconds
+  spanCount       Int
+  hasErrors       Boolean           @default(false)
+  projectId       String
+  deploymentId    String?
+  requestPath     String?
+  requestMethod   String?
+  metadata        Json?             // Resource info, batch metadata
+  createdAt       DateTime          @default(now())
+
+  spans           VercelTraceSpan[]
+
+  @@index([traceId])
+  @@index([projectId, startTime])
+  @@index([requestPath])
+  @@index([hasErrors])
+  @@index([createdAt])
+  @@map("vercel_traces")
+}
+
+model VercelTraceSpan {
+  id              String        @id @default(cuid())
+  // traceId references the unique OpenTelemetry trace identifier (not the auto-generated id)
+  // This enables efficient lookups by the standard trace ID used across distributed systems
+  traceId         String
+  trace           VercelTrace   @relation(fields: [traceId], references: [traceId], onDelete: Cascade)
+  spanId          String
+  parentSpanId    String?
+  operationName   String
+  serviceName     String
+  spanKind        String        // server, client, producer, consumer, internal
+  startTime       BigInt        // Unix timestamp in nanoseconds
+  duration        BigInt        // Duration in nanoseconds
+  statusCode      String        // OK, ERROR, UNSET
+  statusMessage   String?
+  attributes      Json?         // Span attributes
+  events          Json?         // Span events
+
+  createdAt       DateTime      @default(now())
+
+  @@unique([traceId, spanId])
+  @@index([traceId])
+  @@index([operationName])
+  @@index([startTime])
+  @@index([statusCode])
+  @@map("vercel_trace_spans")
+}
+
+// Site-wide, admin-controlled feature toggles (e.g. keyword highlighting).
+// Small key/value store rather than one column per flag, since new toggles
+// are expected to be added from the admin panel over time.
+model AppSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
+}
+
+// A copy of the site its owner told unparty about (#589, "tell unparty you
+// built yours"): the builds metric. No Clerk user, so not a UserSubmission.
+// Counted once its card is fetched back from the copy (src/lib/builds.ts),
+// listed on /builds once approved in Slack
+model Build {
+  id        String   @id @default(cuid())
+  url       String   @unique // The copy's origin, https://…
+  card      Json     // What it showed: name, tagline, colors, cover, projects, version
+  token     String   // The copy's own, to verify it and to take it off
+  number    Int      @unique // build #12, in the order they arrived
+  status    String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  email     String?  // Only when the owner typed one: release notices
+  version   String?  // The snapshot the copy runs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("builds")
+}

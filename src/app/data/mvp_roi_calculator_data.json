@@ -1,0 +1,450 @@
+{
+  "film": {
+    "title": "Sample Indie Film",
+    "genre": "Thriller",
+    "format": "Feature Film",
+    "runtime_minutes": 98,
+    "mpaa_rating": "R",
+    "production_tier": "micro_budget",
+    "shoot_days": 21,
+    "shoot_start": "2025-06-01",
+    "shoot_end": "2025-06-21",
+    "post_wrap": "2025-10-01",
+    "festival_premiere_target": "2026-01-15",
+    "theatrical_release_target": "2026-06-01"
+  },
+
+  "production_budget": {
+    "total": 850000,
+    "contingency_pct": 0.10,
+    "completion_bond_pct": 0.03,
+    "currency": "USD",
+
+    "above_the_line": {
+      "total": 185000,
+      "line_items": {
+        "script_acquisition": 15000,
+        "producer_fee": 40000,
+        "director_fee": 50000,
+        "lead_cast_total": 60000,
+        "supporting_cast_total": 15000,
+        "development_and_rewrites": 5000
+      }
+    },
+
+    "below_the_line_production": {
+      "total": 365000,
+      "line_items": {
+        "crew_wages": 120000,
+        "equipment_rental": 55000,
+        "location_fees_and_permits": 30000,
+        "set_construction_and_art_dept": 25000,
+        "props_and_costumes": 18000,
+        "transportation_and_vehicles": 20000,
+        "catering_and_craft_services": 22000,
+        "expendables_and_supplies": 8000,
+        "production_insurance": 30000,
+        "payroll_services": 12000,
+        "miscellaneous_production": 25000
+      }
+    },
+
+    "post_production": {
+      "total": 145000,
+      "line_items": {
+        "editorial_editor_fee": 25000,
+        "color_grading_and_di": 18000,
+        "sound_mix_and_design": 20000,
+        "adr_and_foley": 8000,
+        "music_score_composition": 15000,
+        "music_licensing": 10000,
+        "vfx_and_cgi": 20000,
+        "deliverables_dcp_and_masters": 12000,
+        "subtitles_and_closed_captions": 5000,
+        "post_miscellaneous": 12000
+      }
+    },
+
+    "soft_costs": {
+      "total": 78000,
+      "line_items": {
+        "legal_fees_and_clearances": 20000,
+        "accounting": 8000,
+        "e_and_o_insurance": 12000,
+        "completion_bond": 25500,
+        "festival_submissions": 5000,
+        "chain_of_title": 7500
+      }
+    },
+
+    "contingency": {
+      "total": 77000,
+      "basis": "10% of ATL + BTL + post_production subtotals"
+    }
+  },
+
+  "distribution_deal_scenarios": {
+    "note": "Three scenarios modeled: traditional_distributor, self_distribution, straight_to_streaming. Use scenario_id to toggle active scenario in the UI.",
+    "active_scenario": "traditional_distributor",
+
+    "traditional_distributor": {
+      "scenario_id": "traditional_distributor",
+      "label": "Traditional Distributor Deal",
+      "distribution_fee_pct": 0.25,
+      "pa_costs_distributor_funded": true,
+      "recoupment_order": ["pa_costs", "distribution_expenses", "distribution_fee", "investor_recoupment", "net_profit"],
+
+      "pa_costs": {
+        "total": 400000,
+        "note": "P&A funded by distributor but recouped against producer gross receipts before any profit flows back",
+        "line_items": {
+          "media_buy_digital_and_social": 180000,
+          "media_buy_print_and_outdoor": 60000,
+          "trailer_and_creative_materials": 35000,
+          "publicist_and_pr_campaign": 45000,
+          "screening_events_and_press": 20000,
+          "dcp_shipping_and_delivery": 15000,
+          "awards_campaign": 25000,
+          "miscellaneous_pa": 20000
+        }
+      },
+
+      "distribution_expenses_other": {
+        "total": 85000,
+        "line_items": {
+          "sales_agent_market_attendance": 20000,
+          "residuals_and_guild_payments": 30000,
+          "format_conversion_costs": 10000,
+          "accounting_and_audit": 10000,
+          "miscellaneous_distribution": 15000
+        }
+      }
+    },
+
+    "self_distribution": {
+      "scenario_id": "self_distribution",
+      "label": "Self-Distribution (Hybrid)",
+      "distribution_fee_pct": 0.0,
+      "aggregator_fee_pct": 0.12,
+      "aggregator_flat_fee": 1200,
+      "pa_costs_distributor_funded": false,
+      "recoupment_order": ["pa_costs", "aggregator_fees", "investor_recoupment", "net_profit"],
+
+      "pa_costs": {
+        "total": 120000,
+        "note": "Lean self-funded P&A spend. Filmmaker controls the spend but takes on full risk.",
+        "line_items": {
+          "digital_and_social_ads": 60000,
+          "publicist": 20000,
+          "trailer_and_creative": 15000,
+          "screening_events": 10000,
+          "dcp_and_delivery": 8000,
+          "miscellaneous_pa": 7000
+        }
+      },
+
+      "distribution_expenses_other": {
+        "total": 22000,
+        "line_items": {
+          "aggregator_flat_fee": 1200,
+          "residuals_and_guild_payments": 12000,
+          "accounting": 8800
+        }
+      }
+    },
+
+    "straight_to_streaming": {
+      "scenario_id": "straight_to_streaming",
+      "label": "Straight-to-Streaming License",
+      "distribution_fee_pct": 0.0,
+      "sales_agent_commission_pct": 0.15,
+      "pa_costs_distributor_funded": false,
+      "recoupment_order": ["sales_agent_commission", "market_expenses", "investor_recoupment", "net_profit"],
+
+      "pa_costs": {
+        "total": 0,
+        "note": "Streaming platform handles all marketing internally. No P&A obligation for the filmmaker."
+      },
+
+      "distribution_expenses_other": {
+        "total": 35000,
+        "line_items": {
+          "sales_agent_market_attendance_afm_cannes": 18000,
+          "legal_and_contract_fees": 10000,
+          "deliverables_preparation": 7000
+        }
+      }
+    }
+  },
+
+  "revenue_projections": {
+    "baseline": {
+      "label": "Baseline (Conservative)",
+      "multiplier": 1.0,
+      "note": "Based on comparable micro-budget thrillers 2021–2024 with limited theatrical, genre VOD strength"
+    },
+    "upside": {
+      "label": "Upside (Festival Breakout)",
+      "multiplier": 2.8,
+      "note": "Assumes a major festival premiere (Sundance, SXSW) driving acquisition buzz and broader release"
+    },
+    "downside": {
+      "label": "Downside (Minimal Traction)",
+      "multiplier": 0.45,
+      "note": "Assumes poor festival response, no acquisition, minimal VOD performance"
+    },
+
+    "channels": {
+      "theatrical_domestic": {
+        "label": "Theatrical (Domestic)",
+        "applicable_scenarios": ["traditional_distributor", "self_distribution"],
+        "gross_receipts_baseline": 320000,
+        "exhibitor_split_pct": 0.55,
+        "note": "Exhibitor keeps ~55% in weeks 1–4. Producer gross = 45% of box office gross.",
+        "producer_gross_baseline": 144000,
+        "screen_count_estimate": 45,
+        "avg_ticket_price": 13.5,
+        "weeks_in_release": 4,
+        "comparables": ["comparable films at similar budget/screen count earn $3,500–$8,000 per screen in opening weekend"]
+      },
+
+      "theatrical_international": {
+        "label": "Theatrical (International)",
+        "applicable_scenarios": ["traditional_distributor"],
+        "gross_receipts_baseline": 95000,
+        "foreign_sales_agent_commission_pct": 0.20,
+        "sub_distribution_fees_pct": 0.15,
+        "market_expenses_recouped": 18000,
+        "producer_gross_baseline": 42750,
+        "note": "International theatrical is modest for micro-budget domestic thrillers without name cast"
+      },
+
+      "tvod": {
+        "label": "Transactional VOD (iTunes, Amazon, Vudu, Google Play)",
+        "applicable_scenarios": ["traditional_distributor", "self_distribution"],
+        "gross_receipts_baseline": 210000,
+        "platform_split_pct": 0.30,
+        "aggregator_fee_pct": 0.12,
+        "producer_gross_baseline": 127680,
+        "note": "Thriller genre historically performs well on TVOD. Platform keeps 30%, aggregator takes 12% of remainder in self-distribution scenario.",
+        "avg_rental_price": 4.99,
+        "avg_purchase_price": 12.99,
+        "estimated_rentals": 28000,
+        "estimated_purchases": 4500
+      },
+
+      "svod_license": {
+        "label": "SVOD License (Netflix, Hulu, Prime, etc.)",
+        "applicable_scenarios": ["traditional_distributor", "straight_to_streaming"],
+        "flat_license_fee_baseline": 275000,
+        "license_term_years": 3,
+        "territory": "North America",
+        "note": "Flat license fee — not per-stream. This is the most predictable revenue line. Straight-to-streaming scenario targets this as primary revenue.",
+        "producer_gross_baseline": 275000
+      },
+
+      "avod": {
+        "label": "Ad-Supported VOD (Tubi, Pluto, Peacock Free)",
+        "applicable_scenarios": ["traditional_distributor", "self_distribution"],
+        "gross_receipts_baseline": 38000,
+        "platform_split_pct": 0.50,
+        "producer_gross_baseline": 19000,
+        "estimated_streams": 950000,
+        "cpm_estimate": 4.0,
+        "note": "AVOD CPMs for indie content range $2–$6. Lower revenue but extends audience reach."
+      },
+
+      "pay_tv_domestic": {
+        "label": "Pay TV / Cable License (Domestic)",
+        "applicable_scenarios": ["traditional_distributor"],
+        "flat_license_fee_baseline": 45000,
+        "license_term_years": 2,
+        "producer_gross_baseline": 45000,
+        "note": "Includes premium cable window (Showtime, Starz, etc.). Fee varies significantly by cast and genre."
+      },
+
+      "free_tv_domestic": {
+        "label": "Free TV / Broadcast (Domestic)",
+        "applicable_scenarios": ["traditional_distributor"],
+        "flat_license_fee_baseline": 15000,
+        "producer_gross_baseline": 15000,
+        "note": "Syndication and free broadcast window, typically 3–5 years post-theatrical"
+      },
+
+      "international_svod_and_tv": {
+        "label": "International SVOD + TV Licenses",
+        "applicable_scenarios": ["traditional_distributor", "straight_to_streaming"],
+        "gross_receipts_baseline": 120000,
+        "foreign_sales_agent_commission_pct": 0.20,
+        "market_expenses_recouped": 18000,
+        "producer_gross_baseline": 78000,
+        "note": "Aggregated MGs across key territories (UK, Germany, Australia, Benelux, Scandinavia). Micro-budget thrillers perform variably internationally."
+      },
+
+      "educational_and_institutional": {
+        "label": "Educational / Institutional Licensing",
+        "applicable_scenarios": ["traditional_distributor", "self_distribution"],
+        "gross_receipts_baseline": 12000,
+        "producer_gross_baseline": 10800,
+        "note": "Film schools, libraries, and institutions. Small but high-margin revenue with no platform split."
+      },
+
+      "ancillary": {
+        "label": "Ancillary (Airline, Military, Clip Licensing, Soundtrack)",
+        "applicable_scenarios": ["traditional_distributor"],
+        "gross_receipts_baseline": 18000,
+        "producer_gross_baseline": 14400,
+        "note": "Airline licensing has declined significantly. Clip licensing highly dependent on whether scenes become culturally referenced."
+      }
+    }
+  },
+
+  "recoupment_waterfall": {
+    "note": "Defines the order in which gross receipts are applied before a net profit is declared. Critical for investor presentations.",
+    "traditional_distributor": [
+      { "position": 1, "label": "Distribution Fee (off the top)", "type": "percentage", "value": 0.25, "basis": "gross_receipts" },
+      { "position": 2, "label": "P&A Recoupment", "type": "fixed", "value": 400000 },
+      { "position": 3, "label": "Other Distribution Expenses", "type": "fixed", "value": 85000 },
+      { "position": 4, "label": "Investor Principal Recoupment", "type": "percentage", "value": 1.0, "basis": "total_production_budget" },
+      { "position": 5, "label": "Net Profit Split (50/50 Filmmaker vs Investor)", "type": "split", "filmmaker_pct": 0.50, "investor_pct": 0.50 }
+    ],
+    "self_distribution": [
+      { "position": 1, "label": "P&A Recoupment", "type": "fixed", "value": 120000 },
+      { "position": 2, "label": "Aggregator Fees", "type": "fixed", "value": 22000 },
+      { "position": 3, "label": "Investor Principal Recoupment", "type": "percentage", "value": 1.0, "basis": "total_production_budget" },
+      { "position": 4, "label": "Net Profit Split (65/35 Filmmaker vs Investor)", "type": "split", "filmmaker_pct": 0.65, "investor_pct": 0.35 }
+    ],
+    "straight_to_streaming": [
+      { "position": 1, "label": "Sales Agent Commission (15%)", "type": "percentage", "value": 0.15, "basis": "gross_receipts" },
+      { "position": 2, "label": "Market Expenses Recoupment", "type": "fixed", "value": 35000 },
+      { "position": 3, "label": "Investor Principal Recoupment", "type": "percentage", "value": 1.0, "basis": "total_production_budget" },
+      { "position": 4, "label": "Net Profit Split (70/30 Filmmaker vs Investor)", "type": "split", "filmmaker_pct": 0.70, "investor_pct": 0.30 }
+    ]
+  },
+
+  "comparable_films": [
+    {
+      "title": "Comp A",
+      "genre": "Thriller",
+      "year": 2022,
+      "production_budget": 750000,
+      "total_gross_receipts": 1850000,
+      "primary_revenue_driver": "SVOD license + TVOD",
+      "theatrical_screens_peak": 38,
+      "festival_premiere": "Tribeca",
+      "roi_estimated_pct": 42
+    },
+    {
+      "title": "Comp B",
+      "genre": "Thriller",
+      "year": 2023,
+      "production_budget": 900000,
+      "total_gross_receipts": 3200000,
+      "primary_revenue_driver": "Theatrical + SVOD",
+      "theatrical_screens_peak": 112,
+      "festival_premiere": "SXSW",
+      "roi_estimated_pct": 198
+    },
+    {
+      "title": "Comp C",
+      "genre": "Thriller",
+      "year": 2021,
+      "production_budget": 500000,
+      "total_gross_receipts": 680000,
+      "primary_revenue_driver": "AVOD + TVOD",
+      "theatrical_screens_peak": 0,
+      "festival_premiere": "None",
+      "roi_estimated_pct": -18
+    },
+    {
+      "title": "Comp D",
+      "genre": "Thriller",
+      "year": 2023,
+      "production_budget": 1100000,
+      "total_gross_receipts": 2100000,
+      "primary_revenue_driver": "International sales + SVOD",
+      "theatrical_screens_peak": 22,
+      "festival_premiere": "Berlin (Generation)",
+      "roi_estimated_pct": 63
+    }
+  ],
+
+  "release_windows": {
+    "note": "Standard window timeline from theatrical release date. Used to model cash flow timing.",
+    "windows": [
+      { "window": "Theatrical", "offset_days_from_release": 0, "duration_days": 90 },
+      { "window": "Premium VOD / PVOD", "offset_days_from_release": 45, "duration_days": 45, "note": "Day-and-date or early PVOD increasingly common for micro-budget" },
+      { "window": "Physical / TVOD", "offset_days_from_release": 90, "duration_days": 180 },
+      { "window": "Pay TV", "offset_days_from_release": 270, "duration_days": 365 },
+      { "window": "SVOD", "offset_days_from_release": 365, "duration_days": 1095 },
+      { "window": "Free TV / Broadcast", "offset_days_from_release": 730, "duration_days": 730 },
+      { "window": "AVOD", "offset_days_from_release": 548, "duration_days": 1825 }
+    ]
+  },
+
+  "roi_summary_baseline": {
+    "note": "Pre-calculated baseline figures using traditional_distributor scenario at 1.0x revenue multiplier. Recalculate dynamically in the UI.",
+    "scenario": "traditional_distributor",
+    "revenue_multiplier": 1.0,
+
+    "gross_receipts_total": 726150,
+    "distribution_fee_deducted": 181538,
+    "pa_costs_recouped": 400000,
+    "other_distribution_expenses_recouped": 85000,
+    "total_deductions": 666538,
+
+    "producer_net_receipts": 59612,
+    "total_production_budget": 850000,
+
+    "gross_profit_loss": -790388,
+    "roi_pct": -92.99,
+
+    "note_on_result": "At baseline revenue with a traditional distribution deal and full P&A spend of $400K, this film does not recoup. This illustrates the core risk the calculator should surface. The upside scenario (2.8x multiplier) and/or self-distribution scenario significantly improve the outcome.",
+
+    "upside_snapshot": {
+      "revenue_multiplier": 2.8,
+      "gross_receipts_total": 2033220,
+      "distribution_fee_deducted": 508305,
+      "pa_costs_recouped": 400000,
+      "other_distribution_expenses_recouped": 85000,
+      "producer_net_receipts": 1039915,
+      "gross_profit_loss": 189915,
+      "roi_pct": 22.34
+    },
+
+    "self_distribution_baseline_snapshot": {
+      "scenario": "self_distribution",
+      "revenue_multiplier": 1.0,
+      "gross_receipts_total": 501480,
+      "aggregator_fees_deducted": 22000,
+      "pa_costs_recouped": 120000,
+      "producer_net_receipts": 359480,
+      "gross_profit_loss": -490520,
+      "roi_pct": -57.71,
+      "note": "Lower gross but significantly less recoupment drag — self-distribution breaks even at a lower revenue threshold"
+    }
+  },
+
+  "ui_config": {
+    "note": "Suggested configuration for the MVP NextJS component",
+    "default_active_scenario": "traditional_distributor",
+    "default_revenue_multiplier": 1.0,
+    "sliders": [
+      { "id": "revenue_multiplier", "label": "Revenue Multiplier", "min": 0.1, "max": 5.0, "step": 0.1, "default": 1.0 },
+      { "id": "pa_spend", "label": "P&A Spend ($)", "min": 0, "max": 750000, "step": 5000, "default": 400000 },
+      { "id": "distribution_fee_pct", "label": "Distribution Fee (%)", "min": 0, "max": 0.45, "step": 0.01, "default": 0.25 },
+      { "id": "contingency_pct", "label": "Contingency (%)", "min": 0.05, "max": 0.20, "step": 0.01, "default": 0.10 }
+    ],
+    "toggles": [
+      { "id": "scenario_selector", "label": "Distribution Scenario", "options": ["traditional_distributor", "self_distribution", "straight_to_streaming"] },
+      { "id": "revenue_scenario", "label": "Revenue Scenario", "options": ["downside", "baseline", "upside"] }
+    ],
+    "key_callouts": [
+      "recoupment_threshold",
+      "pa_as_pct_of_budget",
+      "distribution_drag_total",
+      "roi_pct",
+      "producer_net_receipts"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+    "Last Updated": "This Privacy Policy was last updated on September 2, 2026, and reflects the current state of {site}. It explains what information we collect, how we use it, and the choices you have.",
+    "Information We Collect": {
+        "Account Information": "When you sign up or sign in, our authentication provider, Clerk, collects account details such as your name, email address, and sign-in credentials on our behalf. Within our own systems, your data is referenced by the unique user ID that Clerk assigns to your account.",
+        "User Content": "Content you create or submit within the app — such as problem and waitlist submissions, thoughts, challenge responses, question answers, saved brand colors, and files you upload — is collected so that we can provide the service to you.",
+        "Progress & Journey Data": "We store your step completion, category access, milestones, idea progression, and session activity in our database, tied to your account, so the app can track and display your founder journey over time.",
+        "Payment Information": "If you make a purchase, payment is processed by our payment providers (Polar, or Stripe for legacy book orders). We never receive or store your full card details — we only keep order references (such as a payment or order ID) needed to fulfill and support your purchase.",
+        "Usage Data": "We collect information about how you use the app — such as pages visited, features used, and general performance data — through the analytics tools described below, to help us improve the app.",
+        "Device Information": "We may collect information about the device and browser you use to access the app (like operating system, browser type, and referrer) for compatibility, security, and analytics purposes."
+    },
+    "Cookies & Local Storage": {
+        "Essential Cookies": "Our authentication provider, Clerk, sets cookies that are strictly necessary to keep you signed in and to protect your session (for example, session and client verification cookies). These cannot be disabled while using signed-in features of the app.",
+        "Analytics Cookies": "We use Google Analytics, which sets cookies (such as _ga) to help us understand aggregate usage of the site. Google Analytics only runs after you accept analytics cookies in our cookie banner, and you can also block or delete these cookies in your browser settings without affecting core functionality.",
+        "Vercel Analytics": "We use Vercel Analytics and Speed Insights to measure visits and page performance. These tools are designed to work without cross-site tracking cookies, and they only run after you accept analytics in our cookie banner.",
+        "Local Storage": "We use your browser's local storage to remember preferences such as your selected theme color and your analytics consent choice from the cookie banner. If you are signed in, your theme preference is also synced to your account metadata so your choice follows you across {site} apps.",
+        "No Advertising Trackers": "We do not use advertising cookies, and we do not sell or share your data with advertisers."
+    },
+    "Data Usage": {
+        "Service Delivery": "We use the collected information to operate and provide the core features of the app, ensuring functionality and a personalized user experience.",
+        "Improvement & Development": "Your data helps us diagnose issues, understand usage patterns, and improve the app's performance and features over time.",
+        "Search": "When you use in-app search, your query may be sent to our own search service to generate relevant results from our knowledge base. Queries are used only to answer your search.",
+        "Submission Review": "When you submit a problem or waitlist request, your submission is stored in our database and shared with our team for review — this includes creating a discussion in a private GitHub repository and notifying our internal Slack workspace so we can respond.",
+        "Communication": "If you provide contact information, we may use it to send you important updates (for example, confirmation when your submission is received or approved), respond to support requests, or share information about new features. You can opt out of non-essential communications."
+    },
+    "Third-Party Services": {
+        "Clerk": "We use Clerk to manage authentication and user accounts. Clerk processes your sign-up and sign-in information (name, email, credentials) and stores your account profile under its own privacy policy and security practices.",
+        "Neon (PostgreSQL)": "Our application database is hosted on Neon, a managed PostgreSQL provider. Your app data (content, progress, and submissions) is stored there, encrypted in transit and at rest.",
+        "Vercel": "Our website and backend are hosted on Vercel. When you use the app, your requests (and associated logs, analytics events, and performance traces) are processed on Vercel's servers. Files you upload are stored in Vercel Blob storage.",
+        "Google Analytics": "We use Google Analytics to understand aggregate site usage. Google may set cookies and process usage data in accordance with its own privacy policy.",
+        "Polar": "Purchases are processed by Polar, our payment provider for new orders. Polar collects the billing details needed to complete your payment under its own privacy policy.",
+        "Stripe": "Some legacy book purchases are processed by Stripe. Stripe collects and processes your card details directly; we never see your full card number.",
+        "Loops": "We use Loops to send transactional emails (such as submission confirmations and approval notifications). Your name and email address are shared with Loops solely to deliver these messages.",
+        "Slack": "Messages you send through our contact and chat features, along with notifications about submissions and book claims, are forwarded to our private Slack workspace so our team can respond.",
+        "GitHub": "Waitlist and problem submissions create a discussion in a private GitHub repository for our team's review. Approval of that discussion updates your account's access status.",
+        "Apple MusicKit": "We integrate Apple's MusicKit service to enable music playback within the app. Playback requires an active Apple Music subscription. You will be prompted to authorize your Apple Music account through Apple's secure authentication system. We do not collect, store, or share any data from your Apple Music account, including your listening history, playlists, or music preferences. All Apple Music authentication and playback is handled directly by Apple's servers. Your use of Apple Music features is subject to Apple's Terms of Service and Privacy Policy.",
+        "Data Sharing": "We do not sell your personal information. We only share your data with the above service providers to help us operate the app, and we ensure each service has appropriate data protection measures."
+    },
+    "Data Retention": {
+        "Retention Period": "We retain your personal data only as long as necessary to fulfill the purposes for which it was collected, or as required by law. After that, we will delete or anonymize the data.",
+        "Analytics Retention": "Analytics events, pageviews, and performance traces that we store in our own database are automatically purged after 30 days by a scheduled cleanup job.",
+        "User Deletion Requests": "If you delete your account or request deletion of your data, we will remove your personal information from our active databases. Some information may remain in encrypted backups for a short period before being automatically deleted.",
+        "Ongoing Review": "We periodically review the data we hold and delete or anonymize information that we no longer need for business or legal purposes."
+    },
+    "Data Security": {
+        "Security Measures": "We implement industry-standard security measures to protect your data, including encryption in transit (when your data is sent between your device and our servers) and encryption at rest (when stored).",
+        "Access Controls": "Admin functionality is protected by role-based access control, and inbound webhooks (payments, GitHub, and analytics drains) are verified with cryptographic signatures before processing.",
+        "Breach Notification": "In the event of a data breach that compromises your personal data, we will notify you as soon as possible and provide information about what happened and any steps you should take."
+    },
+    "User Rights": {
+        "Access & Correction": "You have the right to request access to the personal data we hold about you and to ask for corrections if that information is inaccurate or out of date.",
+        "Deletion": "You can request that we delete your personal data. When you ask us to delete your data, we will remove your information from our active systems unless we have a legal obligation to keep it.",
+        "Withdrawal of Consent": "If our app ever relies on your consent for a certain data use, you have the right to withdraw that consent at any time, which will stop that specific processing.",
+        "Data Portability": "You can request a copy of the data you have provided to us in a common format, so you can transfer it to another service if needed."
+    },
+    "Opt-Out": {
+        "Marketing Communications": "If we send promotional emails or newsletters, you can opt out by using the unsubscribe link in those communications or by contacting us directly. Opting out of marketing won't affect administrative or account-related notifications you may still receive as needed for service.",
+        "Analytics": "Analytics only run if you accept them in our cookie banner, and you can change your choice at any time via the \"cookie preferences\" link in the footer. You can additionally block or delete analytics cookies in your browser settings or with a content blocker. Essential authentication cookies are still required for signed-in features.",
+        "Search": "In-app search is optional. If you prefer that your queries not be processed by our search service, simply refrain from using the search feature — core browsing works without it."
+    },
+    "Children's Privacy": {
+        "Under 13": "Our app is not intended for children under the age of 13. We do not knowingly collect personal information from anyone under 13 years old.",
+        "Parental Guidance": "If you are a parent or guardian and believe your child under 13 has provided personal data in the app, please contact us so we can delete the information."
+    },
+    "Changes to Privacy Policy": {
+        "Notice": "We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons.",
+        "Notification": "If we make significant changes, we will notify you through the app or via email. We will also update the \"Last Updated\" date at the top of the policy.",
+        "Continued Use": "By continuing to use the app after an updated Privacy Policy becomes effective, you accept the terms of the new policy."
+    },
+    "Contact Us": {
+        "Contact Email": "If you have any questions, concerns, or requests regarding this Privacy Policy or your personal data, you can contact us at {email}.",
+        "Mailing Address": "available upon request."
+    },
+    "Trademark Notices": {
+        "Apple Trademarks": "Apple and Apple Music are trademarks of Apple Inc., registered in the U.S. and other countries."
+    }
+}

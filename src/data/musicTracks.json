@@ -1,0 +1,81 @@
+{
+  "whitney-step-by-step": {
+    "id": "whitney-step-by-step",
+    "artist": "Whitney Houston",
+    "title": "Step by Step (Remix)",
+    "appleUrl": "https://music.apple.com/us/song/step-by-step-remix/267930619",
+    "appleTrackId": "267930619"
+  },
+  "badbunny-dtmf": {
+    "id": "badbunny-dtmf",
+    "artist": "Bad Bunny",
+    "title": "DtMF",
+    "appleUrl": "https://music.apple.com/us/album/dtmf/1787023936",
+    "appleTrackId": "1787023936"
+  },
+  "guess-what": {
+    "id": "guess-what",
+    "artist": "Syleena Johnson",
+    "title": "Guess What",
+    "appleUrl": "https://music.apple.com/us/album/guess-what/304798687",
+    "appleTrackId": "304798687"
+  },
+  "last-time-that-i-checcd": {
+    "id": "last-time-that-i-checcd",
+    "artist": "Nipsey Hussle",
+    "title": "Last Time That I Checc'd",
+    "appleUrl": "https://music.apple.com/us/album/last-time-that-i-checcd-feat-yg/1316706680",
+    "appleTrackId": "1316706680"
+  },
+  "charlene": {
+    "id": "charlene",
+    "artist": "Anthony Hamilton",
+    "title": "Charlene",
+    "appleUrl": "https://music.apple.com/us/album/charlene/298424131",
+    "appleTrackId": "298424131"
+  },
+  "anklebiters": {
+    "id": "anklebiters",
+    "artist": "Paramore",
+    "title": "Anklebiters",
+    "appleUrl": "https://music.apple.com/us/album/anklebiters/593146366?i=593148442",
+    "appleTrackId": "593148442"
+  },
+  "crooks-castles": {
+    "id": "crooks-castles",
+    "artist": "Kembe X",
+    "title": "Crooks & Castles",
+    "appleUrl": "https://music.apple.com/us/album/crooks-castles/1883995286?i=1883995289",
+    "appleTrackId": "1883995289"
+  },
+  "ten-crack-commandments" : {
+    "id": "ten-crack-commandments",
+    "artist": "The Notorious B.I.G.",
+    "title": "Ten Crack Commandments",
+    "appleUrl": "https://music.apple.com/us/album/ten-crack-commandments/906888433?i=906888520",
+    "appleTrackId": "906888520"
+  },
+  "thats-life" : {
+    "id": "thats-life",
+    "artist": "Frank Sinatra",
+    "title": "That's Life",
+    "appleUrl": "https://music.apple.com/us/album/thats-life/1440858119?i=1440858707",
+    "appleTrackId": "1440858707"
+  },
+  "the-fifth" : {
+    "id": "the-fifth",
+    "artist": "DJ Spen",
+    "title": "The Fifth (Of Beethoven) [Mixed]",
+    "appleUrl": "https://music.apple.com/us/album/the-fifth-of-beethoven-mixed/6781786506?i=6781786633",
+    "appleTrackId": "6781786633"
+  },
+  "too-fast" : {
+      "id" : "too-fast",
+      "artist": "Sonder",
+      "title": "Too Fast",
+      "appleUrl": "https://music.apple.com/us/album/too-fast/1236828998?i=1236829679",
+      "appleTrackId": "1236829679"
+    }
+  
+}
+

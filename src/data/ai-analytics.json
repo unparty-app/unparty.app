@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "total": 0,
+    "chatgpt": 0,
+    "claude": 0,
+    "dateRange": {
+      "start": "",
+      "end": ""
+    },
+    "spanDays": 0
+  },
+  "hourly": [],
+  "topDays": [],
+  "weekday": [],
+  "daily": []
+}

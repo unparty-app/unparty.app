@@ -1,0 +1,317 @@
+name: TypeScript Build Check & Issue Creation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: '24'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Generate Prisma Client
+      run: npx prisma generate
+      
+    - name: Run TypeScript build and capture output
+      id: build
+      run: |
+        # Create output files
+        mkdir -p build-results
+        
+        # Run build and capture all output
+        set +e  # Don't exit on error
+        npm run build > build-results/build-output.log 2>&1
+        BUILD_EXIT_CODE=$?
+        set -e
+        
+        echo "BUILD_EXIT_CODE=$BUILD_EXIT_CODE" >> $GITHUB_OUTPUT
+        
+        # Parse TypeScript/ESLint errors and warnings - combine file paths with their warnings
+        awk '
+        /^\.\/.*$/ { file = $0; getline; if (/^[0-9]+:[0-9]+/) { print file ":" $0 } }
+        ' build-results/build-output.log | grep -E "(Error|Warning):" > build-results/ts-errors.log || true
+        
+        # Parse runtime errors (like Stripe API key issues)
+        cat build-results/build-output.log | grep -A5 -B5 "Error:" | head -50 > build-results/runtime-errors.log || true
+        
+        # Count errors
+        TS_ERROR_COUNT=$(cat build-results/ts-errors.log | wc -l || echo "0")
+        RUNTIME_ERROR_COUNT=$(cat build-results/runtime-errors.log | grep "Error:" | wc -l || echo "0")
+        
+        echo "TS_ERROR_COUNT=$TS_ERROR_COUNT" >> $GITHUB_OUTPUT
+        echo "RUNTIME_ERROR_COUNT=$RUNTIME_ERROR_COUNT" >> $GITHUB_OUTPUT
+        
+        # Upload artifacts for debugging
+        echo "Build completed with exit code: $BUILD_EXIT_CODE"
+        echo "TypeScript errors found: $TS_ERROR_COUNT"
+        echo "Runtime errors found: $RUNTIME_ERROR_COUNT"
+        
+    - name: Debug - Show intermediate files
+      if: always()
+      run: |
+        echo "=== DEBUG: Checking intermediate files ==="
+        echo "TypeScript errors file (ts-errors.log):"
+        if [[ -f build-results/ts-errors.log ]]; then
+          echo "File exists, $(wc -l < build-results/ts-errors.log) lines"
+          head -5 build-results/ts-errors.log || true
+        else
+          echo "File does not exist"
+        fi
+        
+        echo -e "\nRuntime errors file (runtime-errors.log):"
+        if [[ -f build-results/runtime-errors.log ]]; then
+          echo "File exists, $(wc -l < build-results/runtime-errors.log) lines"
+          head -5 build-results/runtime-errors.log || true
+        else
+          echo "File does not exist"
+        fi
+        
+        echo -e "\nBuild outputs:"
+        echo "BUILD_EXIT_CODE: ${{ steps.build.outputs.BUILD_EXIT_CODE }}"
+        echo "TS_ERROR_COUNT: ${{ steps.build.outputs.TS_ERROR_COUNT }}"
+        echo "RUNTIME_ERROR_COUNT: ${{ steps.build.outputs.RUNTIME_ERROR_COUNT }}"
+        
+    - name: Upload build results
+      uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: build-results
+        path: build-results/
+        
+    - name: Process TypeScript Errors
+      if: steps.build.outputs.TS_ERROR_COUNT != '0'
+      run: |
+        echo "Processing TypeScript errors..."
+        echo "TS_ERROR_COUNT: ${{ steps.build.outputs.TS_ERROR_COUNT }}"
+        
+        # Initialize issues file
+        touch build-results/issues-to-create.txt
+        
+        # Process each TypeScript error line
+        while IFS= read -r line; do
+          if [[ -n "$line" ]]; then
+            echo "Processing: $line"
+            
+            # Extract file path and line number from Next.js/ESLint format
+            # Format: ./file:line:column  (Error|Warning): Message
+            if [[ $line =~ ^(\./[^:]+):([0-9]+):([0-9]+)[[:space:]]+([^:]+):[[:space:]]*(.+)$ ]]; then
+              FILE="${BASH_REMATCH[1]}"
+              LINE_NUM="${BASH_REMATCH[2]}"
+              COLUMN="${BASH_REMATCH[3]}"
+              FULL_MSG="${BASH_REMATCH[4]}:${BASH_REMATCH[5]}"
+              
+              # Extract error type
+              if [[ $FULL_MSG =~ ([[:space:]]*)(Error|Warning):[[:space:]]*(.+)$ ]]; then
+                ERROR_TYPE="${BASH_REMATCH[2]}"
+                ERROR_MSG="${BASH_REMATCH[3]}"
+              else
+                ERROR_TYPE="Warning"
+                ERROR_MSG="$FULL_MSG"
+              fi
+              
+              # Clean file path
+              FILE=$(echo "$FILE" | sed 's/^\.\///')
+              
+              # Determine issue type and labels
+              if [[ "$ERROR_TYPE" == "Error" ]]; then
+                ISSUE_TYPE="blocking"
+                LABEL_COLOR="2a1314"
+                PRIORITY="🚨 BLOCKING"
+              else
+                ISSUE_TYPE="warning"
+                LABEL_COLOR="0d3868"
+                PRIORITY="⚠️ WARNING"
+              fi
+              
+              # Create issue title
+              ISSUE_TITLE="$PRIORITY TypeScript $ERROR_TYPE in $FILE:$LINE_NUM"
+              
+              # Create issue body with context (single line, using tabs so no pipe escaping needed)
+              COMMIT_SHA="${{ github.sha || 'unknown' }}"
+              BRANCH_NAME="${{ github.ref_name || 'unknown' }}"
+              RUN_ID="${{ github.run_id || 'unknown' }}"
+              SERVER_URL="${{ github.server_url || 'https://github.com' }}"
+              REPOSITORY="${{ github.repository || 'unknown/unknown' }}"
+              
+              ISSUE_BODY="TypeScript Build $ERROR_TYPE in $FILE at line $LINE_NUM:$COLUMN - $ERROR_MSG | Commit: $COMMIT_SHA | Branch: $BRANCH_NAME | Workflow: $RUN_ID"
+              
+              # Save issue data (using tab delimiter to avoid pipe conflicts)
+              printf "%s\t%s\t%s\t%s\n" \
+                "$ISSUE_TITLE" \
+                "$ISSUE_BODY" \
+                "$ISSUE_TYPE" \
+                "$LABEL_COLOR" \
+                >> build-results/issues-to-create.txt
+              echo "✅ Added issue for $FILE:$LINE_NUM"
+              
+            else
+              echo "⚠️ Could not parse line: $line"
+            fi
+          fi
+        done < build-results/ts-errors.log
+        
+        echo "✅ Finished processing TypeScript errors"
+        
+    - name: Process Runtime Errors  
+      if: steps.build.outputs.RUNTIME_ERROR_COUNT != '0'
+      run: |
+        echo "Processing runtime errors..."
+        echo "RUNTIME_ERROR_COUNT: ${{ steps.build.outputs.RUNTIME_ERROR_COUNT }}"
+        
+        # Initialize issues file if not exists
+        touch build-results/issues-to-create.txt
+        
+        # Process runtime errors (avoid subshell by using different approach)
+        while IFS= read -r line; do
+          if [[ -n "$line" ]]; then
+            echo "Processing runtime error: $line"
+            
+            # Extract error message
+            ERROR_MSG=$(echo "$line" | sed 's/^[0-9]*://' | sed 's/Error: //')
+            
+            # Create issue for runtime error with fallback values (single line format, tabs so no pipe escaping needed)
+            COMMIT_SHA="${{ github.sha || 'unknown' }}"
+            BRANCH_NAME="${{ github.ref_name || 'unknown' }}"
+            RUN_ID="${{ github.run_id || 'unknown' }}"
+            SERVER_URL="${{ github.server_url || 'https://github.com' }}"
+            REPOSITORY="${{ github.repository || 'unknown/unknown' }}"
+            
+            ISSUE_TITLE="🚨 BLOCKING Runtime Error: $ERROR_MSG"
+            ISSUE_BODY="Runtime Build Error: $ERROR_MSG | Commit: $COMMIT_SHA | Branch: $BRANCH_NAME | Workflow: $RUN_ID | Possible causes: missing environment variables, configuration issues, dependency setup problems, API key configuration"
+            
+            printf "%s\t%s\t%s\t%s\n" "$ISSUE_TITLE" "$ISSUE_BODY" "blocking" "2a1314" >> build-results/issues-to-create.txt
+            echo "✅ Added runtime error issue"
+          fi
+        done < <(grep -n "Error:" build-results/runtime-errors.log)
+        
+        echo "✅ Finished processing runtime errors"
+        
+    - name: Debug - Check issues file before creation
+      if: always()
+      run: |
+        echo "=== DEBUG: Checking issues-to-create.txt ==="
+        if [[ -f "build-results/issues-to-create.txt" ]]; then
+          echo "File exists"
+          echo "Size: $(wc -c < build-results/issues-to-create.txt) bytes"
+          echo "Lines: $(wc -l < build-results/issues-to-create.txt)"
+          echo "First 3 lines:"
+          head -3 build-results/issues-to-create.txt || true
+        else
+          echo "File does not exist"
+        fi
+        
+        echo -e "\nChecking hashFiles equivalent:"
+        if [[ -f "build-results/issues-to-create.txt" && -s "build-results/issues-to-create.txt" ]]; then
+          echo "✅ File exists and has content - issues will be created"
+        else
+          echo "❌ File missing or empty - no issues will be created"
+        fi
+        
+    - name: Create GitHub Issues
+      if: always() && hashFiles('build-results/issues-to-create.txt') != ''
+      run: |
+        echo "Creating GitHub issues..."
+        
+        # Check if issues file exists and has content
+        if [[ -f "build-results/issues-to-create.txt" && -s "build-results/issues-to-create.txt" ]]; then
+          
+          echo "✅ Issues file found with content"
+          
+          # Create labels if they don't exist
+          echo "Creating/updating labels..."
+          gh label create "typecheck" --color "1f2937" --description "TypeScript build check issues" --force || true
+          gh label create "blocking" --color "2a1314" --description "Blocking deployment errors" --force || true  
+          gh label create "warning" --color "0d3868" --description "Non-blocking warnings" --force || true
+          gh label create "automated" --color "6b7280" --description "Auto-generated issue" --force || true
+          
+          # Process each issue (using tab delimiter)
+          ISSUE_COUNT=0
+          while IFS=$'\t' read -r title body type label_color; do
+            if [[ -n "$title" && -n "$body" ]]; then
+              echo "Creating issue: $title"
+              
+              # Check if similar issue already exists (simplified search)
+              EXISTING_ISSUE=$(gh issue list --search "in:title \"TypeScript\" \"$type\"" --json number --jq '.[0].number' 2>/dev/null || echo "")
+              
+              if [[ -z "$EXISTING_ISSUE" ]]; then
+                # Create new issue
+                ACTOR="${{ github.actor || 'github-actions' }}"
+                if gh issue create \
+                  --title "$title" \
+                  --body "$body" \
+                  --label "typecheck,$type,automated" \
+                  --assignee "$ACTOR" 2>/dev/null; then
+                  echo "✅ Created issue: $title"
+                  ((ISSUE_COUNT++))
+                else
+                  echo "⚠️ Failed to create issue: $title"
+                fi
+              else
+                echo "⏭️ Similar issue already exists: #$EXISTING_ISSUE"
+              fi
+            else
+              echo "⚠️ Skipping invalid issue line: title='$title' body='$body'"
+            fi
+          done < build-results/issues-to-create.txt
+          
+          echo "✅ Processed issues, created: $ISSUE_COUNT"
+          
+        else
+          echo "❌ No issues to create (file missing or empty)"
+        fi
+      env:
+        GH_TOKEN: ${{ github.token }}
+        
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## 🔍 TypeScript Build Check Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ steps.build.outputs.BUILD_EXIT_CODE }}" == "0" ]]; then
+          echo "✅ **Build Status:** SUCCESS" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Build Status:** FAILED (Exit Code: ${{ steps.build.outputs.BUILD_EXIT_CODE }})" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "📊 **TypeScript Errors:** ${{ steps.build.outputs.TS_ERROR_COUNT }}" >> $GITHUB_STEP_SUMMARY
+        echo "⚡ **Runtime Errors:** ${{ steps.build.outputs.RUNTIME_ERROR_COUNT }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ -f "build-results/issues-to-create.txt" && -s "build-results/issues-to-create.txt" ]]; then
+          ISSUE_COUNT=$(wc -l < build-results/issues-to-create.txt)
+          echo "🎫 **GitHub Issues Created:** $ISSUE_COUNT" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "🎫 **GitHub Issues Created:** 0" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Next Steps" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ steps.build.outputs.BUILD_EXIT_CODE }}" != "0" ]]; then
+          echo "1. Review the created GitHub issues" >> $GITHUB_STEP_SUMMARY  
+          echo "2. Fix blocking errors (🚨) first" >> $GITHUB_STEP_SUMMARY
+          echo "3. Address warnings (⚠️) to improve code quality" >> $GITHUB_STEP_SUMMARY
+          echo "4. Check [build logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "✨ No action needed - build passed successfully!" >> $GITHUB_STEP_SUMMARY
+        fi

@@ -1,0 +1,12 @@
+{
+  "types": [
+    { "id": "app",       "color": "#F9C22E", "description": "developed for you to build your own version of unparty-app." },
+    { "id": "agent",     "color": "#0F7B5F", "description": "step by step templates for builders." },
+    { "id": "service",   "color": "#2450C8", "description": "connect with human by creating a build." },
+    { "id": "assistant", "color": "#6D3FC9", "description": "make your build smarter with large language models." },
+    { "id": "library",   "color": "#A4521A", "description": "designed for you to explore." },
+    { "id": "framework", "color": "#B3123E", "description": "built for you to create." },
+    { "id": "tool",      "color": "#0E6E8C", "description": "created to make planning a little bit easier." },
+    { "id": "bot",       "color": "#B8327A", "description": "programmed to automate the boring stuff." }
+  ]
+}

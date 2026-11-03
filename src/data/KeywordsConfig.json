@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "keywords": {
+    "#dumbai (n)": "A model you own and control that learns from your goals, effort, and creativity.",
+    "party (n)": "Personalized, owned environments for self-expression.",
+    "circle (n)": "A network of people building together.",
+    "hearth (n)": "A fireplace or the area around it, symbolically representing warmth, home, and a gathering place for ideas and community.",
+    "unparty (n)": "an app you build.",
+    "runway (n)": "how many days you can financially support your idea.",
+    "ClaudeCode (n)": "LLM. unparty.app uses Claude Code for internal search, code and artifact generation.",
+    "project (n)": "a collection of work built for a specific purpose.",
+    "story (n)": "how you build your unparty.app",
+    "respectfully (🫆)": "hint of sarcasm detected.",
+    "goal (📌)": "a creative marketplace for ideas.",
+    "DM (✉️)": "an initialism for direct messaging.",
+    "DMs (✉️)": "an initialism for direct messaging.",
+    "SMART(🧠)": "An acronym for a goal that is Specific, Measurable, Achievable, Relevant, and Time-bound.",
+    "WAV(🌊)": "Weekly Active Views",
+    "FoundersConfig (n)": "your data source that powers your app."
+  },
+  "links": {
+    "FoundersConfig (n)": { "href": "/founders", "label": "see the founder page it builds" }
+  },
+  "categories": { 
+    "technology": ["#dumbai (n)"],
+    "concepts": [ "party (n)", "circle (n)", "hearth (n)", "unparty (n)"]
+  }
+}

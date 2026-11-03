@@ -1,0 +1,80 @@
+# Project vocabulary for ./spellcheck (see docs/guides/SPELLCHECK.md).
+#
+# One word per line, case-insensitive, `#` starts a comment. Words listed here
+# are treated as correctly spelled everywhere in the repo.
+#
+# Add a word the fast way:  ./spellcheck add <word>
+#
+# Nothing matching `unparty*`, `theunparty*` or `unppp*` needs to be listed —
+# those are already ignored by a pattern in cspell.json.
+
+# --- unparty product + feature names -----------------------------------------
+charette
+codechallenge
+featurevote
+foundersquestions
+uapp
+unclock
+uncolor
+unlocal
+
+# --- people + places we write about ------------------------------------------
+# Book authors go here one at a time, only after checking the spelling against a
+# second source. Bulk-adding every flagged name is how a typo becomes permanent.
+Aminian
+beyonce
+Cremades
+dtla
+hussle
+olvera
+
+# --- tools + platforms in the stack ------------------------------------------
+canva
+cython
+dbscan
+musickit
+supabase
+swiftui
+turbopack
+umap
+venv
+
+# --- vocabulary the en_US dictionary is missing ------------------------------
+backlink
+backlinks
+chunker
+contentview
+cuids
+frontmatter
+itil
+journaling
+llms
+mvvm
+nonisolated
+omnichannel
+slugified
+subshell
+subview
+subviews
+sunsetting
+swipeable
+unwired
+upserts
+viewbuilder
+waitlist
+wcag
+workstream
+workstreams
+xmark
+pooler
+neondb
+sslmode
+UNPOOLED
+
+# --- added via `./spellcheck add` ---------------------------------------
+UNPARTY
+Langston
+Jaccard
+solopreneurs
+Untime
+statline

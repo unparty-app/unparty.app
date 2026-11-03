@@ -1,0 +1,18 @@
+{
+  "buildDir": ".next/server/app",
+  "ogImagePatterns": [
+    "^https?://.*?/api/og\\?",
+    "^https?://.*?\\.(png|jpg|jpeg|webp)$",
+    "^/.*?\\.(png|jpg|jpeg|webp)$"
+  ],
+  "recommendedTags": [
+    "og:type",
+    "og:site_name",
+    "twitter:site"
+  ],
+  "imageSpecs": {
+    "recommendedWidth": 1200,
+    "recommendedHeight": 630,
+    "formats": ["png", "jpg", "jpeg", "webp"]
+  }
+}

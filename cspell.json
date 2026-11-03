@@ -1,0 +1,94 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
+  "// why": [
+    "Spelling half of ./spellcheck (see docs/guides/SPELLCHECK.md).",
+    "The whole point of this config is signal-to-noise: a raw en_US pass over",
+    "this repo's prose reports ~160 unknown words, and roughly 85% of them are",
+    "unparty jargon (theunpartybudget, unppp, ...). The jargon collapses into",
+    "three ignoreRegExp patterns below, which leaves the genuine typos visible",
+    "instead of buried. Everything else that is a real word we just happen to",
+    "use lives in .cspell-words.txt - add to that file (or run",
+    "`./spellcheck add <word>`) rather than loosening the patterns."
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "unparty",
+      "path": "./.cspell-words.txt",
+      "description": "Project vocabulary: brand terms, people, and tools we write about.",
+      "addWords": true
+    }
+  ],
+  "dictionaries": [
+    "en_US",
+    "softwareTerms",
+    "typescript",
+    "node",
+    "npm",
+    "html",
+    "css",
+    "bash",
+    "filetypes",
+    "companies",
+    "fonts",
+    "misc",
+    "unparty"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    ".next/**",
+    ".git/**",
+    "out/**",
+    "build/**",
+    "build-results/**",
+    "tmp/**",
+    "package-lock.json",
+    "LICENSE.md",
+    "prisma/migrations/**",
+    "src/generated/**",
+    "**/*.min.*"
+  ],
+  "patterns": [
+    {
+      "name": "md-code-fence",
+      "pattern": "/^ {0,3}(`{3,}|~{3,})[\\s\\S]*?^ {0,3}\\1/gm"
+    },
+    { "name": "md-inline-code", "pattern": "/`[^`\\n]+`/g" },
+    { "name": "md-link-target", "pattern": "/\\]\\([^)\\n]*\\)/g" },
+    { "name": "md-directive", "pattern": "/:::[\\s\\S]*?:::/g" },
+    { "name": "html-tag", "pattern": "/<\\/?[A-Za-z][^>\\n]*>/g" },
+    {
+      "// why": "cuids/hashes in generated reports (docs/reports/what-does-unparty-store.md) get split into dozens of fake 'words'. Requiring a digit keeps real long words like 'internationalization' checkable.",
+      "name": "opaque-id",
+      "pattern": "/\\b(?=[a-z0-9]*\\d)[a-z0-9]{16,}\\b/g"
+    },
+    {
+      "name": "frontmatter-ids",
+      "pattern": "/^(?:slug|cover|authorImage|author|song|song-artist|category|tags|image|icon|id|repo|path|url|unppp):.*$/gm"
+    },
+    {
+      "// why": "No \\b anchor: the jargon shows up mid-token too (isUnparty, aboutUNPARTY, user_unppp_visits). The suffix deliberately stops at a hyphen so a typo in `unparty-somehting` stays visible.",
+      "name": "unparty-jargon",
+      "pattern": "/(?:the)?unparty\\w*/gi"
+    },
+    { "name": "unppp-jargon", "pattern": "/unppps?\\w*/gi" }
+  ],
+  "ignoreRegExpList": [
+    "Urls",
+    "Email",
+    "HexValues",
+    "Base64",
+    "SHA",
+    "CommitHash",
+    "md-code-fence",
+    "md-inline-code",
+    "md-link-target",
+    "md-directive",
+    "html-tag",
+    "opaque-id",
+    "frontmatter-ids",
+    "unparty-jargon",
+    "unppp-jargon"
+  ]
+}

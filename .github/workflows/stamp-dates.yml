@@ -1,0 +1,103 @@
+name: Stamp Dates
+
+# Dates the content a PR changes (#1030): the same rules as the pre-commit
+# hook (scripts/stamp-dates.js), for edits that never ran it — the GitHub web
+# editor, Claude PRs, a machine without hooks installed. A created date is set
+# when missing; the updated date becomes the edit's day when a title or body
+# changed. The stamp lands in the PR, so main gets one commit per edit and no
+# bot commit after merge.
+#
+# - Only the files changed in this push are compared (against the PR's
+#   previous head), so a later unrelated push doesn't re-date earlier edits.
+#   After a force-push there's no previous head to compare with, so every
+#   content file the PR changes gets that push's date
+# - The date is the head commit's author date in the author's own timezone
+# - `[skip stamp]` in the head commit's first line skips it (only the first
+#   line, so a commit that just mentions the marker doesn't switch it off)
+# - Pushes with GITHUB_TOKEN, whose push doesn't start workflows, so this
+#   can't loop. It then dispatches validate-articles on the branch, so the
+#   required check runs on the stamped commit (GITHUB_TOKEN can still start
+#   workflow_dispatch runs; App-pushed commits don't reliably trigger
+#   pull_request workflows here either, see validate-articles.yml)
+# - Skips PRs from forks, which this token can't push to, and in-app saves
+#   (unseen/* branches): the save API already dated them with the writer's
+#   own date (src/lib/stamp-on-save.ts), which the commit's UTC time could undo
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: stamp-dates-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  stamp:
+    if: github.event.pull_request.head.repo.full_name == github.repository && !startsWith(github.event.pull_request.head.ref, 'unseen/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the PR branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      # stamp-dates.js only uses Node built-ins and git, so no npm ci
+      - name: Stamp changed content
+        id: stamp
+        env:
+          BEFORE: ${{ github.event.before }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          if git log -1 --format=%s | grep -qF '[skip stamp]'; then
+            echo "Head commit says [skip stamp]; leaving dates alone"
+            exit 0
+          fi
+
+          # The PR's previous head when this push builds on it, else where
+          # the branch left main
+          if [ "$ACTION" = "synchronize" ] && [ -n "$BEFORE" ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null && git merge-base --is-ancestor "$BEFORE" HEAD; then
+            BASE="$BEFORE"
+          else
+            BASE=$(git merge-base origin/main HEAD)
+          fi
+          TODAY=$(git log -1 --format=%ad --date=format:%Y-%m-%d)
+          echo "Comparing against $BASE, dating edits $TODAY"
+
+          git diff -z --name-only --diff-filter=AM "$BASE" HEAD > ../changed.txt
+          if [ ! -s ../changed.txt ]; then
+            echo "Nothing changed"
+            exit 0
+          fi
+          xargs -0 node scripts/stamp-dates.js --base "$BASE" --today "$TODAY" < ../changed.txt
+
+          if git diff --quiet; then
+            echo "Dates already right"
+            exit 0
+          fi
+          echo "stamped=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push the dates
+        if: steps.stamp.outputs.stamped == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am 'STAMP. Dates for the edited content [skip stamp]'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+
+      - name: Run validate-articles on the stamped commit
+        if: steps.stamp.outputs.stamped == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run validate-articles.yml --ref "${{ github.event.pull_request.head.ref }}"

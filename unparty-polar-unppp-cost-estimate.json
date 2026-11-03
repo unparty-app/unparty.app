@@ -1,0 +1,17 @@
+{
+  "generated_at": "",
+  "llm_baseline": {
+    "source": "",
+    "total_cost": 0,
+    "date_range": ""
+  },
+  "summary": {
+    "unppp_count": 0,
+    "high_confidence_count": 0,
+    "low_confidence_count": 0,
+    "total_dev_hours": 0,
+    "total_polar_price": 0,
+    "total_llm_cost": 0
+  },
+  "unppps": []
+}

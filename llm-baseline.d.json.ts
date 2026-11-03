@@ -1,0 +1,2 @@
+declare const data: { "summary": { "total_cost": number; "total_requests": number; "total_users": number; "date_range": string }; "efficiency": { "cost_per_request": number; "cost_per_code_line": number; "daily_average": number }; "trends": ({ "week_start": string; "week_end": string; "total_cost": number; "total_requests": number })[]; "top_users": ({ "username": string; "total_cost": number })[]; "models": Record<string, number>; "optimization": (string)[] };
+export default data;

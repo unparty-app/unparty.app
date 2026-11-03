@@ -1,0 +1,17 @@
+{
+  "summary": {
+    "total_cost": 0,
+    "total_requests": 0,
+    "total_users": 0,
+    "date_range": ""
+  },
+  "efficiency": {
+    "cost_per_request": 0,
+    "cost_per_code_line": 0,
+    "daily_average": 0
+  },
+  "trends": [],
+  "top_users": [],
+  "models": {},
+  "optimization": []
+}

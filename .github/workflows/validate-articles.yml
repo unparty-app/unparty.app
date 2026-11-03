@@ -1,0 +1,69 @@
+name: Validate Articles
+
+# Deliberately no `paths:` filter — a required status check that never runs on
+# an unrelated PR leaves that PR stuck "pending" forever, which would block
+# auto-merge repo-wide. This job always runs; the JSON half does nothing when no
+# content/articles/**/*.json file changed in the PR.
+#
+# The .md half validates frontmatter on every unppp markdown article, not only
+# the changed ones: all 55 pass since #1030, and checking only changed files is
+# how 7 broken ones went unnoticed (#1018). It takes about a second.
+#
+# Also has workflow_dispatch: PRs opened by the theunpartybuilder GitHub App
+# (e.g. version-unppps-config.yml's automated version-bump PRs) do not
+# reliably trigger pull_request-event workflows in this org — confirmed by
+# testing directly against #773, where the App-created PR never queued this
+# check at all, while a same-branch push from a human account triggered it
+# immediately. version-unppps-config.yml explicitly dispatches this workflow
+# after opening its PR so the required check actually runs instead of
+# leaving the PR permanently blocked on a check that was never going to fire.
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  validate-articles:
+    name: validate-articles
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Find changed JSON article files
+        id: changed
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [ -z "$BASE_SHA" ]; then
+            # workflow_dispatch (no pull_request context) — diff against main.
+            # fetch-depth: 0 above already fetched origin/main along with this ref.
+            BASE_SHA=$(git merge-base origin/main HEAD)
+          fi
+          FILES=$(git diff --name-only "$BASE_SHA" "${{ github.sha }}" -- 'content/articles/**/*.json')
+          echo "Changed JSON files:"
+          echo "$FILES"
+          {
+            echo "files<<EOF"
+            echo "$FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate changed articles against schema
+        if: steps.changed.outputs.files != ''
+        run: npx tsx scripts/validate-articles.ts ${{ steps.changed.outputs.files }}
+
+      - name: Validate every unppp markdown article's frontmatter
+        run: npx tsx scripts/validate-md-frontmatter.ts --all

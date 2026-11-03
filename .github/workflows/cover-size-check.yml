@@ -1,0 +1,35 @@
+name: Cover Size Check
+
+# Guards against oversized assets landing in public/covers/ (cover-046.png was
+# a 47MB camera original before being re-encoded — see issue #819).
+#
+# Deliberately no `paths:` filter, for the same reason as validate-articles.yml:
+# a required status check that never runs on an unrelated PR leaves that PR
+# stuck "pending" forever. The check itself is a sub-second stat of
+# public/covers/, so it simply always runs.
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check-cover-sizes:
+    name: check-cover-sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      # No npm ci — scripts/check-cover-sizes.js is dependency-free.
+      - name: Check cover image sizes
+        run: node scripts/check-cover-sizes.js

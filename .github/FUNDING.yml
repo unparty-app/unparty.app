@@ -1,0 +1,5 @@
+# The Sponsor button on this repository. If you run your own copy, change these
+# to your own accounts (and the "sponsor" block in src/data/FoundersConfig.json,
+# which the site's sponsor card reads), or delete this file to remove the button.
+github: unparty-app
+# polar: unparty-llc   # Polar's public pages (polar.sh/<name>) return 404 as of 2026-10-05

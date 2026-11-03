@@ -1,0 +1,258 @@
+/**
+ * Authentication - Clerk Integration with Fallback
+ * 
+ * This file provides Clerk authentication when API keys are available,
+ * and falls back to stub behavior when keys are missing (for development).
+ */
+
+// Check if Clerk keys are available
+const hasClerkKeys = !!(
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  process.env.CLERK_SECRET_KEY
+);
+
+// Server-side auth function
+export async function auth() {
+  if (hasClerkKeys) {
+    try {
+      const { auth: clerkAuth } = await import('@clerk/nextjs/server');
+      return await clerkAuth();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk auth:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    userId: null,
+    sessionClaims: null as { metadata?: { role?: string } } | null,
+    sessionId: null,
+    orgId: null,
+    protect: async () => {
+      // No-op - authentication disabled
+    }
+  };
+}
+
+// Server-side currentUser function
+export async function currentUser() {
+  if (hasClerkKeys) {
+    try {
+      const { currentUser: clerkCurrentUser } = await import('@clerk/nextjs/server');
+      return await clerkCurrentUser();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk currentUser:', error);
+    }
+  }
+  return null;
+}
+
+// Client-side useAuth hook
+export function useAuth() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { useAuth: clerkUseAuth } = require('@clerk/nextjs');
+      return clerkUseAuth();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk useAuth:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    userId: null,
+    sessionId: null,
+    isLoaded: true,
+    isSignedIn: false,
+  };
+}
+
+// Client-side useUser hook
+export function useUser() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { useUser: clerkUseUser } = require('@clerk/nextjs');
+      return clerkUseUser();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk useUser:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    user: null as StubUser | null,
+    isLoaded: true,
+    isSignedIn: false,
+  };
+}
+
+// useSignUp hook
+export function useSignUp() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { useSignUp: clerkUseSignUp } = require('@clerk/nextjs');
+      return clerkUseSignUp();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk useSignUp:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    isLoaded: true,
+    signUp: {
+      create: async (_params: unknown) => ({
+        status: 'complete' as 'complete' | 'missing_requirements' | 'abandoned',
+        createdSessionId: null,
+      }),
+      prepareEmailAddressVerification: async (_params?: unknown) => ({}),
+      attemptEmailAddressVerification: async (_params: unknown) => ({
+        status: 'complete' as 'complete' | 'missing_requirements' | 'abandoned',
+        createdSessionId: null
+      }),
+      authenticateWithRedirect: async (_params: unknown) => {},
+    },
+    setActive: async (_params?: unknown) => {},
+  };
+}
+
+// useSignIn hook
+export function useSignIn() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { useSignIn: clerkUseSignIn } = require('@clerk/nextjs');
+      return clerkUseSignIn();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk useSignIn:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    isLoaded: true,
+    signIn: {
+      authenticateWithRedirect: async (_params: unknown) => {},
+      create: async (_params: unknown) => ({}),
+    },
+    setActive: async () => {},
+  };
+}
+
+// Dark theme export
+export const dark = hasClerkKeys && typeof window !== 'undefined' 
+  ? require('@clerk/nextjs').dark 
+  : {};
+
+// RedirectToSignIn component
+export function RedirectToSignIn() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { RedirectToSignIn: ClerkRedirect } = require('@clerk/nextjs');
+      return ClerkRedirect({});
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk RedirectToSignIn:', error);
+    }
+  }
+  return null;
+}
+
+// useOrganization hook
+export function useOrganization() {
+  if (hasClerkKeys && typeof window !== 'undefined') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { useOrganization: clerkUseOrganization } = require('@clerk/nextjs');
+      return clerkUseOrganization();
+    } catch (error) {
+      console.warn('[Auth] Failed to import Clerk useOrganization:', error);
+    }
+  }
+  
+  // Fallback stub
+  return {
+    organization: null,
+    isLoaded: true,
+  };
+}
+
+// Stub types for user data
+interface StubUser {
+  id: string
+  imageUrl?: string
+  firstName?: string
+  lastName?: string
+  emailAddresses: Array<{ id: string; emailAddress: string }>
+  primaryEmailAddressId?: string
+  publicMetadata: Record<string, unknown>
+  createdAt: number
+}
+
+// Stub for clerkClient
+export function clerkClient() {
+  return Promise.resolve({
+    users: {
+      updateUserMetadata: async (_userId: string, _metadata: Record<string, unknown>) => ({}),
+      getUser: async (userId: string): Promise<StubUser> => ({
+        id: userId,
+        firstName: 'Stub',
+        lastName: 'User',
+        imageUrl: undefined,
+        emailAddresses: [],
+        primaryEmailAddressId: undefined,
+        publicMetadata: {},
+        createdAt: Date.now(),
+      }),
+      getUserList: async (_params?: Record<string, unknown>) => ({
+        data: [] as StubUser[],
+        totalCount: 0
+      }),
+    },
+    organizations: {
+      getOrganization: async (_params: { organizationId: string }) => ({
+        id: _params.organizationId,
+        name: 'Stub Organization',
+        slug: 'stub-org',
+      }),
+    },
+  })
+}
+
+// UserButton stub component with UserProfileLink
+function UserButtonComponent(_props?: {
+  children?: React.ReactNode
+  appearance?: unknown
+  [key: string]: unknown
+}) {
+  return null
+}
+UserButtonComponent.displayName = 'UserButton'
+
+const UserProfileLink = function(_props?: {
+  label?: string
+  url?: string
+  labelIcon?: React.ReactNode
+  [key: string]: unknown
+}) {
+  return null
+}
+UserProfileLink.displayName = 'UserProfileLink'
+UserButtonComponent.UserProfileLink = UserProfileLink
+
+// These stubs return simple divs
+export const SignIn = () => null
+export const SignUp = () => null
+export const UserButton = UserButtonComponent
+export const OrganizationSwitcher = (_props?: {
+  appearance?: unknown
+  [key: string]: unknown
+}) => null
+export const SignedIn = ({ children }: { children?: React.ReactNode }) => null
+export const SignedOut = ({ children }: { children?: React.ReactNode }) => children
+
+// Stub for /src/app/api/analytics/user-progress/route.ts
+// This route uses auth() from Clerk to verify user identity before fetching/updating analytics data

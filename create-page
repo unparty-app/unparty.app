@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# Creates a project page: src/app/<name>/page.tsx with UnpppPageShell wrapping one of
+# your editorial articles (its cover comes from the article), then lists the page in
+# the sitemap.
+# Works in macOS bash and Git Bash on Windows (no sed -i).
+
+set -e
+
+REGISTRY_FILE="src/app/constants/editorial-articles/registry.ts"
+ROUTES_FILE="src/lib/site-routes.ts"
+ROUTES_ANCHOR="const STATIC_ROUTES = ["
+
+if [ ! -f "package.json" ]; then
+  echo "Error: run this script from the project root."
+  exit 1
+fi
+
+echo ""
+echo "CREATE PROJECT PAGE"
+echo "==================="
+echo ""
+
+# ── Page name ────────────────────────────────────────────────
+
+read -p "Page name (lowercase words joined by dashes, e.g. my-project): " pagename
+if ! [[ "$pagename" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+  echo "Error: use lowercase letters, numbers and dashes only, like my-project."
+  exit 1
+fi
+if [[ "$pagename" == theunparty* ]]; then
+  echo "Error: the theunparty prefix is reserved for unparty's own project pages. Pick your own name."
+  exit 1
+fi
+
+dir_path="src/app/$pagename"
+if [ -e "$dir_path" ]; then
+  echo "Error: $dir_path already exists. Pick another name."
+  exit 1
+fi
+
+# ── Article ──────────────────────────────────────────────────
+
+read -p "Article to show (its name in capitals, e.g. MY_FIRST_ARTICLE): " article
+if ! [[ "$article" =~ ^[A-Z][A-Z0-9_]*$ ]] || ! grep -qE "^import \{ ${article} \} from '\./articles/[^']+';" "$REGISTRY_FILE"; then
+  echo "Error: ${article:-that name} is not registered in $REGISTRY_FILE."
+  echo "       Create one with ./create-article first, then use the name it printed."
+  exit 1
+fi
+article_file=$(grep -E "^import \{ ${article} \} from '\./articles/[^']+';" "$REGISTRY_FILE" | head -1 | sed -E "s/.*'\.\/articles\/([^']+)'.*/\1/")
+
+# PascalCase component name from the page name: my-project -> MyProjectPage
+compname=""
+IFS='-' read -ra parts <<< "$pagename"
+for part in "${parts[@]}"; do
+  compname="${compname}$(echo "${part:0:1}" | tr '[:lower:]' '[:upper:]')${part:1}"
+done
+compname="${compname}Page"
+case "$compname" in [0-9]*) compname="Page${compname}" ;; esac
+
+# ── Write page.tsx ───────────────────────────────────────────
+
+mkdir -p "$dir_path"
+cat > "$dir_path/page.tsx" << EOF
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { generatePageMetadata } from '@/app/utils/ogMetadata';
+import UnpppPageShell from '../components/UnpppPageShell';
+import EditorialArticle from '../components/editorial/EditorialArticle';
+import { ${article} } from '../constants/editorial-articles/articles/${article_file}';
+
+// Title, description, cover and link preview all come from the article, so
+// editing the article updates this page too. The cover shows when the article
+// sets coverImage; its /covers/<id>.<ext> id also colors the link preview.
+export const metadata: Metadata = generatePageMetadata({
+  title: ${article}.title,
+  description: ${article}.description,
+  category: ${article}.category,
+  coverId: ${article}.coverImage?.match(/^\/covers\/([^/.]+)\./)?.[1],
+  path: '/${pagename}',
+});
+
+export default function ${compname}() {
+  // Same rule as /article/<slug>: a draft (published: false) is never public
+  if (!${article}.published) notFound();
+
+  return (
+    <UnpppPageShell>
+      <EditorialArticle article={${article}} />
+    </UnpppPageShell>
+  );
+}
+EOF
+
+# ── List it in the sitemap ───────────────────────────────────
+# STATIC_ROUTES in site-routes.ts feeds /sitemap.xml. Only /theunparty* folders are
+# discovered automatically, so add this page after the list's opening line.
+
+listed="false"
+if grep -qF "$ROUTES_ANCHOR" "$ROUTES_FILE"; then
+  tmpfile="${ROUTES_FILE}.tmp"
+  awk -v anchor="$ROUTES_ANCHOR" -v route="  '/${pagename}'," '
+    { print }
+    index($0, anchor) == 1 && !done { print route; done = 1 }
+  ' "$ROUTES_FILE" > "$tmpfile" && mv "$tmpfile" "$ROUTES_FILE"
+  listed="true"
+fi
+
+# ── Done ─────────────────────────────────────────────────────
+
+echo ""
+echo "Created:  $dir_path/page.tsx"
+if [ "$listed" = "true" ]; then
+  echo "Sitemap:  added /${pagename} to $ROUTES_FILE"
+else
+  echo "Sitemap:  could not find STATIC_ROUTES in $ROUTES_FILE; add '/${pagename}' there yourself"
+fi
+echo ""
+echo "Next steps:"
+echo "  1. Check your work: npx tsc --noEmit (no output means it is fine)"
+echo "  2. npm run dev, then open http://localhost:3000/${pagename}"
+echo ""

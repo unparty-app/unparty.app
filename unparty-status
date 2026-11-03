@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# UNPARTY Status Script
+# Simple wrapper to run the status generator
+
+node scripts/unparty-status.js "$@"

@@ -1,0 +1,334 @@
+#!/usr/bin/env bash
+
+# spellcheck — spelling + grammar for everything unparty.app publishes.
+#
+# Two passes over the same files:
+#   SPELLING.  cspell (cspell.json + .cspell-words.txt) — real dictionary, so it
+#              catches the non-words a fast typist leaves behind ("Exeperience",
+#              "entrpreneurs", "wtih") and suggests the right one.
+#   GRAMMAR.   scripts/grammar-check.js — a short list of mechanical rules
+#              (doubled words, missing apostrophes, a/an, stray spaces).
+#
+# By default it only looks at prose you actually changed, so it stays out of the
+# way. Nothing here rewrites a file unless you ask for --fix.
+#
+# Usage: ./spellcheck [options] [files...]
+#        ./spellcheck add <word>...
+
+set -uo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+cd "$SCRIPT_DIR" || exit 1
+
+WORDS_FILE=".cspell-words.txt"
+CSPELL_BIN="node_modules/.bin/cspell"
+
+BASE_REF="origin/main"
+MODE="changed"
+FIX=false
+USE_COLOR=true
+FILES=()
+
+# Colors (same palette as scripts/investigate; brand yellow from
+# scripts/lib/unparty-cli-brand.js). Auto-off when piped, so CI logs and PR
+# comments get the same text without escape codes.
+setup_colors() {
+  if [ "$USE_COLOR" = true ] && [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+    BRAND=$'\033[38;2;249;194;46m'
+    RED=$'\033[0;31m'
+    GREEN=$'\033[0;32m'
+    YELLOW=$'\033[1;33m'
+    BLUE=$'\033[0;34m'
+    DIM=$'\033[2m'
+    NC=$'\033[0m'
+  else
+    BRAND='' RED='' GREEN='' YELLOW='' BLUE='' DIM='' NC=''
+  fi
+  # Same rule for links: a real terminal gets them, a log file gets plain text.
+  [ -n "$NC" ] && LINKS=1 || LINKS=0
+  # VS Code drops the #L12 of a file:// link and opens at the top, but its own
+  # vscode://file/<path>:12:5 handler lands on the exact spot. Each editor
+  # answers its own scheme, so pick it from the app this terminal runs in.
+  case "${__CFBundleIdentifier:-}" in
+    com.microsoft.VSCode)         EDITOR_SCHEME=vscode ;;
+    com.microsoft.VSCodeInsiders) EDITOR_SCHEME=vscode-insiders ;;
+    com.todesktop.*)              EDITOR_SCHEME=cursor ;;
+    *) [ "${TERM_PROGRAM:-}" = vscode ] && EDITOR_SCHEME=vscode || EDITOR_SCHEME="" ;;
+  esac
+}
+
+# Turns a file + line + column into "12:5" padded to 10 columns. In a terminal
+# that "12:5" is an OSC 8 link, so a click in VS Code (or Cursor) opens the file
+# with the cursor on the word; other terminals get a plain file:// link that at
+# least opens the file. The padding is added outside the link because printf's
+# %-10s would count the escape codes.
+LOC_AWK='
+  function loc(file, row, col,    text, path, url, out) {
+    text = row ":" col
+    out = text
+    if (links) {
+      path = root "/" file
+      gsub(/%/, "%25", path); gsub(/ /, "%20", path); gsub(/#/, "%23", path)
+      url = scheme != "" ? scheme "://file" path ":" row ":" col : "file://" path
+      out = "\033]8;;" url "\033\\" text "\033]8;;\033\\"
+    }
+    while (length(text) < 10) { text = text " "; out = out " " }
+    return out
+  }
+'
+
+show_help() {
+  cat << EOF
+UNPARTY spellcheck — spelling + grammar before it ships
+
+USAGE:
+    ./spellcheck [options] [files...]
+    ./spellcheck add <word>...
+
+WHAT IT CHECKS:
+    Markdown, MDX and text prose (.md, .mdx, .txt) plus published article JSON.
+    By default: only the prose you changed against $BASE_REF.
+
+OPTIONS:
+    --all              Check every tracked prose file, not just your changes
+    --staged           Check files staged for commit (what the git hooks use)
+    --base <ref>       Compare against <ref> instead of $BASE_REF
+    --fix              Apply the safe grammar fixes, then re-report the rest
+    --no-color         Plain output (also honours NO_COLOR)
+    -h, --help         Show this help
+
+COMMANDS:
+    add <word>...      Teach the checker a word by adding it to $WORDS_FILE
+
+EXAMPLES:
+    ./spellcheck                                   # what am I about to push?
+    ./spellcheck --fix                             # fix the mechanical stuff
+    ./spellcheck --all                             # the full backlog
+    ./spellcheck public/covers/stories/story-51.md # one file
+    ./spellcheck add unpartyverse                  # it's a word, promise
+
+EXIT CODES:
+    0  nothing to report    1  issues found    2  bad usage / setup
+
+Full guide: docs/guides/SPELLCHECK.md
+EOF
+}
+
+log_error() {
+  echo "${RED}❌ $1${NC}" >&2
+}
+
+# --- word list ---------------------------------------------------------------
+
+add_words() {
+  if [ $# -eq 0 ]; then
+    log_error "Usage: ./spellcheck add <word>..."
+    exit 2
+  fi
+
+  [ -f "$WORDS_FILE" ] || touch "$WORDS_FILE"
+  if ! grep -q '^# --- added via `./spellcheck add`' "$WORDS_FILE"; then
+    [ -s "$WORDS_FILE" ] && [ -n "$(tail -c 2 "$WORDS_FILE")" ] && printf '\n' >> "$WORDS_FILE"
+    printf '# --- added via `./spellcheck add` ---------------------------------------\n' >> "$WORDS_FILE"
+  fi
+
+  for word in "$@"; do
+    if grep -Fqix -- "$word" "$WORDS_FILE"; then
+      echo "${DIM}⊘ $word is already in $WORDS_FILE${NC}"
+      continue
+    fi
+    printf '%s\n' "$word" >> "$WORDS_FILE"
+    echo "${GREEN}✓ added $word to $WORDS_FILE${NC}"
+  done
+}
+
+# --- file selection ----------------------------------------------------------
+
+# Prose only. Code comments and UI strings are a different (much noisier)
+# problem than the writing that ships to readers.
+is_prose_file() {
+  case "$1" in
+    LICENSE.md|"$WORDS_FILE"|node_modules/*|.next/*|tmp/*) return 1 ;;
+    *.md|*.mdx|*.txt|content/articles/*.json) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Reads NUL-delimited paths on stdin so filenames with spaces survive. Always
+# called with a redirect rather than a pipe: a pipe would run the loop in a
+# subshell and throw the collected paths away.
+collect_prose() {
+  local file
+  while IFS= read -r -d '' file; do
+    is_prose_file "$file" && [ -f "$file" ] && FILES+=("$file")
+  done
+}
+
+select_files() {
+  local given merge_base
+  case "$MODE" in
+    explicit)
+      given=("${FILES[@]}")
+      FILES=()
+      collect_prose < <(printf '%s\0' "${given[@]}")
+      ;;
+    all)
+      collect_prose < <(git ls-files -z)
+      ;;
+    staged)
+      collect_prose < <(git diff --cached --name-only --diff-filter=ACMR -z)
+      ;;
+    changed)
+      merge_base=$(git merge-base "$BASE_REF" HEAD 2>/dev/null)
+      if [ -n "$merge_base" ]; then
+        # Untracked files too: a brand new draft you haven't `git add`ed yet is
+        # the prose most likely to have typos in it, and `git diff` can't see it.
+        collect_prose < <(
+          git diff --name-only --diff-filter=ACMR -z "$merge_base"
+          git ls-files -z --others --exclude-standard
+        )
+      else
+        # Shallow clone, or no $BASE_REF yet: check what is dirty right now
+        # rather than silently checking nothing.
+        echo "${DIM}$BASE_REF not available — checking uncommitted changes instead${NC}"
+        collect_prose < <(
+          git diff --name-only --diff-filter=ACMR -z HEAD
+          git ls-files -z --others --exclude-standard
+        )
+      fi
+      ;;
+  esac
+}
+
+# --- checking ----------------------------------------------------------------
+
+run_spelling() {
+  "$CSPELL_BIN" lint \
+    --no-progress --no-summary --no-color \
+    --no-must-find-files --show-suggestions \
+    --issue-template $'$filename\t$row\t$col\t$text\t$suggestions' \
+    -- "${FILES[@]}" 2>/dev/null
+}
+
+run_grammar() {
+  local args=(--porcelain)
+  [ "$FIX" = true ] && args+=(--fix)
+  node scripts/grammar-check.js "${args[@]}" "${FILES[@]}" 2>/dev/null
+}
+
+render_spelling() {
+  # cspell marks its best guess with a trailing "*" and can offer five of them;
+  # three unadorned words is plenty to pick from.
+  awk -F'\t' -v dim="$DIM" -v blue="$BLUE" -v nc="$NC" -v links="$LINKS" -v scheme="$EDITOR_SCHEME" -v root="$SCRIPT_DIR" "$LOC_AWK"'
+    $1 != file { file = $1; printf "    %s%s%s\n", blue, file, nc }
+    {
+      n = split($5, all, ", ")
+      if (n > 3) n = 3
+      tip = ""
+      for (i = 1; i <= n; i++) { sub(/\*$/, "", all[i]); tip = tip (i > 1 ? ", " : "") all[i] }
+      if (tip == "") printf "      %s %s\n", loc($1, $2, $3), $4
+      else printf "      %s %-24s %s→ %s%s\n", loc($1, $2, $3), $4, dim, tip, nc
+    }
+  '
+}
+
+render_grammar() {
+  awk -F'\t' -v dim="$DIM" -v blue="$BLUE" -v nc="$NC" -v links="$LINKS" -v scheme="$EDITOR_SCHEME" -v root="$SCRIPT_DIR" "$LOC_AWK"'
+    $1 != file { file = $1; printf "    %s%s%s\n", blue, file, nc }
+    $6 == "yes" { printf "      %s %-48s%s✎%s\n", loc($1, $2, $3), $5, dim, nc; next }
+    { printf "      %s %s\n", loc($1, $2, $3), $5 }
+  '
+}
+
+main() {
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      add)            shift; setup_colors; add_words "$@"; exit 0 ;;
+      --all)          MODE="all"; shift ;;
+      --staged)       MODE="staged"; shift ;;
+      --base)         BASE_REF="${2:-}"; [ -n "$BASE_REF" ] || { echo "--base needs a ref" >&2; exit 2; }; shift 2 ;;
+      --fix)          FIX=true; shift ;;
+      --no-color)     USE_COLOR=false; shift ;;
+      -h|--help)      show_help; exit 0 ;;
+      -*)             setup_colors; log_error "Unknown option: $1 (try ./spellcheck --help)"; exit 2 ;;
+      *)              MODE="explicit"; FILES+=("$1"); shift ;;
+    esac
+  done
+
+  setup_colors
+
+  if [ ! -x "$CSPELL_BIN" ]; then
+    log_error "cspell is not installed. Run: npm install"
+    exit 2
+  fi
+
+  select_files
+
+  if [ ${#FILES[@]} -eq 0 ]; then
+    echo
+    echo "  ${BRAND}UNPARTY${NC}  spellcheck"
+    echo "  ${GREEN}✅ no prose to check${NC}"
+    echo
+    exit 0
+  fi
+
+  local work grammar spelling spell_count grammar_count fixable
+  work=$(mktemp -d)
+  trap 'rm -rf "$work"' EXIT
+  grammar="$work/grammar.tsv"
+  spelling="$work/spelling.tsv"
+
+  # --fix rewrites first, so what gets reported below is the leftovers rather
+  # than a to-do list of things already handled.
+  run_grammar > "$grammar"
+  run_spelling > "$work/spelling.raw"
+
+  # cspell flags "dont" and "youre" too, but grammar-check already reports them
+  # with the actual answer instead of a list of guesses. Same spot, one report.
+  #
+  # Keyed on FILENAME rather than the usual NR==FNR: when the grammar file is
+  # empty, NR and FNR stay in lockstep through the second file and NR==FNR would
+  # silently swallow every spelling issue.
+  awk -F'\t' -v gfile="$grammar" '
+    FILENAME == gfile { seen[$1":"$2":"$3]; next }
+    !(($1":"$2":"$3) in seen)
+  ' "$grammar" "$work/spelling.raw" > "$spelling"
+
+  spell_count=$(wc -l < "$spelling")
+  grammar_count=$(wc -l < "$grammar")
+  fixable=$(grep -c $'\tyes$' "$grammar" || true)
+
+  echo
+  echo "  ${BRAND}UNPARTY${NC}  spellcheck  ${DIM}·${NC}  ${#FILES[@]} file(s)"
+  echo
+
+  if [ "$spell_count" -eq 0 ] && [ "$grammar_count" -eq 0 ]; then
+    echo "  ${GREEN}✅ no spelling or grammar issues${NC}"
+    echo
+    exit 0
+  fi
+
+  if [ "$spell_count" -gt 0 ]; then
+    echo "  ${YELLOW}SPELLING.${NC}"
+    render_spelling < "$spelling"
+    echo
+  fi
+
+  if [ "$grammar_count" -gt 0 ]; then
+    echo "  ${YELLOW}GRAMMAR.${NC}"
+    render_grammar < "$grammar"
+    echo
+  fi
+
+  echo "  ${YELLOW}⚠️  $((spell_count + grammar_count)) issue(s)${NC}${DIM} · $fixable fixable automatically${NC}"
+  echo
+  if [ "$FIX" = false ] && [ "$fixable" -gt 0 ]; then
+    printf "  %-26s %s%s%s\n" "./spellcheck --fix" "$DIM" "fixes every ✎ above" "$NC"
+  fi
+  printf "  %-26s %s%s%s\n" "./spellcheck add <word>" "$DIM" "when it was spelled right all along" "$NC"
+  printf "  %-26s %s%s%s\n" "comment on the PR" "$DIM" "\"@claude fix the spelling and grammar issues\"" "$NC"
+  echo
+  exit 1
+}
+
+main "$@"

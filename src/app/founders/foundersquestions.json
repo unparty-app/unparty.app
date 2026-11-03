@@ -1,0 +1,560 @@
+{
+  "categories": [
+    {
+      "id": "core",
+      "label": "CORE",
+      "step": "ABOUT",
+      "audience": "published",
+      "questions": [
+        {
+          "id": "core_q1",
+          "text": "HOW WOULD OTHERS RANK YOUR EGO?",
+          "type": "ranking",
+          "model": "about",
+          "choices": [
+            "MEH.",
+            "BLAH.",
+            "NOTICEABLE.",
+            "AWARE.",
+            "THIS OFFENDS ME"
+          ]
+        },
+        {
+          "id": "core_q2",
+          "text": "WHAT ARE YOU?",
+          "type": "multipleChoice",
+          "model": "build",
+          "choices": [
+            "WALLFLOWER.",
+            "SOCIALITE.",
+            "FOUNDER.",
+            "HOMEBODY.",
+            "IS THIS A RIDDLE?"
+          ]
+        },
+        {
+          "id": "core_q3",
+          "text": "Rank the personality you'd most need from a collaborator to complement your own:",
+          "type": "ranking",
+          "model": "connect",
+          "choices": [
+            "BUILDER. (a free bird who brings ideas to life)",
+            "PARTNER. (someone you can grow with)",
+            "LEARNER. (is on the search for new skills and problems to solve)",
+            "FOUNDER. (someone you believe in)",
+            "CONNECTOR. (the big fish in any pond)"
+          ]
+        },
+        {
+          "id": "core_q4",
+          "text": "FAVORITE WORD.",
+          "type": "text",
+          "model": "about"
+        },
+        {
+          "id": "core_q5",
+          "text": "If you had $1,000 to invest in your idea over the next 3 days, how soon would you want your return?",
+          "type": "text",
+          "model": "build"
+        },
+        {
+          "id": "core_q6",
+          "text": "When others doubt your vision for your idea, what's your go-to attitude?",
+          "type": "multipleChoice",
+          "model": "build",
+          "choices": [
+            "PROVE THEM WRONG.",
+            "REACH OUT TO FRIENDS FOR SUPPORT.",
+            "ISOLATE AND REFLECT.",
+            "WHO CARES WHAT THEY THINK?"
+          ]
+        },
+        {
+          "id": "core_q7",
+          "text": "Rank the experience you would seek advice from first?",
+          "type": "ranking",
+          "model": "connect",
+          "choices": [
+            "TEACHER",
+            "PROFESSOR",
+            "PRINCIPAL",
+            "DEAN",
+            "ARTIFICIAL INTELLIGENCE"
+          ]
+        },
+        {
+          "id": "core_q8",
+          "text": "When faced with important decisions about your idea, what approach do you typically take?",
+          "type": "multipleChoice",
+          "model": "build",
+          "choices": [
+            "ASK",
+            "SEARCH",
+            "TRUST",
+            "IGNORE"
+          ]
+        },
+        {
+          "id": "core_q9",
+          "text": "Looking ahead, rank how you envision financial success for your idea:",
+          "type": "ranking",
+          "model": "about",
+          "choices": [
+            "I WANT TO BE RICH",
+            "I WANT TO BE VERY RICH",
+            "I WANT TO BE HATED",
+            "HOW RICH IS THE REST OF THE WORLD?"
+          ]
+        },
+        {
+          "id": "core_q10",
+          "text": "When things get tough with your idea, what one word will you repeat to yourself to keep you going?",
+          "type": "text",
+          "model": "about"
+        },
+        {
+          "id": "core_q11",
+          "text": "How would you describe your social battery?",
+          "type": "scale",
+          "model": "about",
+          "scaleMin": 0,
+          "scaleMax": 100,
+          "scaleStep": 10,
+          "scaleSuffix": "%",
+          "scaleLabels": [
+            {
+              "value": 0,
+              "label": "DRAINED."
+            },
+            {
+              "value": 50,
+              "label": "BALANCED."
+            },
+            {
+              "value": 100,
+              "label": "ENERGIZED."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "label": "BUDGET",
+      "step": "ABOUT",
+      "audience": "private",
+      "questions": [
+        {
+          "id": "budget_q1",
+          "text": "Can you BUILD. your idea by yourself?",
+          "type": "multipleChoice",
+          "model": "unparty",
+          "choices": [
+            "YES.",
+            "NO.",
+            "I CAN DO ANYTHING."
+          ]
+        },
+        {
+          "id": "budget_q2",
+          "text": "Rank the following personal lifestyle priorities:",
+          "type": "ranking",
+          "model": "unparty",
+          "choices": [
+            "FITNESS.",
+            "RESTAURANTS.",
+            "SHOPPING.",
+            "PARTIES.",
+            "SAVING."
+          ]
+        },
+        {
+          "id": "budget_q3",
+          "text": "If a pencil costs $0.05 to make, how much will you sell it for?",
+          "type": "scale",
+          "model": "unparty",
+          "scaleMin": 0.05,
+          "scaleMax": 1.00,
+          "scaleStep": 0.05,
+          "scalePrefix": "$",
+          "scaleLabels": [
+            {
+              "value": 0.05,
+              "label": "Break-even"
+            },
+            {
+              "value": 0.50,
+              "label": "Market rate"
+            },
+            {
+              "value": 1.00,
+              "label": "Premium"
+            }
+          ]
+        },
+        {
+          "id": "budget_q4",
+          "text": "Do you have a RUNWAY. for your idea?",
+          "type": "multipleChoice",
+          "model": "unparty",
+          "choices": [
+            "YES.",
+            "NO.",
+            "MAYBE.",
+            "I'M NOT SURE WHAT THIS MEANS."
+          ]
+        },
+        {
+          "id": "budget_q5",
+          "text": "How confident are you in this idea?",
+          "type": "scale",
+          "model": "unparty",
+          "scaleMin": 1,
+          "scaleMax": 100,
+          "scaleStep": 10,
+          "scalePrefix": "",
+          "scaleLabels": [
+            {
+              "value": 1,
+              "label": "MEH."
+            },
+            {
+              "value": 50,
+              "label": "THINKING."
+            },
+            {
+              "value": 100,
+              "label": "FULLY."
+            }
+          ]
+        },
+        {
+          "id": "budget_q6",
+          "text": "What title excites you the most?",
+          "type": "multipleChoice",
+          "model": "unparty",
+          "choices": [
+            "CEO",
+            "CTO",
+            "WHO CARES?"
+          ]
+        },
+        {
+          "id": "budget_q7",
+          "text": "Your client is two weeks late on payment, what is your communication method?",
+          "type": "multipleChoice",
+          "model": "unparty",
+          "choices": [
+            "EMAIL",
+            "CALL",
+            "TEXT",
+            "THEY'LL PAY EVENTUALLY."
+          ]
+        },
+        {
+          "id": "budget_q8",
+          "text": "Rank these income streams from MOST to LEAST appealing for your business:",
+          "type": "ranking",
+          "model": "unparty",
+          "choices": [
+            "CLIENT PROJECTS (Freelance)",
+            "SALARY (Full-time job)",
+            "PLATFORM WORK (Gig economy)",
+            "INVESTOR FUNDING"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brand",
+      "label": "BRAND",
+      "step": "ABOUT",
+      "audience": "private",
+      "questions": [
+        {
+          "id": "brand_q1",
+          "text": "Do you know how to lookup trademarks?",
+          "type": "multipleChoice",
+          "model": "unparty",
+          "choices": [
+            "YES.",
+            "NO.",
+            "I'M NOT SURE.",
+            "WHAT'S A TRADEMARK?"
+          ]
+        },
+        {
+          "id": "brand_q2",
+          "text": "When you hear AI, you think...",
+          "type": "ranking",
+          "model": "unparty",
+          "choices": [
+          "OVERHYPED",
+          "WHAT IS IT?",
+          "I DO NOT CARE",
+          "EXCITED",
+          "INTRIGUED"
+          ]
+        },
+        {
+          "id": "brand_q3",
+          "text": "There is no new idea under the sun. How many humans on earth do you think are working on your same idea at this very moment?",
+          "type": "scale",
+          "model": "unparty",
+          "scaleMin": 0,
+          "scaleMax": 100,
+          "scaleStep": 10,
+          "scaleSuffix": "%",
+          "scaleLabels": [
+            {
+              "value": 0,
+              "label": "no one else on this planet is as original as me."
+            },
+            {
+              "value": 50,
+              "label": "most are thinking about it, but less are working."
+            },
+            {
+              "value": 100,
+              "label": "everyone is doing it, I just do it better."
+            }
+          ]
+        },
+        {
+          "id": "brand_q4",
+          "text": "In a partnership or collaborative project, have you agreed on who will own any intellectual property you create together and how each of you can use it, both during your venture and if someone leaves the business?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "brand_q5",
+          "text": "How will you make your brand recognizable and build credibility from the start? (Consider things like a consistent logo, design style, brand voice, and a clear message that resonates with your target audience.)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "brand_q6",
+          "text": "Have you planned how to showcase your work or products—such as creating a portfolio, website, or demo—to highlight your expertise and attract potential customers or clients early on?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "brand_q7",
+          "text": "If your business involves using content or tools created by others (e.g., photographs, music, code libraries, or patterns), are you obtaining the necessary licenses or permissions to use them so you don't run into legal issues?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "brand_q8",
+          "text": "If you're doing client work (like designing, writing, or coding for others), have you clarified in your agreements who will own the final deliverables and whether you have the right to display that work in your portfolio or marketing materials?",
+          "type": "text",
+          "model": "unparty"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "label": "PRODUCT",
+      "step": "ABOUT",
+      "audience": "private",
+      "questions": [
+        {
+          "id": "product_q1",
+          "text": "What systems or processes will you put in place to ensure that every product or service you deliver meets a high quality standard consistently, even as your volume of work increases?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q2",
+          "text": "If demand for your product or service grows quickly, how will you scale up production or workload? Do you have a plan to handle more orders or clients without sacrificing quality or exhausting yourself?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q3",
+          "text": "How will you gather and incorporate feedback from early customers or clients to catch any issues and continuously improve your product or service?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q4",
+          "text": "Do you have backup plans for your essential resources? For example, have you identified secondary suppliers in case your primary supplier falls through, or a backup for critical equipment or software in case of a breakdown?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q5",
+          "text": "For digital products or services (such as software or design work), how will you handle errors, bugs, or revision requests from clients in order to maintain a high standard of deliverables and client satisfaction?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q6",
+          "text": "Have you prepared the necessary workspace and tools to operate effectively? (This could mean a dedicated space for crafting if you're making goods, reliable hardware and software if you're running a SaaS or design service, etc.)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q7",
+          "text": "Will you need to hire or contract additional help as you grow (for instance, bringing on an assistant, a developer, or a production helper), and if so, how will you ensure they adhere to the quality standards you've set?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q8",
+          "text": "How will you balance your time between actually producing your product/service and handling other operational tasks (like marketing, customer service, and admin)? Do you have a schedule or strategy to keep everything running smoothly without letting quality slip?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "product_q9",
+          "text": "What is your plan for situations where you might not be able to work (due to illness, emergency, or other obligations)? Have you considered how you'll meet deadlines or fulfill orders during those times to uphold your commitments to customers?",
+          "type": "text",
+          "model": "unparty"
+        }
+      ]
+    },
+    {
+      "id": "risk",
+      "label": "RISK",
+      "step": "ABOUT",
+      "audience": "private",
+      "questions": [
+        {
+          "id": "risk_q1",
+          "text": "Have you thought about the legal structure of your business (sole proprietorship, LLC, partnership, etc.) and any insurance you might need (like liability insurance or professional indemnity) to protect yourself and your personal assets from potential business risks?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q2",
+          "text": "If you are working with a partner or co-founder, have you put a partnership agreement in writing that outlines each person's roles, ownership percentage, contribution, and a plan for resolving disputes or what happens if one of you wants to leave the business?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q3",
+          "text": "What kind of client agreements or contracts will you use to make sure expectations are clear? (Think about how you'll outline the scope of work, payment terms, timelines, and deliverables so that you and your clients have a shared understanding and legal protection in case of disagreements.)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q4",
+          "text": "How will you handle a situation where a client is unhappy with your work or asks for extra changes beyond what was agreed? Do you have a policy for revisions, refunds, or handling complaints that will keep the relationship professional while also protecting your time and resources?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q5",
+          "text": "What will you do if a client delays payment or refuses to pay altogether? Have you planned steps for following up on late payments, charging late fees, or using legal means to collect payment if necessary, so that a non-paying client doesn't jeopardize your finances?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q6",
+          "text": "If you're selling physical products, have you considered how you'll deal with returns, refunds, or even liability issues if a product is defective or causes harm? (For example, do you have clear return policies and have you looked into product liability insurance if relevant?)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q7",
+          "text": "How will you manage the personal risks of running a business, such as stress and burnout? Are you setting any boundaries (like not working 24/7) and do you have a support system or self-care plan to maintain your mental and emotional well-being during challenging times?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q8",
+          "text": "Who can you turn to for advice or help when you encounter major challenges or conflicts in your business? Identifying a mentor, advisor, or even a peer group of fellow entrepreneurs can be crucial when you need guidance or emotional support.",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "risk_q9",
+          "text": "Have you considered what you would do if the business hits a serious obstacle or even fails? Thinking about a contingency plan or a financial fallback (like knowing how long you'll give the business to become viable, or what you'll do if you have to pause or shut down) can help you navigate worst-case scenarios.",
+          "type": "text",
+          "model": "unparty"
+        }
+      ]
+    },
+    {
+      "id": "grow",
+      "label": "GROW",
+      "step": "ABOUT",
+      "audience": "private",
+      "questions": [
+        {
+          "id": "grow_vision_ranking",
+          "text": "Rank these grow priorities from most to least important:",
+          "type": "ranking",
+          "choices": [
+            "PERSONAL-BRAND",
+            "PRODUCT",
+            "PEOPLE",
+            "VISION",
+            "MONEY"
+          ]
+        },
+        {
+          "id": "grow_q2",
+          "text": "Is this a business or a hobby?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q3",
+          "text": "If your business begins to gain traction, how will you handle growth? For instance, are you prepared to scale up by increasing production, hiring contractors or employees, or investing more time and money into the business to meet demand?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q4",
+          "text": "How do you plan to attract new customers or clients consistently over time, and keep the ones you have coming back? (Consider your marketing and customer retention strategies—like social media outreach, referrals, partnerships, or advertising—and how you'll implement them.)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q5",
+          "text": "In what ways will you reinvest profits back into the business to fuel its growth? Think about whether you'll need to upgrade equipment, develop new products or services, enhance your skills through training, or spend more on marketing as you grow.",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q6",
+          "text": "How will you define and measure success for your business over time? Beyond just revenue or profit, consider metrics like customer satisfaction, personal fulfillment, growth in client base, or the flexibility and lifestyle it provides you—what will matter most to you as outcomes?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q7",
+          "text": "If new opportunities arise (for example, a chance to pivot to a different market, collaborate with another business, or take on an investor), how will you evaluate whether these moves align with your goals and whether you're ready to take them on?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q8",
+          "text": "Have you thought about an exit strategy or what the future of the business might look like in the long term? Even if it's far off, consider possibilities like selling the business, passing it to someone else, or winding it down once it has served its purpose or if your interests change.",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q9",
+          "text": "What skills or resources might you need in the future to reach the next level of growth, and do you have a plan for acquiring them? (This could include learning new technologies, improving your business skills, or seeking mentorship to guide you through scaling up.)",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q10",
+          "text": "Are you prepared for how success might change your day-to-day role in the business? For instance, if your venture grows significantly, you may spend more time managing operations or people and less time on the hands-on work that you might love—how do you feel about that possibility and how might you adapt?",
+          "type": "text",
+          "model": "unparty"
+        },
+        {
+          "id": "grow_q11",
+          "text": "If your side-business becomes much more demanding or even turns into a full-time opportunity, how will that impact your current job (if you have one) or other life commitments? Have you considered how you'll balance or transition if the time comes to make this venture a bigger priority?",
+          "type": "text",
+          "model": "unparty"
+        }
+      ]
+    }
+  ]
+}

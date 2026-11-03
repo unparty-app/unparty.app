@@ -1,0 +1,597 @@
+{
+  "site": {
+    "name": "my site",
+    "title": "my site",
+    "tagline": "this is starting somewhere.",
+    "headline": "built one step at a time",
+    "description": "A site I own, built one step at a time.",
+    "url": "https://www.unparty.app",
+    "legalName": "my site",
+    "email": "",
+    "github": "",
+    "logo": {
+      "path": "/logo.png",
+      "width": 512,
+      "height": 512
+    }
+  },
+  "founder": {
+    "name": "your name",
+    "role": "founder",
+    "title": "builder.",
+    "image": "",
+    "initials": "YN",
+    "cover": "cover-001",
+    "bio": "A line about you goes here.",
+    "summary": "A few lines about you and what you build go here.",
+    "links": [],
+    "cta": {
+      "label": "build yours",
+      "href": "/article/setup-start-here",
+      "pitch": "30ish steps to build your own APP."
+    },
+    "resume": {
+      "articles": [],
+      "components": [],
+      "labels": false,
+      "views": true,
+      "areas": [
+        {
+          "name": "stories",
+          "match": [
+            "story",
+            "stories",
+            "story."
+          ]
+        },
+        {
+          "name": "guides",
+          "match": [
+            "setup.",
+            "setup"
+          ]
+        },
+        {
+          "name": "apps",
+          "match": [
+            "apps"
+          ]
+        },
+        {
+          "name": "components",
+          "match": [
+            "component",
+            "make."
+          ]
+        }
+      ]
+    }
+  },
+  "brandColors": [
+    "#F9C22E",
+    "#29284E",
+    "#FFF1D6",
+    "#000605",
+    ""
+  ],
+  "sponsor": {
+    "github": "",
+    "polarUrl": "",
+    "cover": "",
+    "pitch": ""
+  },
+  "values": {
+    "label": "NO HATE.",
+    "line": "you do you, but there is no place for hate.",
+    "cover": ""
+  },
+  "icons": {},
+  "apps": {
+    "ask": "",
+    "widgets": []
+  },
+  "projects": [],
+  "waitlist": false,
+  "checkout": false,
+  "privateRepos": false,
+  "answers": {
+    "about": "",
+    "build": "",
+    "connect": ""
+  },
+  "stack": {},
+  "baseline": {
+    "source": "unparty's own repos, hours measured from git work sessions",
+    "measured": "2026-09-24",
+    "pay": [
+      {
+        "label": "machine-learning engineer",
+        "yearly": 155000
+      },
+      {
+        "label": "seed-stage founder",
+        "yearly": 147000
+      }
+    ],
+    "hoursPerYear": 2080,
+    "llmPerHour": 0.92,
+    "projects": [
+      {
+        "id": "theunpartyapp",
+        "site": true,
+        "hours": 589,
+        "sessions": 706,
+        "commits": 2032,
+        "from": "2024-10-23",
+        "to": "2026-09-24"
+      },
+      {
+        "id": "theunpartydocs",
+        "hours": 324.9,
+        "sessions": 1148,
+        "commits": 1280,
+        "from": "2024-07-17",
+        "to": "2026-07-21"
+      },
+      {
+        "id": "theunpartyrunway",
+        "hours": 297.1,
+        "sessions": 372,
+        "commits": 1245,
+        "from": "2025-06-06",
+        "to": "2026-09-17"
+      },
+      {
+        "id": "theunpartyunppp",
+        "hours": 230.7,
+        "sessions": 278,
+        "commits": 836,
+        "from": "2025-01-12",
+        "to": "2026-08-21"
+      },
+      {
+        "id": "theunpartycrawler",
+        "hours": 85.5,
+        "sessions": 156,
+        "commits": 387,
+        "from": "2025-05-03",
+        "to": "2026-09-01"
+      },
+      {
+        "id": "theunpartyapi",
+        "hours": 84.6,
+        "sessions": 133,
+        "commits": 431,
+        "from": "2025-04-20",
+        "to": "2026-09-13"
+      },
+      {
+        "id": "theunpartyunseen",
+        "hours": 61.9,
+        "sessions": 106,
+        "commits": 235,
+        "from": "2025-08-12",
+        "to": "2026-08-04"
+      },
+      {
+        "id": "theunpartysomewhere",
+        "hours": 48.6,
+        "sessions": 77,
+        "commits": 159,
+        "from": "2024-05-13",
+        "to": "2026-05-11"
+      },
+      {
+        "id": "theunpartycharette",
+        "hours": 41.2,
+        "sessions": 52,
+        "commits": 177,
+        "from": "2024-08-30",
+        "to": "2026-08-27"
+      },
+      {
+        "id": "theunpartybuilder",
+        "hours": 39.1,
+        "sessions": 48,
+        "commits": 133,
+        "from": "2025-07-16",
+        "to": "2026-09-02"
+      },
+      {
+        "id": "theunpartystarter",
+        "hours": 38.4,
+        "sessions": 68,
+        "commits": 119,
+        "from": "2024-05-13",
+        "to": "2026-01-29"
+      },
+      {
+        "id": "theunpartyterminal",
+        "hours": 37.8,
+        "sessions": 32,
+        "commits": 105,
+        "from": "2024-09-29",
+        "to": "2025-11-23"
+      },
+      {
+        "id": "theunpartychatty",
+        "hours": 21.9,
+        "sessions": 24,
+        "commits": 79,
+        "from": "2023-07-11",
+        "to": "2025-10-29"
+      },
+      {
+        "id": "theunpartyproject",
+        "hours": 17.6,
+        "sessions": 29,
+        "commits": 57,
+        "from": "2024-04-18",
+        "to": "2025-11-11"
+      },
+      {
+        "id": "theunpartycore",
+        "hours": 14.2,
+        "sessions": 29,
+        "commits": 56,
+        "from": "2025-07-30",
+        "to": "2026-06-23"
+      },
+      {
+        "id": "theunpartybeta",
+        "hours": 14,
+        "sessions": 21,
+        "commits": 70,
+        "from": "2024-11-13",
+        "to": "2026-06-25"
+      },
+      {
+        "id": "theunpartybrand",
+        "hours": 12.6,
+        "sessions": 19,
+        "commits": 33,
+        "from": "2025-07-27",
+        "to": "2026-07-06"
+      },
+      {
+        "id": "theunpartycloud",
+        "hours": 12.1,
+        "sessions": 26,
+        "commits": 47,
+        "from": "2024-08-01",
+        "to": "2026-08-13"
+      },
+      {
+        "id": "theunpartyspace",
+        "hours": 9.8,
+        "sessions": 10,
+        "commits": 39,
+        "from": "2024-09-24",
+        "to": "2025-10-29"
+      },
+      {
+        "id": "theunpartygrow",
+        "hours": 9.7,
+        "sessions": 25,
+        "commits": 42,
+        "from": "2024-10-22",
+        "to": "2026-04-09"
+      },
+      {
+        "id": "theunpartyglosser",
+        "hours": 7,
+        "sessions": 14,
+        "commits": 28,
+        "from": "2024-07-15",
+        "to": "2026-01-29"
+      },
+      {
+        "id": "theunpartyclock",
+        "hours": 5.9,
+        "sessions": 17,
+        "commits": 29,
+        "from": "2025-05-05",
+        "to": "2026-02-11"
+      },
+      {
+        "id": "theunpartyselector",
+        "hours": 5.7,
+        "sessions": 12,
+        "commits": 37,
+        "from": "2024-02-29",
+        "to": "2025-10-30"
+      },
+      {
+        "id": "theunpartydashboard",
+        "hours": 5.5,
+        "sessions": 14,
+        "commits": 24,
+        "from": "2024-05-07",
+        "to": "2025-10-29"
+      },
+      {
+        "id": "theunpartybudget",
+        "hours": 5.3,
+        "sessions": 7,
+        "commits": 16,
+        "from": "2025-07-28",
+        "to": "2026-06-23"
+      },
+      {
+        "id": "theunpartycolors",
+        "hours": 5.1,
+        "sessions": 13,
+        "commits": 23,
+        "from": "2024-09-20",
+        "to": "2026-01-29"
+      },
+      {
+        "id": "theunpartybot",
+        "hours": 4.9,
+        "sessions": 12,
+        "commits": 29,
+        "from": "2024-10-15",
+        "to": "2026-08-12"
+      },
+      {
+        "id": "theunpartydeveloper",
+        "hours": 4.1,
+        "sessions": 11,
+        "commits": 16,
+        "from": "2024-09-25",
+        "to": "2026-04-28"
+      },
+      {
+        "id": "theunpartylanding",
+        "hours": 3.8,
+        "sessions": 10,
+        "commits": 21,
+        "from": "2025-07-22",
+        "to": "2026-06-18"
+      },
+      {
+        "id": "theunpartyuser",
+        "hours": 3.5,
+        "sessions": 9,
+        "commits": 14,
+        "from": "2025-01-06",
+        "to": "2025-11-23"
+      },
+      {
+        "id": "theunpartychat",
+        "hours": 3.3,
+        "sessions": 11,
+        "commits": 17,
+        "from": "2025-06-03",
+        "to": "2026-07-20"
+      },
+      {
+        "id": "theunpartylogger",
+        "hours": 3.2,
+        "sessions": 11,
+        "commits": 17,
+        "from": "2025-04-05",
+        "to": "2026-03-09"
+      },
+      {
+        "id": "theunpartyinvite",
+        "hours": 3,
+        "sessions": 10,
+        "commits": 19,
+        "from": "2024-09-04",
+        "to": "2026-08-19"
+      },
+      {
+        "id": "theunpartymood",
+        "hours": 2.7,
+        "sessions": 9,
+        "commits": 13,
+        "from": "2024-03-13",
+        "to": "2025-11-23"
+      },
+      {
+        "id": "theunpartybq",
+        "hours": 2.7,
+        "sessions": 5,
+        "commits": 9,
+        "from": "2025-05-22",
+        "to": "2025-10-29"
+      },
+      {
+        "id": "theunpartyios",
+        "hours": 2.5,
+        "sessions": 9,
+        "commits": 12,
+        "from": "2024-03-04",
+        "to": "2026-03-25"
+      },
+      {
+        "id": "theunpartyswatch",
+        "hours": 2,
+        "sessions": 7,
+        "commits": 11,
+        "from": "2024-08-30",
+        "to": "2025-11-23"
+      },
+      {
+        "id": "theunpartyfoundation",
+        "hours": 1.9,
+        "sessions": 5,
+        "commits": 9,
+        "from": "2024-03-27",
+        "to": "2025-11-19"
+      },
+      {
+        "id": "theunpartytheme",
+        "hours": 1.4,
+        "sessions": 4,
+        "commits": 8,
+        "from": "2025-07-22",
+        "to": "2025-11-23"
+      },
+      {
+        "id": "theunpartyhtml",
+        "hours": 1.1,
+        "sessions": 4,
+        "commits": 5,
+        "from": "2025-09-23",
+        "to": "2026-07-26"
+      },
+      {
+        "id": "theunpartysnake",
+        "hours": 1,
+        "sessions": 4,
+        "commits": 5,
+        "from": "2025-12-15",
+        "to": "2026-06-02"
+      },
+      {
+        "id": "theunpartyteam",
+        "hours": 0.8,
+        "sessions": 3,
+        "commits": 3,
+        "from": "2024-09-21",
+        "to": "2025-09-23"
+      },
+      {
+        "id": "theunpartysearch",
+        "hours": 0.5,
+        "sessions": 2,
+        "commits": 2,
+        "from": "2025-07-27",
+        "to": "2025-09-23"
+      },
+      {
+        "id": "theunpartyporter",
+        "hours": 0.2,
+        "sessions": 1,
+        "commits": 1,
+        "from": "2025-09-23",
+        "to": "2025-09-23"
+      }
+    ],
+    "rhythm": [
+      {
+        "year": 2024,
+        "commits": 389,
+        "repos": 24,
+        "hours": [
+          10,
+          4,
+          12,
+          4,
+          0,
+          0,
+          1,
+          0,
+          0,
+          14,
+          30,
+          42,
+          28,
+          34,
+          34,
+          24,
+          21,
+          23,
+          14,
+          14,
+          13,
+          22,
+          26,
+          19
+        ],
+        "days": [
+          66,
+          57,
+          78,
+          68,
+          73,
+          22,
+          25
+        ]
+      },
+      {
+        "year": 2025,
+        "commits": 1558,
+        "repos": 41,
+        "hours": [
+          67,
+          51,
+          25,
+          26,
+          10,
+          6,
+          1,
+          8,
+          25,
+          35,
+          65,
+          80,
+          88,
+          137,
+          121,
+          99,
+          103,
+          98,
+          82,
+          80,
+          80,
+          101,
+          103,
+          67
+        ],
+        "days": [
+          382,
+          364,
+          183,
+          264,
+          172,
+          58,
+          135
+        ]
+      },
+      {
+        "year": 2026,
+        "commits": 1945,
+        "repos": 22,
+        "through": "2026-10-18",
+        "hours": [
+          47,
+          14,
+          18,
+          11,
+          1,
+          2,
+          1,
+          1,
+          13,
+          18,
+          26,
+          66,
+          121,
+          137,
+          141,
+          170,
+          213,
+          168,
+          127,
+          131,
+          142,
+          157,
+          115,
+          105
+        ],
+        "days": [
+          346,
+          423,
+          399,
+          351,
+          245,
+          48,
+          133
+        ]
+      }
+    ]
+  }
+}

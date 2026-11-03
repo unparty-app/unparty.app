@@ -1,0 +1,3570 @@
+/* Only import fonts not available in next/font/google */
+@import url('https://fonts.googleapis.com/css2?family=Datatype:wght@100..900&family=Flow+Rounded&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme-color lines and washes, for admin's data pages (and anywhere a border
+   or hover should follow the reader's theme instead of a hardcoded gray).
+   In @layer utilities so hover:, focus: and divide- work on them */
+@layer utilities {
+  .border-theme-line { border-color: color-mix(in srgb, var(--theme-color, var(--brand-color)) 20%, transparent); }
+  .border-theme { border-color: var(--theme-color, var(--brand-color)); }
+  .divide-theme-line > :not([hidden]) ~ :not([hidden]) { border-color: color-mix(in srgb, var(--theme-color, var(--brand-color)) 20%, transparent); }
+  .bg-theme-wash { background-color: color-mix(in srgb, var(--theme-color, var(--brand-color)) 10%, transparent); }
+}
+
+/* Theme-aware inline links (used in dangerouslySetInnerHTML contexts) */
+.theme-link {
+  color: var(--theme-color, var(--brand-color));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s ease;
+}
+.theme-link:hover {
+  opacity: 0.7;
+}
+
+/* Chyron-style scrolling animation for music banner */
+@keyframes scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-scroll {
+  animation: scroll 12s linear infinite;
+  animation-play-state: running;
+}
+
+/* Pause scrolling on hover */
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+:root {
+  color-scheme: light;
+  --background: #ededed;
+  --foreground: #171717;
+  --background-highlight: rgba(0, 0, 0, 0.1); /* Light mode highlight */
+  --text-muted: rgba(23, 23, 23, 0.8); /* Light mode muted text */
+  --border: color-mix(in srgb, var(--theme-color, var(--brand-color)) 20%, transparent); /* Every border follows the theme, the same as .border-theme-line (#1007) */
+  --bg-modal: hsla(0, 0%, 4%, 0.262);
+  
+  /* =================================================================
+     COMPREHENSIVE VISUAL HIERARCHY DESIGN TOKENS
+     ================================================================= */
+  
+  /* Depth Layers - Progressive shadow system */
+  --depth-raised: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --depth-elevated: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --depth-floating: 0 6px 12px rgba(0, 0, 0, 0.15);
+  --depth-modal: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --depth-overlay: 0 12px 24px rgba(0, 0, 0, 0.18);
+
+  /* Brand Integration Shadows & Effects */
+  /* The owner's first brand color (FoundersConfig brandColors[0]). layout.tsx
+     sets it on <html>; this default is unparty's yellow */
+  --brand-color: #F9C22E;
+  --brand-shadow: 0 2px 4px color-mix(in srgb, var(--brand-color) 10%, transparent);
+  --brand-shadow-strong: 0 4px 8px color-mix(in srgb, var(--brand-color) 15%, transparent);
+  --brand-glow: 0 0 8px color-mix(in srgb, var(--brand-color) 20%, transparent);
+  --brand-glow-strong: 0 0 12px color-mix(in srgb, var(--brand-color) 25%, transparent);
+  --brand-accent: color-mix(in srgb, var(--brand-color) 10%, transparent);
+  --brand-accent-strong: color-mix(in srgb, var(--brand-color) 15%, transparent);
+
+  /* Animation Standards */
+  --transition-fast: 0.15s ease;
+  --transition-standard: 0.2s ease;
+  
+  /* Keyword Styling */
+  --keyword-underline: color-mix(in srgb, var(--brand-color) 40%, transparent);
+  --keyword-hover-bg: color-mix(in srgb, var(--brand-color) 10%, transparent);
+  --transition-slow: 0.3s ease;
+  --easing-brand: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Interactive States */
+  --hover-lift: translateY(-1px);
+  --hover-lift-strong: translateY(-2px);
+  --active-press: translateY(0) scale(0.98);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-color) 30%, transparent);
+
+  /* Responsive Depth Scaling */
+  --depth-scale-mobile: 0.8;
+  --depth-scale-tablet: 0.9;
+  --depth-scale-desktop: 1.0;
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:root:where(.dark) {
+  color-scheme: dark;
+  --background: #10100D;
+  --foreground: #ededed;
+  --background-highlight: rgba(22, 25, 32, 0); /* Dark mode highlight 43,38,38,0.054 */
+  --text-muted: rgba(237, 237, 237, 0.8); /* Dark mode muted text */
+  --border: color-mix(in srgb, var(--theme-color, var(--brand-color)) 20%, transparent); /* Every border follows the theme, the same as .border-theme-line (#1007) */
+
+  /* Dark Mode Depth Adjustments */
+  --depth-raised: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --depth-elevated: 0 4px 8px rgba(0, 0, 0, 0.25);
+  --depth-floating: 0 6px 12px rgba(0, 0, 0, 0.3);
+  --depth-modal: 0 8px 16px rgba(0, 0, 0, 0.35);
+  --depth-overlay: 0 12px 24px rgba(0, 0, 0, 0.4);
+
+  /* Dark Mode Brand Effects */
+  --brand-shadow: 0 2px 4px color-mix(in srgb, var(--brand-color) 15%, transparent);
+  --brand-shadow-strong: 0 4px 8px color-mix(in srgb, var(--brand-color) 20%, transparent);
+  --brand-glow: 0 0 8px color-mix(in srgb, var(--brand-color) 25%, transparent);
+  --brand-glow-strong: 0 0 12px color-mix(in srgb, var(--brand-color) 30%, transparent);
+  --brand-accent: color-mix(in srgb, var(--brand-color) 15%, transparent);
+  --brand-accent-strong: color-mix(in srgb, var(--brand-color) 20%, transparent);
+
+  /* Dark Mode Focus Ring */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+button:hover {
+  cursor: url("/cursor-brain-32.png") 16 16, pointer;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scrollbar-color: var(--theme-color);
+  scrollbar-width: thin;
+}
+
+/* Add these transition styles to your globals.css */
+.page-transition-wrapper {
+  position: relative;
+}
+
+.unppp-page-shell {
+  animation: unppp-page-shell-enter 0.24s var(--easing-brand) both;
+}
+
+/* Base transition styles */
+.page-transition-wrapper > * {
+  animation: fade-slide-in 0.3s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unppp-page-shell {
+    animation: none;
+  }
+}
+
+@keyframes unppp-page-shell-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: Add smooth transitions for link interactions */
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Optional: Add page exit animation */
+.page-exit {
+  animation: fade-slide-out 0.3s ease-in forwards;
+}
+
+@keyframes fade-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* Keyword Term Styling */
+.keyword-term {
+  position: relative;
+  display: inline;
+  border-bottom: 2px dotted var(--keyword-underline);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: inherit;
+}
+
+.keyword-term:hover {
+  background-color: var(--keyword-hover-bg);
+  border-bottom-style: solid;
+  transform: translateY(-1px);
+}
+
+.keyword-term:active {
+  transform: translateY(0);
+}
+
+/* Optional: Add a subtle indicator that keywords are clickable */
+.keyword-term::before {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--keyword-underline);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.keyword-term:hover::before {
+  opacity: 1;
+}
+
+/* Inside an article title (hero/heading), the title itself is neutral
+   (var(--foreground)) so keyword terms can pop in the live theme accent
+   instead - the base .keyword-term rule above inherits color and uses a
+   fixed brand-yellow underline regardless of theme, which reads fine
+   against dense body text but not against large display type or a
+   non-default theme color. */
+.article-title .keyword-term {
+  color: var(--theme-color, var(--brand-color));
+  border-bottom-color: var(--theme-color, var(--brand-color));
+}
+
+.article-title .keyword-term:hover {
+  background-color: color-mix(in srgb, var(--theme-color, var(--brand-color)) 12%, transparent);
+}
+
+.article-title .keyword-term::before {
+  background: var(--theme-color, var(--brand-color));
+}
+
+/* Dark mode adjustments */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .keyword-term {
+  border-bottom-color: color-mix(in srgb, var(--brand-color) 60%, transparent);
+}
+
+/* Step icons styling */
+.step-icon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) saturate(100%) invert(11%) sepia(0%) saturate(0%) hue-rotate(162deg) brightness(95%) contrast(89%);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .step-icon {
+  filter: brightness(0) saturate(100%) invert(93%) sepia(0%) saturate(0%) hue-rotate(162deg) brightness(93%) contrast(93%);
+}
+
+/* Step button tooltip styling */
+.step-button {
+  position: relative;
+}
+
+.step-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--foreground);
+  color: var(--background);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.step-button:hover::after,
+.step-button:focus::after {
+  opacity: 1;
+}
+
+/* Project description styling */
+.project-description {
+  font-family: monospace;
+  text-align: inherit;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+@media (min-width: 640px) {
+  .project-description {
+    font-size: 16px;
+  }
+}
+
+/* Page media tag styling - mobile-first approach */
+.page-media-tag {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  line-height: 1.1;
+  color: var(--foreground);
+  font-size: 0.75rem; /* 16px */
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Responsive scaling for page media tag */
+@media (min-width: 640px) {
+  .page-media-tag {
+    font-size: 1.25rem; /* 20px */
+  }
+}
+
+@media (min-width: 768px) {
+  .page-media-tag {
+    font-size: 1.5rem; /* 24px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-media-tag {
+    font-size: 1.875rem; /* 30px */
+  }
+}
+
+@media (min-width: 1280px) {
+  .page-media-tag {
+    font-size: 2.25rem; /* 36px */
+  }
+}
+
+/* Enhanced hover effect for interactive elements */
+.page-media-tag:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .page-media-tag:hover {
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Page Navigation Component Styles */
+.page-navigation {
+  transition: opacity 200ms ease-out, visibility 0s;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 50;
+  padding: 0 1rem;
+}
+
+/* The floating arrows sit beside the content (max-w-5xl, 1024px) only from
+   1200px; narrower, they'd cover it, so the page ends on its neighbors
+   instead (PageNeighbors) */
+@media (max-width: 1199px) {
+  .page-navigation { display: none; }
+}
+
+/* The widget tray is open at the same edge: step aside until it closes */
+html[data-tray-open] .page-navigation {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease-out, visibility 0s 200ms;
+}
+
+.page-navigation-arrow {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Frosted glass, the same recipe as the header and the bottom bar
+     (bg-background/85 backdrop-blur-md shadow-lg), so the arrow reads over
+     any photo; the hand-drawn loop is its edge */
+  background: color-mix(in srgb, var(--background) 85%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  color: var(--foreground);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* The hand-drawn loop is the button's edge (components/icons/CircleArrow),
+   so the button has no border and the icon fills it; keyboard focus gets a
+   ring in the theme color instead of the browser's */
+.page-navigation-arrow__icon {
+  width: 100%;
+  height: 100%;
+}
+.page-navigation-arrow:focus-visible {
+  outline: 2px solid var(--theme-color);
+  outline-offset: 3px;
+}
+
+.page-navigation-arrow::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+}
+
+.page-navigation-arrow:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.page-navigation-arrow:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.page-navigation-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .page-navigation {
+    padding: 0 0.5rem;
+    top: 55%;
+  }
+  
+  .page-navigation-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .page-navigation-arrow::before {
+    inset: -14px;
+  }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .page-navigation {
+    padding: 0 1.5rem;
+  }
+  
+  .page-navigation-arrow {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Desktop and larger screens */
+@media (min-width: 1025px) {
+  .page-navigation {
+    padding: 0 2rem;
+  }
+  
+  .page-navigation-arrow {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Dynamic masonry grid system - reusable across features */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  /* Dynamic rows based on content - no fixed height */
+  grid-auto-rows: minmax(120px, auto);
+}
+
+/* Main cover image - spans 2x2 grid */
+.masonry-main {
+  grid-column: span 2;
+  grid-row: span 2;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Supporting images - single grid cells */
+.masonry-item {
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  /* Ensure consistent height */
+  min-height: 120px;
+}
+
+.masonry-item:hover {
+  transform: scale(1.02);
+  z-index: 2;
+}
+
+/* Image styling within masonry */
+.masonry-grid img {
+  width: 100%;  
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Dynamic layout for different image counts */
+.masonry-grid[data-image-count="5"] {
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.masonry-grid[data-image-count="4"] {
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.masonry-grid[data-image-count="6"] {
+  grid-template-rows: repeat(3, 1fr);
+}
+
+/* Responsive breakpoints for optimal viewing */
+@media (max-width: 768px) {
+  .masonry-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 6px;
+  }
+  
+  .masonry-main {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  
+  .masonry-item {
+    min-height: 100px;
+  }
+}
+
+/* Large screens - 4 column layout */
+@media (min-width: 1024px) {
+  .masonry-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(140px, auto);
+  }
+  
+  .masonry-main {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  
+  .masonry-item {
+    min-height: 140px;
+  }
+  
+  /* Adjust rows for different image counts on large screens */
+  .masonry-grid[data-image-count="5"] {
+    grid-template-rows: repeat(2, 1fr);
+  }
+  
+  .masonry-grid[data-image-count="4"] {
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+/* Extra large screens - 5 column layout with larger cover */
+@media (min-width: 1280px) {
+  .masonry-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    grid-auto-rows: minmax(160px, auto);
+  }
+  
+  .masonry-main {
+    grid-column: span 3;
+    grid-row: span 2;
+  }
+  
+  .masonry-item {
+    min-height: 160px;
+  }
+  
+  /* XL screen layouts */
+  .masonry-grid[data-image-count="5"] {
+    grid-template-rows: repeat(2, 1fr);
+  }
+  
+  .masonry-grid[data-image-count="4"] {
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+/* Article Table Component Styles */
+.article-table-container {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.article-table-header {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.article-table-title {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.article-table-subtitle {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.article-table-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.article-table-item {
+  display: block;
+  padding: 1.25rem;
+  background: var(--background);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--foreground);
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.article-table-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--foreground);
+}
+
+.article-table-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.article-table-category {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.5rem;
+  background: var(--background-highlight);
+  border-radius: 4px;
+  color: var(--foreground);
+}
+
+.article-table-date {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.article-table-item-title {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+
+.article-table-item-description {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-table-item-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.article-table-author {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Dark mode adjustments */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .article-table-item {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:where(.dark) .article-table-item:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive grid layout */
+@media (min-width: 640px) {
+  .article-table-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .article-table-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .article-table-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Premium Edge-to-Edge Navbar Styles */
+.navbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 0;
+  gap: 0.5rem;
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.875rem;
+  overflow: hidden;
+  flex-wrap: wrap;
+  min-height: 4rem;
+  transform: perspective(1000px) translateZ(-30px);
+}
+
+.navbar-logo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 900;
+  font-size: 1.125rem;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.navbar-logo-button:hover {
+  background: var(--background-highlight);
+  opacity: 0.8;
+}
+
+.navbar-logo-button:active {
+  transform: scale(0.98);
+}
+
+.navbar-logo-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.navbar-breadcrumb-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar-breadcrumb-menu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 50;
+  margin-top: 0.5rem;
+  min-width: 15rem;
+  max-width: 22rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transform-origin: top left;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-breadcrumb-menu[data-closed] {
+  opacity: 0;
+  transform: scale(0.92) translateY(-8px);
+  pointer-events: none;
+}
+
+.navbar-breadcrumb-menu-header {
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.navbar-breadcrumb-menu-title {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.navbar-breadcrumb-menu-items {
+  padding: 0.5rem 0;
+}
+
+.navbar-breadcrumb-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: 'vt323', monospace;
+  font-size: 0.9375rem;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-decoration: none;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.navbar-breadcrumb-menu-item:hover,
+.navbar-breadcrumb-menu-item[data-focus] {
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.95);
+  transform: translateX(2px);
+}
+
+.navbar-breadcrumb-menu-item:active {
+  transform: scale(0.97) translateX(2px);
+}
+
+.navbar-breadcrumb-menu-item-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  color: rgba(0, 0, 0, 0.45);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navbar-breadcrumb-menu-item:hover .navbar-breadcrumb-menu-item-icon,
+.navbar-breadcrumb-menu-item[data-focus] .navbar-breadcrumb-menu-item-icon {
+  color: rgba(0, 0, 0, 0.75);
+  transform: scale(1.05);
+}
+
+.navbar-breadcrumb-menu-item-text {
+  flex: 1;
+  font-weight: 520;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.navbar-breadcrumb-menu-item-current {
+  background: rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.navbar-spacer {
+  flex: 1;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-action-button:hover {
+  background: var(--background-highlight);
+  transform: translateY(-1px);
+}
+
+.navbar-action-button:active {
+  transform: scale(0.95) translateY(0);
+}
+
+/* Enhanced PNG icon styling with layered effects */
+.navbar-action-icon {
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05));
+}
+
+.navbar-action-button:hover .navbar-action-icon {
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+  transform: scale(1.05);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .navbar-action-icon {
+  filter: drop-shadow(0 1px 1px rgba(255,255,255,0.05));
+}
+
+:where(.dark) .navbar-action-button:hover .navbar-action-icon {
+  filter: drop-shadow(0 2px 3px rgba(255,255,255,0.1));
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .navbar-container {
+    gap: 0.25rem;
+  }
+  
+  .navbar-logo-button {
+    padding: 0.375rem 0.5rem;
+    font-size: 1rem;
+    gap: 0.375rem;
+  }
+  
+  .navbar-logo-svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .navbar-breadcrumb-menu {
+    min-width: 12rem;
+    margin-top: 0.25rem;
+  }
+  
+  .navbar-action-button {
+    padding: 0.375rem;
+  }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .navbar-logo-button {
+    gap: 0.625rem;
+  }
+  
+  .navbar-breadcrumb-menu {
+    min-width: 16rem;
+  }
+}
+
+/* Dark mode specific adjustments */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .navbar-breadcrumb-menu {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-title {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item:hover,
+:where(.dark) .navbar-breadcrumb-menu-item[data-focus] {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item-icon {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item:hover .navbar-breadcrumb-menu-item-icon,
+:where(.dark) .navbar-breadcrumb-menu-item[data-focus] .navbar-breadcrumb-menu-item-icon {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item-current {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark mode enhancements for smart navigation */
+:where(.dark) .navbar-menu-separator-line {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+:where(.dark) .navbar-menu-separator-text {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Enhanced Smart Navigation Styles */
+
+/* Separator styling */
+.navbar-menu-separator {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+.navbar-menu-separator-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-menu-separator-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* Core navigation item styling */
+.navbar-breadcrumb-menu-item-core {
+  opacity: 0.8;
+  font-size: 0.875rem;
+}
+
+.navbar-breadcrumb-menu-item-core:hover,
+.navbar-breadcrumb-menu-item-core[data-focus] {
+  opacity: 1;
+}
+
+/* Unppp navigation item styling */
+.navbar-breadcrumb-menu-item-unppp {
+  position: relative;
+}
+
+.navbar-breadcrumb-menu-item-unppp:hover {
+  transform: translateX(3px);
+}
+
+/* Sleek colored circles for unppp navigation */
+.navbar-breadcrumb-menu-item-circle {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all var(--transition-standard) var(--easing-brand);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* Ensure the circle is visible with minimum size */
+  min-width: 0.75rem;
+  min-height: 0.75rem;
+}
+
+.navbar-breadcrumb-menu-item:hover .navbar-breadcrumb-menu-item-circle,
+.navbar-breadcrumb-menu-item[data-focus] .navbar-breadcrumb-menu-item-circle {
+  transform: scale(1.15);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.navbar-breadcrumb-menu-item-current .navbar-breadcrumb-menu-item-circle {
+  transform: scale(1.1);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 0 2px color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .navbar-breadcrumb-menu-item-circle {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item:hover .navbar-breadcrumb-menu-item-circle,
+:where(.dark) .navbar-breadcrumb-menu-item[data-focus] .navbar-breadcrumb-menu-item-circle {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+:where(.dark) .navbar-breadcrumb-menu-item-current .navbar-breadcrumb-menu-item-circle {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 2px color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+/* Mobile-first responsive sizing */
+@media (max-width: 640px) {
+  .navbar-breadcrumb-menu-item-circle {
+    width: 0.625rem;
+    height: 0.625rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-breadcrumb-menu-item-circle {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+/* Simple logo for empty state */
+.navbar-logo-simple {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.navbar-logo-simple:hover {
+  transform: scale(1.05);
+}
+
+/* Glossy logo enhancement styles - preserves the brand yellow */
+.navbar-logo-svg {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  transition: all 0.2s ease;
+}
+
+.navbar-logo-svg:hover {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  transform: scale(1.02);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .navbar-logo-svg {
+  filter: drop-shadow(0 1px 2px rgba(255,255,255,0.1));
+}
+
+:where(.dark) .navbar-logo-svg:hover {
+  filter: drop-shadow(0 2px 4px rgba(255,255,255,0.2));
+}
+
+/* Widget panel entrance — transform/opacity only */
+.widget-panel-enter {
+  animation: fade-slide-in 0.25s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .widget-panel-enter {
+    animation: none;
+  }
+}
+
+/* The Fab's "build yours" (components/build-yours/BuildYours): the brand
+   brain beside the words, hand-written. On first view the words write
+   themselves in, one stroke after another at one pen speed, and the brain's
+   bulb lights up as they finish. Then the bulb only flickers on now and then
+   while the visitor is idle ([data-lit]) or the button is hovered or
+   focused. No constant pulse. */
+.fab-button {
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fab-button:hover {
+  transform: translateY(-1px);
+}
+.fab-button:active {
+  transform: scale(0.97);
+  transition-duration: 100ms;
+}
+.fab-button:focus-visible {
+  outline: 2px solid var(--theme-color);
+  outline-offset: 3px;
+}
+
+.build-yours__words path {
+  stroke-dasharray: 1;
+  animation-name: build-yours-write;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+/* Hidden until the pen reaches it: a round cap would otherwise show each
+   unwritten stroke as a dot */
+@keyframes build-yours-write {
+  from { stroke-dashoffset: 1; opacity: 0; }
+  1% { opacity: 1; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.build-yours__brain {
+  animation: build-yours-brain-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes build-yours-brain-in {
+  from { opacity: 0; transform: scale(0.82) rotate(-6deg); }
+}
+
+/* The bulb: lights up once as the writing ends, then on idle and hover */
+.build-yours__bulb {
+  animation: build-yours-bulb 900ms ease-out var(--build-yours-done, 1500ms) 1 both;
+}
+.build-yours[data-lit] .build-yours__bulb,
+.fab-button:hover .build-yours__bulb,
+.fab-button:focus-visible .build-yours__bulb {
+  animation: build-yours-flicker 1400ms ease-out 1;
+}
+@keyframes build-yours-bulb {
+  0% { filter: none; }
+  35% { filter: brightness(1.45) drop-shadow(0 0 6px #ffd6da); }
+  100% { filter: none; }
+}
+@keyframes build-yours-flicker {
+  0%, 100% { filter: none; }
+  12% { filter: brightness(1.5) drop-shadow(0 0 6px #ffd6da); }
+  20% { filter: none; }
+  30% { filter: brightness(1.5) drop-shadow(0 0 7px #ffd6da); }
+  70% { filter: brightness(1.3) drop-shadow(0 0 5px #ffd6da); }
+}
+
+/* Held until seen (BuildYoursCard in an article): the brain, the writing,
+   the bulb and the link's arrow wait, then play when the band is on screen */
+.build-yours[data-paused] .build-yours__brain,
+.build-yours[data-paused] .build-yours__words path,
+.build-yours[data-paused] .build-yours__bulb,
+.build-yours[data-paused] .hand-arrow path {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab-button,
+  .fab-button:hover,
+  .fab-button:active {
+    transition: none;
+    transform: none;
+  }
+  .build-yours__words path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .build-yours__brain,
+  .build-yours__bulb,
+  .build-yours[data-lit] .build-yours__bulb,
+  .fab-button:hover .build-yours__bulb,
+  .fab-button:focus-visible .build-yours__bulb {
+    animation: none;
+  }
+}
+
+/* The brand color setup (components/brand-colors/BrandColorsSetup): five
+   hand-drawn rings that write themselves in, one after another, once the
+   setup is on screen (data-seen), with the same pen as "build yours". A picked
+   color drops into its ring like ink, with a small overshoot; a new color
+   remounts the ink, so every pick drops again. The ring being picked gets an
+   underline drawn under it */
+.brand-ring__line,
+.brand-ring__mark {
+  stroke-dasharray: 1;
+}
+.brand-colors:not([data-seen]) .brand-ring__line {
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+.brand-colors[data-seen] .brand-ring__line {
+  animation: build-yours-write 560ms ease-in-out var(--ring-delay, 0ms) both;
+}
+.brand-ring__ink {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+  animation: brand-ring-ink 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes brand-ring-ink {
+  from { transform: scale(0.15) rotate(-18deg); opacity: 0.4; }
+}
+.brand-ring__mark {
+  animation: build-yours-write 320ms ease-out both;
+}
+.brand-ring:hover .brand-ring__ink {
+  transform: scale(1.04);
+  transition: transform 200ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-colors .brand-ring__line,
+  .brand-colors:not([data-seen]) .brand-ring__line,
+  .brand-ring__mark {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  .brand-ring__ink,
+  .brand-ring:hover .brand-ring__ink {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Delete Your Doubts (components/doubts/DeleteYourDoubts): a doubt rises in
+   as it's written, and deleting one draws a pen stroke through it in the
+   theme color (--strike), left to right, the way the brand rings' pen writes */
+.doubt-in {
+  animation: ink-rise 420ms ease-out both;
+}
+.doubt::after {
+  content: '';
+  position: absolute;
+  left: -0.15em;
+  right: -0.15em;
+  top: 52%;
+  height: 0.09em;
+  border-radius: 999px;
+  background: var(--strike, var(--theme-color));
+  transform: scaleX(0) rotate(-1.5deg);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.doubt-struck::after {
+  transform: scaleX(1) rotate(-1.5deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .doubt-in { animation: none; }
+  .doubt::after { transition: none; }
+}
+
+/* LinkPreview (components/link-preview): each new render of the card settles
+   in like the ink in the brand color rings, so a change reads as a change */
+.link-preview__card {
+  animation: link-preview-in 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes link-preview-in {
+  from { opacity: 0; transform: scale(0.97); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-preview__card { animation: none; }
+}
+
+/* The footer (components/footer/FooterLinks): the ask's lightbulb lights up,
+   the sponsor heart beats once, and each founder mark lifts a pixel,
+   all on hover or keyboard focus. Reduced motion holds them still */
+.footer-ask:hover .footer-ask__bulb,
+.footer-ask:focus-visible .footer-ask__bulb {
+  animation: footer-bulb-light 1400ms ease-out 1 both;
+}
+/* The Fab's flicker (build-yours-flicker), glowing in the theme color */
+@keyframes footer-bulb-light {
+  0% { filter: none; }
+  12% { filter: drop-shadow(0 0 4px var(--theme-color)); }
+  20% { filter: none; }
+  30% { filter: drop-shadow(0 0 5px var(--theme-color)); }
+  70%, 100% { filter: drop-shadow(0 0 3px var(--theme-color)); }
+}
+.footer-sponsor__heart {
+  transform-origin: 50% 60%;
+}
+.footer-sponsor:hover .footer-sponsor__heart,
+.footer-sponsor:focus-visible .footer-sponsor__heart {
+  animation: footer-heart-beat 900ms ease-in-out 1;
+}
+@keyframes footer-heart-beat {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.25); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.12); }
+}
+.footer-logo {
+  transition: color 200ms ease, transform 200ms ease;
+}
+.footer-logo:hover,
+.footer-logo:focus-visible {
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-ask:hover .footer-ask__bulb,
+  .footer-ask:focus-visible .footer-ask__bulb,
+  .footer-sponsor:hover .footer-sponsor__heart,
+  .footer-sponsor:focus-visible .footer-sponsor__heart {
+    animation: none;
+  }
+  .footer-logo:hover,
+  .footer-logo:focus-visible {
+    transform: none;
+  }
+}
+
+/* The pixel tip on /build (components/portfolio/PixelPlug): the plug hops a
+   pixel when hovered, and what it opens reveals left to right in hard pixel
+   steps, not a smooth fade */
+.pixel-tip:hover svg { transform: translateY(-1px); }
+.pixel-reveal {
+  animation: pixel-reveal 280ms steps(7, end) both;
+}
+@keyframes pixel-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pixel-tip:hover svg { transform: none; }
+  .pixel-reveal { animation: none; }
+}
+
+/* =================================================================
+   UNPARTY FORM STYLING SYSTEM
+   Professional layered effects with brand yellow
+   ================================================================= */
+
+/* Core Form Element Styling */
+.app-form {
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--background);
+  border: 1px solid color-mix(in srgb, var(--brand-color) 20%, transparent);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent,
+    color-mix(in srgb, var(--brand-color) 80%, transparent),
+    transparent
+  );
+}
+
+.app-form:hover {
+  border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--brand-color) 10%, transparent);
+}
+
+/* Form Header Styling */
+.app-form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-color) 10%, transparent);
+}
+
+.app-form-title {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--brand-color)  100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-form-subtitle {
+  font-family: 'Brandon-Grotesque', monospace;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Form Group Styling */
+.app-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.app-form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Form Label Styling */
+.app-form-label {
+  display: block;
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Form Input Styling */
+.app-form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid color-mix(in srgb, var(--brand-color) 20%, transparent);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.app-form-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.app-form-input:focus {
+  outline: none;
+  border-color: var(--brand-color);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 15%, transparent);
+}
+
+.app-form-input:hover:not(:focus) {
+  border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+/* Form Button Styling */
+.app-form-button {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: var(--brand-color);
+  color: #000605;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-form-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.app-form-button:hover {
+  background: #E7B12E;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.app-form-button:hover::before {
+  left: 100%;
+}
+
+.app-form-button:active {
+  transform: translateY(0);
+}
+
+.app-form-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.app-form-button.loading {
+  color: transparent;
+  position: relative;
+}
+
+.app-form-button.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #000605;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Secondary Button Styling */
+.app-form-button-secondary {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  color: var(--foreground);
+  border: 1.5px solid color-mix(in srgb, var(--brand-color) 40%, transparent);
+  border-radius: 8px;
+  font-family: 'Brandon-Grotesque', monospace;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.app-form-button-secondary:hover {
+  background: color-mix(in srgb, var(--brand-color) 10%, transparent);
+  border-color: var(--brand-color);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.app-form-button-secondary:active {
+  transform: translateY(0);
+}
+
+/* Form Footer Styling */
+.app-form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--brand-color) 10%, transparent);
+  font-size: 0.875rem;
+}
+
+.app-form-link {
+  color: var(--brand-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.app-form-link:hover {
+  color: #E7B12E;
+  border-bottom-color: currentColor;
+}
+
+/* Form Error Styling */
+.app-form-error {
+  color: #EF4444;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Dark mode adjustments */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .app-form {
+  background: rgba(10, 10, 10, 0.9);
+  border-color: color-mix(in srgb, var(--brand-color) 30%, transparent);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:where(.dark) .app-form:hover {
+  border-color: color-mix(in srgb, var(--brand-color) 50%, transparent);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+:where(.dark) .app-form-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+:where(.dark) .app-form-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(255, 255, 255, 0.05),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+/* Form Container Styling */
+.app-form-container {
+  background: var(--background);
+  border: 1px solid color-mix(in srgb, var(--brand-color) 20%, transparent); /* brand yellow with opacity */
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent,
+    color-mix(in srgb, var(--brand-color) 50%, transparent),
+    transparent
+  );
+}
+
+.app-form-container:hover {
+  border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--brand-color) 10%, transparent);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .app-form-container {
+  background: rgba(10, 10, 10, 0.8);
+  border-color: color-mix(in srgb, var(--brand-color) 30%, transparent);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:where(.dark) .app-form-container:hover {
+  border-color: color-mix(in srgb, var(--brand-color) 50%, transparent);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+/* Input Field Styling */
+.app-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid color-mix(in srgb, var(--brand-color) 20%, transparent);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: all 0.2s ease;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.app-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.app-input:focus {
+  outline: none;
+  border-color: var(--brand-color); /* brand yellow */
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 10%, transparent);
+  background: var(--background);
+}
+
+.app-input:focus::placeholder {
+  opacity: 0.5;
+}
+
+.app-input:hover:not(:focus) {
+  border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .app-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: color-mix(in srgb, var(--brand-color) 30%, transparent);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+:where(.dark) .app-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--brand-color);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(255, 255, 255, 0.05),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+/* Textarea Styling */
+.app-textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+/* Select Styling */
+.app-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23F9C22E' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+/* Primary Button Styling */
+.app-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--brand-color); /* brand yellow */
+  color: #000605; /* brandblack */
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.app-button-primary:hover {
+  background: #E7B12E; /* champion yellow */
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.app-button-primary:hover::before {
+  left: 100%;
+}
+
+.app-button-primary:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.app-button-primary:focus {
+  outline: none;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+/* Secondary Button Styling */
+.app-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--foreground);
+  border: 1.5px solid color-mix(in srgb, var(--brand-color) 50%, transparent);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.app-button-secondary:hover {
+  background: color-mix(in srgb, var(--brand-color) 10%, transparent);
+  border-color: var(--brand-color);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.app-button-secondary:active {
+  transform: translateY(0);
+}
+
+.app-button-secondary:focus {
+  outline: none;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+/* Disabled Button State */
+.app-button-primary:disabled,
+.app-button-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
+/* Loading Button State */
+.app-button-loading {
+  position: relative;
+  color: transparent;
+}
+
+.app-button-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Form Field Group */
+.app-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.app-field-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Form Label */
+.app-label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+}
+
+.app-label-required::after {
+  content: ' *';
+  color: #EF4444; /* red-500 */
+}
+
+/* Error States */
+.app-input-error {
+  border-color: #EF4444; /* red-500 */
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.app-input-error:focus {
+  border-color: #EF4444;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1),
+    0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.app-field-error {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #EF4444;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Success States */
+.app-input-success {
+  border-color: #10B981; /* green-500 */
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.app-input-success:focus {
+  border-color: #10B981;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 1px rgba(255, 255, 255, 0.1),
+    0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.app-field-success {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #10B981;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Form Grid Layouts */
+.app-form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.app-form-grid-2 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .app-form-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.app-form-grid-3 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .app-form-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Form Actions */
+.app-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+.app-form-actions-right {
+  justify-content: flex-end;
+}
+
+.app-form-actions-center {
+  justify-content: center;
+}
+
+.app-form-actions-between {
+  justify-content: space-between;
+}
+
+@media (max-width: 640px) {
+  .app-form-actions {
+    flex-direction: column;
+  }
+  
+  .app-form-actions-between {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Enhanced Modal Form Styling (for Header modals) */
+.app-modal-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid color-mix(in srgb, var(--brand-color) 30%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.app-modal-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--brand-color);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.1),
+    0 1px 1px rgba(255, 255, 255, 0.05),
+    0 0 0 3px color-mix(in srgb, var(--brand-color) 20%, transparent);
+}
+
+/* File Input Styling */
+.app-file-input {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.app-file-input input[type="file"] {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+.app-file-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px dashed color-mix(in srgb, var(--brand-color) 50%, transparent);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.app-file-input:hover .app-file-input-label {
+  border-color: var(--brand-color);
+  background: color-mix(in srgb, var(--brand-color) 5%, transparent);
+}
+
+.app-file-input-label:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+/* =================================================================
+   COMPREHENSIVE VISUAL HIERARCHY COMPONENT CLASSES
+   ================================================================= */
+
+/* PRIMARY INTERACTIVE ELEMENTS */
+/* Main navigation, CTAs, FAB - Strong depth effects */
+.vh-primary-interactive {
+  position: relative;
+  transition: all var(--transition-standard) var(--easing-brand);
+  box-shadow: var(--depth-elevated), var(--brand-shadow);
+  border: 1px solid var(--brand-accent);
+  backdrop-filter: blur(8px);
+}
+
+.vh-primary-interactive:hover {
+  transform: var(--hover-lift-strong) scale(1.02);
+  box-shadow: var(--depth-floating), var(--brand-shadow-strong);
+  border-color: var(--brand-color);
+}
+
+.vh-primary-interactive:active {
+  transform: var(--active-press);
+  transition: all var(--transition-fast);
+}
+
+.vh-primary-interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--depth-elevated), var(--brand-shadow), var(--focus-ring);
+}
+
+/* SECONDARY INTERACTIVE ELEMENTS */
+/* Form inputs, secondary buttons, cards - Moderate depth effects */
+.vh-secondary-interactive {
+  position: relative;
+  transition: all var(--transition-standard);
+  box-shadow: var(--depth-raised);
+  border: 1px solid var(--brand-accent);
+}
+
+.vh-secondary-interactive:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--depth-elevated), var(--brand-shadow);
+  border-color: color-mix(in srgb, var(--brand-color) 40%, transparent);
+}
+
+.vh-secondary-interactive:active {
+  transform: var(--active-press);
+}
+
+.vh-secondary-interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--depth-raised), var(--focus-ring);
+}
+
+/* CONTENT CONTAINERS */
+/* Article cards, step containers, modal backgrounds - Light depth effects */
+.vh-content-container {
+  position: relative;
+  transition: all var(--transition-standard);
+  box-shadow: var(--depth-raised);
+  border: 1px solid var(--border);
+  background: var(--background);
+  overflow: hidden;
+}
+
+.vh-content-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent,
+    var(--brand-accent),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--transition-standard);
+}
+
+.vh-content-container:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--depth-elevated);
+  border-color: var(--brand-accent);
+}
+
+.vh-content-container:hover::before {
+  opacity: 1;
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .vh-content-container {
+  border-color: var(--border);
+}
+
+/* SUPPORTING ELEMENTS */
+/* Icons, dividers, labels - Minimal shadows with brand tinting */
+.vh-supporting-element {
+  transition: all var(--transition-fast);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.vh-supporting-element:hover {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  transform: scale(1.05);
+}
+
+/* Brand-tinted supporting elements */
+.vh-supporting-element-brand {
+  transition: all var(--transition-fast);
+  filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--brand-color) 10%, transparent));
+}
+
+.vh-supporting-element-brand:hover {
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--brand-color) 20%, transparent));
+  transform: scale(1.05);
+}
+
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .vh-supporting-element {
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.05));
+}
+
+:where(.dark) .vh-supporting-element:hover {
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
+}
+
+:where(.dark) .vh-supporting-element-brand {
+  filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--brand-color) 15%, transparent));
+}
+
+:where(.dark) .vh-supporting-element-brand:hover {
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--brand-color) 25%, transparent));
+}
+
+/* RESPONSIVE DEPTH SCALING */
+@media (max-width: 640px) {
+  .vh-primary-interactive,
+  .vh-secondary-interactive,
+  .vh-content-container {
+    transform: scale(var(--depth-scale-mobile));
+  }
+  
+  .vh-primary-interactive:hover {
+    transform: scale(calc(var(--depth-scale-mobile) * 1.02)) var(--hover-lift-strong);
+  }
+  
+  .vh-secondary-interactive:hover,
+  .vh-content-container:hover {
+    transform: scale(var(--depth-scale-mobile)) var(--hover-lift);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .vh-primary-interactive,
+  .vh-secondary-interactive,
+  .vh-content-container {
+    transform: scale(var(--depth-scale-tablet));
+  }
+  
+  .vh-primary-interactive:hover {
+    transform: scale(calc(var(--depth-scale-tablet) * 1.02)) var(--hover-lift-strong);
+  }
+  
+  .vh-secondary-interactive:hover,
+  .vh-content-container:hover {
+    transform: scale(var(--depth-scale-tablet)) var(--hover-lift);
+  }
+}
+
+/* UTILITY CLASSES FOR QUICK APPLICATION */
+.vh-brand-glow {
+  box-shadow: var(--brand-glow);
+}
+
+.vh-brand-glow-strong {
+  box-shadow: var(--brand-glow-strong);
+}
+
+.vh-brand-accent-bg {
+  background: var(--brand-accent);
+}
+
+.vh-brand-accent-border {
+  border-color: var(--brand-accent);
+}
+
+/* ENHANCED BUTTON HIERARCHY */
+.vh-button-primary {
+  @apply vh-primary-interactive;
+  background: var(--brand-color);
+  color: #000605;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.vh-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.vh-button-primary:hover::before {
+  left: 100%;
+}
+
+.vh-button-secondary {
+  @apply vh-secondary-interactive;
+  background: transparent;
+  color: var(--foreground);
+  border: 1.5px solid var(--brand-accent-strong);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+}
+
+.vh-button-secondary:hover {
+  background: var(--brand-accent);
+}
+
+/* CARD HIERARCHY */
+.vh-card {
+  @apply vh-content-container;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.vh-card-elevated {
+  @apply vh-secondary-interactive;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.vh-card-primary {
+  @apply vh-primary-interactive;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Premium shimmer animation for PageMedia loading states */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* =================================================================
+   RESPONSIVE IMAGE OPTIMIZATION UTILITIES
+   ================================================================= */
+
+/* Image container with aspect ratio preservation */
+.image-container-responsive {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--background-highlight);
+  border-radius: 0.75rem;
+}
+
+/* Living wordmark cover (components/cover-motion/WordmarkCover.tsx): a yellow
+   misprint drifting out of line and back (~12px at 1440px wide), the period
+   turning like a record, and a slow breath on the whole logo. Reduced motion
+   holds it still. */
+.wordmark-breath {
+  animation: wordmark-breath 9s ease-in-out infinite;
+}
+.wordmark-misprint {
+  animation: wordmark-misprint 9s ease-in-out infinite;
+}
+.wordmark-badge {
+  animation: wordmark-badge 7s linear infinite;
+}
+@keyframes wordmark-breath {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.015; }
+}
+@keyframes wordmark-misprint {
+  0%, 100% { translate: 0 0; }
+  30% { translate: 0.8% 1.35%; }
+  62% { translate: -0.5% 1.1%; }
+}
+@keyframes wordmark-badge {
+  to { rotate: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-breath,
+  .wordmark-misprint,
+  .wordmark-badge {
+    animation: none;
+  }
+}
+
+/* Scroll rows (components/HorizontalRow). The track centers its items while
+   they fit; `safe` drops to start-aligned once they overflow, so the first
+   item is always reachable. fullBleed (.scroll-row-bleed) spans the screen
+   edge to edge, the same breakout main used; inside a story column the row
+   stays within the column instead of spilling out of it */
+.scroll-row-track {
+  justify-content: center;
+  justify-content: safe center;
+  /* Fade only the edge with more to scroll to (ScrollRow sets the data
+     attributes); 1 = solid, 0 = faded */
+  --fade-start: 1;
+  --fade-end: 1;
+  -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / var(--fade-start)), #000 3rem, #000 calc(100% - 3rem), rgb(0 0 0 / var(--fade-end)));
+  mask-image: linear-gradient(to right, rgb(0 0 0 / var(--fade-start)), #000 3rem, #000 calc(100% - 3rem), rgb(0 0 0 / var(--fade-end)));
+}
+.scroll-row-track[data-more-start="true"] { --fade-start: 0; }
+.scroll-row-track[data-more-end="true"] { --fade-end: 0; }
+.scroll-row-track[data-dragging="true"] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .scroll-row-track[data-more-start="true"],
+  .scroll-row-track[data-more-end="true"] {
+    cursor: grab;
+  }
+}
+/* layout="grid": 2×2 pages of squares. The square is the smallest of half the
+   row (100cqw, less the track's padding and the gap), half the screen's height
+   less the header, the row's title and the bottom dock, and 15rem; the page is
+   two squares and a gap. Pages start at the left, under the row's title */
+.scroll-row-grid {
+  container-type: inline-size;
+  --tile-gap: 0.75rem;
+  --tile: min(calc((100cqw - 2rem - var(--tile-gap)) / 2), calc((100svh - 19rem) / 2), 15rem);
+}
+.scroll-row-grid .scroll-row-track {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.scroll-row-grid__page {
+  width: calc(var(--tile) * 2 + var(--tile-gap));
+  gap: var(--tile-gap);
+}
+.scroll-row-grid__tile {
+  display: flex;
+  width: var(--tile);
+  height: var(--tile);
+}
+/* Within a page the circles lean toward its middle, one cluster rather than
+   four boxes, and step down in size: the first a little larger than the rest,
+   the fourth smaller by the same amount (100%, 88%, 88%, 76% of a cell) */
+.scroll-row-grid__tile > * { width: 88%; height: 88%; flex-shrink: 0; }
+.scroll-row-grid__tile:nth-child(1) { align-items: flex-end; justify-content: flex-end; }
+.scroll-row-grid__tile:nth-child(2) { align-items: flex-end; justify-content: flex-start; }
+.scroll-row-grid__tile:nth-child(3) { align-items: flex-start; justify-content: flex-end; }
+.scroll-row-grid__tile:nth-child(4) { align-items: flex-start; justify-content: flex-start; }
+.scroll-row-grid__tile:nth-child(1) > * { width: 100%; height: 100%; }
+.scroll-row-grid__tile:nth-child(4) > * { width: 76%; height: 76%; }
+
+/* Glass circle (CoverPhotoCard circle): the photo and nothing around it. A
+   faint sheen across the top and a hairline edge, both a few percent of the
+   foreground, read as glass on any theme color */
+.glass-circle {
+  background-color: color-mix(in srgb, var(--foreground) 4%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+.glass-circle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 70% at 30% 0%, color-mix(in srgb, var(--foreground) 16%, transparent) 0%, transparent 55%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+.scroll-row-bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+.editorial-column .scroll-row-bleed {
+  width: auto;
+  margin-inline: 0;
+}
+/* A writer's preview (the story and article writers in /admin): sections that
+   break out to the screen's edges (heroes, bands, full-bleed rows) fill the
+   preview instead, so the page reads as it will, beside its editor */
+.editorial-preview .w-screen,
+.editorial-preview .scroll-row-bleed {
+  width: auto;
+  margin-inline: 0;
+}
+
+/* Hand-drawn arrow (components/HandDrawnArrow): draws itself in, shaft then
+   head, and leans forward while its link is hovered or focused */
+.hand-arrow path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hand-arrow-draw 700ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.hand-arrow .hand-arrow__head {
+  animation-delay: 450ms;
+  animation-duration: 450ms;
+}
+@keyframes hand-arrow-draw {
+  to { stroke-dashoffset: 0; }
+}
+.hand-arrow {
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.group:hover .hand-arrow,
+.group:focus-visible .hand-arrow {
+  transform: translateX(4px) rotate(-3deg);
+}
+.group:active .hand-arrow {
+  transform: translateX(6px) scale(0.96);
+  transition-duration: 120ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hand-arrow path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .hand-arrow,
+  .group:hover .hand-arrow,
+  .group:focus-visible .hand-arrow,
+  .group:active .hand-arrow {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* A hero's hand-drawn icon (EditorialSection hero, metadata.icon): each time
+   its hero shows (the first hero in flow at the top of the page, any hero as
+   StickyHeroStack's active pinned layer, whose .visible class toggles back on
+   so the animations replay) the strokes draw in, then the icon settles with a
+   small overshoot, like a pen lifting off. Hovering the hero nudges it again.
+   Icon strokes carry no pathLength, so the dash is longer than any stroke on
+   the 24 grid */
+.hero-icon {
+  transform-origin: 50% 60%;
+}
+.hero-icon * {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+}
+[data-hero-sentinel] .hero-icon *,
+[data-hero-display].visible .hero-icon * {
+  animation: hand-arrow-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+[data-hero-sentinel] .hero-icon,
+[data-hero-display].visible .hero-icon {
+  animation: hero-icon-settle 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 650ms both;
+}
+.article-title:hover .hero-icon {
+  animation: hero-icon-nudge 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes hero-icon-settle {
+  from { transform: rotate(-9deg) scale(0.92); }
+  60% { transform: rotate(3deg) scale(1.04); }
+  to { transform: none; }
+}
+@keyframes hero-icon-nudge {
+  40% { transform: rotate(-6deg) translateY(-2px); }
+  to { transform: none; }
+}
+
+/* Hand-drawn icons that draw themselves in (the space demos, #560): every
+   icon inside .ink-icons draws its strokes like a hero's icon, each after its
+   row's --ink-delay, so a list of rows draws in one after another. Only the
+   icons (HandDrawnIcon's 24-grid svg), not other ink in the rows */
+.ink-icons svg[viewBox="0 0 24 24"] * {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: hand-arrow-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--ink-delay, 0ms) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-icons svg[viewBox="0 0 24 24"] * {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A poem's icon (editorial/PoemWalker), walking its story like an old desktop
+   assistant: across the story's column (its lane, measured with container
+   units), a pause to turn around, and back, waddling
+   all the way. The trip (.poem-walker) and the turn (__face) share one clock
+   (--poem-walk, offset per poem by animation-delay); the waddle (__body)
+   keeps its own. Hovering or focusing it stops everything so it can be
+   tapped. Its strokes draw in when it arrives, like a hero's icon. With
+   reduced motion it stands at the left */
+.poem-walker-lane {
+  container-type: inline-size;
+}
+.poem-walker {
+  animation: poem-walk var(--poem-walk, 48s) ease-in-out infinite;
+}
+.poem-walker__face {
+  animation: poem-turn var(--poem-walk, 48s) ease-in-out infinite;
+}
+.poem-walker__body {
+  animation: poem-waddle 700ms ease-in-out infinite;
+  transform-origin: 50% 100%;
+  transition: scale 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.poem-walker:hover,
+.poem-walker:focus-within,
+.poem-walker:hover *,
+.poem-walker:focus-within *,
+.poem-walker[data-open],
+.poem-walker[data-open] * {
+  animation-play-state: paused;
+}
+/* The poem unfolds under its stopped icon, in the page (PoemWalker) */
+.poem-unfold {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 450ms cubic-bezier(0.65, 0, 0.35, 1), opacity 300ms ease;
+}
+.poem-unfold[data-open] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.poem-walker:hover .poem-walker__body,
+.poem-walker:focus-within .poem-walker__body {
+  scale: 1.08;
+}
+.poem-walker__icon *,
+.poem-viewer-icon * {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: hand-arrow-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) 200ms forwards;
+}
+@keyframes poem-walk {
+  0%, 4% { transform: translateX(0); }
+  44%, 54% { transform: translateX(calc(100cqw - 3.5rem)); }
+  94%, 100% { transform: translateX(0); }
+}
+@keyframes poem-turn {
+  0%, 46% { transform: scaleX(1); }
+  52%, 96% { transform: scaleX(-1); }
+  100% { transform: scaleX(1); }
+}
+@keyframes poem-waddle {
+  0%, 100% { transform: rotate(-7deg) translateY(0); }
+  50% { transform: rotate(7deg) translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .poem-walker,
+  .poem-walker__face,
+  .poem-walker__body {
+    animation: none;
+  }
+  .poem-walker__icon *,
+  .poem-viewer-icon * {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .poem-unfold {
+    transition: none;
+  }
+}
+
+/* InkTimeline's "now": a slow ring breathing out of the latest point, the one
+   thing on the chart that keeps moving, so the eye comes to rest there */
+.ink-now {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ink-now 2600ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms infinite both;
+}
+/* Ink (components/ink): a point lands with a little overshoot, a word rises
+   into place; both wait their beat (--ink-delay) */
+.ink-land {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ink-land 520ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--ink-delay, 0ms) both;
+}
+@keyframes ink-land {
+  from { transform: scale(0); }
+}
+.ink-rise {
+  display: inline-block;
+  animation: ink-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--ink-delay, 0ms) both;
+}
+@keyframes ink-rise {
+  from { opacity: 0; transform: translateY(6px); }
+}
+/* The one word that keeps moving in InkWords: the most used, a slow pulse */
+.ink-pulse {
+  animation: ink-pulse 3200ms ease-in-out 1800ms infinite;
+}
+@keyframes ink-pulse {
+  50% { transform: scale(1.04); }
+}
+.ink-fade {
+  animation: ink-fade 1200ms ease-out var(--ink-delay, 0ms) both;
+}
+@keyframes ink-fade {
+  from { opacity: 0; }
+}
+.ink-now--soft {
+  animation-name: ink-now-soft;
+}
+@keyframes ink-now-soft {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(1.45); opacity: 0; }
+}
+@keyframes ink-now {
+  from { transform: scale(1); opacity: 0.55; }
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-icon *,
+  [data-hero-sentinel] .hero-icon *,
+  [data-hero-display].visible .hero-icon * {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .hero-icon,
+  [data-hero-sentinel] .hero-icon,
+  [data-hero-display].visible .hero-icon,
+  .article-title:hover .hero-icon,
+  .ink-now,
+  .ink-land,
+  .ink-rise,
+  .ink-fade,
+  .ink-pulse {
+    animation: none;
+  }
+}
+
+/* Hand-drawn circle arrows (components/icons/CircleArrow): the arrow nudges
+   its way while its button is hovered or focused. Left is the same drawing
+   mirrored, so one translate moves each arrow toward where it points. */
+.circle-arrow__arrow {
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.page-navigation-arrow:hover:not(:disabled) .circle-arrow__arrow,
+.page-navigation-arrow:focus-visible .circle-arrow__arrow,
+.group:hover .circle-arrow__arrow,
+.group:focus-visible .circle-arrow__arrow {
+  transform: translateX(1.6px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .circle-arrow__arrow {
+    transition: none;
+    transform: none !important;
+  }
+}
+
+/* Article balls (components/ArticleCard): each ball floats gently, out of
+   step with its neighbours (ArticleCard staggers the delay). On hover the
+   ball lifts and its stamp rolls toward the rim, narrowing as if the ball
+   turned. The stamp's hand-drawn ring draws itself in. `translate` and
+   `scale` are separate properties, so the float and the lift never fight */
+.article-ball {
+  animation: article-ball-float 5.2s ease-in-out infinite alternate;
+  transition: scale 400ms cubic-bezier(0.34, 1.56, 0.64, 1), filter 300ms ease;
+}
+.article-ball:hover,
+.article-ball:focus-visible {
+  scale: 1.03;
+}
+@keyframes article-ball-float {
+  from { translate: 0 0; }
+  to { translate: 0 -5px; }
+}
+/* 2D only: a 3D tilt on an element with an SVG filter renders flat in some
+   browsers (Safari) */
+.article-ball__stamp {
+  transform: rotate(-4deg);
+  transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.article-ball:hover .article-ball__stamp,
+.article-ball:focus-visible .article-ball__stamp {
+  transform: translateX(8px) rotate(-1deg) scaleX(0.95);
+}
+.article-ball__ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hand-arrow-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) 200ms forwards;
+}
+
+/* Article view toggle (components/ArticleViewToggle): the active view's
+   scribbled underline draws itself in */
+.view-toggle__underline {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hand-arrow-draw 450ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* ArticleList: switching between balls and list fades the new view in */
+.article-view-enter {
+  animation: article-view-enter 300ms ease-out;
+}
+@keyframes article-view-enter {
+  from { opacity: 0; translate: 0 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-ball,
+  .article-view-enter {
+    animation: none;
+  }
+  .article-ball,
+  .article-ball__stamp {
+    transition: none;
+  }
+  .article-ball:hover .article-ball__stamp,
+  .article-ball:focus-visible .article-ball__stamp {
+    transform: rotate(-4deg);
+  }
+  .article-ball__ring,
+  .view-toggle__underline {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 404 page (components/NotFoundView): blocks rise in one after another (each
+   sets its own animation-delay), and every hand-drawn stroke (the circle
+   around 404, the strike through the missing path, the arrow to the ask)
+   draws itself in. Its own root runs these, so they play on client
+   navigation too, not only on a full page load */
+.nf-rise {
+  animation: nf-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes nf-rise {
+  from { opacity: 0; translate: 0 10px; }
+}
+.nf-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hand-arrow-draw 800ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nf-rise {
+    animation: none;
+  }
+  .nf-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Columns row (editorial/ColumnsRow): side by side whenever the row itself
+   has room, about 200px a column, whatever the window width; narrower rows
+   keep their stacked or swipe (peek) layout and indicator bar. The two-class
+   selectors outrank the track's single-class Tailwind utilities */
+.columns-row {
+  container-type: inline-size;
+}
+@container (min-width: 440px) {
+  .columns-row[data-columns="2"] .columns-row__track {
+    display: grid;
+    grid-template-columns: var(--column-template);
+    gap: 2rem;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .columns-row[data-columns="2"] .columns-row__track > .editorial-column {
+    width: auto;
+  }
+  .columns-row[data-columns="2"] .columns-row__dots {
+    display: none;
+  }
+}
+@container (min-width: 520px) {
+  .columns-row[data-columns="3"] .columns-row__track,
+  .columns-row[data-columns="4"] .columns-row__track {
+    display: grid;
+    grid-template-columns: var(--column-template);
+    gap: 2rem;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .columns-row[data-columns="3"] .columns-row__track > .editorial-column,
+  .columns-row[data-columns="4"] .columns-row__track > .editorial-column {
+    width: auto;
+  }
+  .columns-row[data-columns="3"] .columns-row__dots,
+  .columns-row[data-columns="4"] .columns-row__dots {
+    display: none;
+  }
+}
+
+/* Columns (editorial/ColumnsRow): each column is a size container, so a
+   heading inside one scales to the column instead of the page: big enough to
+   lead it, never so big it stacks the column three times taller than its
+   neighbour */
+.editorial-column {
+  container-type: inline-size;
+}
+.editorial-column .article-title {
+  font-size: clamp(1.75rem, 10cqw, 3.75rem);
+}
+
+/* Circle photo rows (PhotoGallery shape="circle"): each photo drifts slowly
+   inside its circle, a small push-in with a slight rise, and back. Only
+   transform animates, so the circle never re-lays out. Reduced motion holds
+   it still. */
+.photo-circle-drift {
+  animation: photo-circle-drift 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes photo-circle-drift {
+  from { transform: scale(1.06) translate3d(0, 2%, 0); }
+  to { transform: scale(1.16) translate3d(0, -2%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-circle-drift {
+    animation: none;
+    transform: scale(1.06);
+  }
+}
+
+/* Circle set photo viewer (PhotoSetViewer): the ambient fill behind the
+   photos fades over each time the open photo changes */
+.photo-ambient-enter {
+  animation: photo-ambient-enter 600ms ease-out;
+}
+@keyframes photo-ambient-enter {
+  from { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-ambient-enter {
+    animation: none;
+  }
+}
+
+/* cover-008 tilt (ZinniaTiltCover): the portrait photo at full frame width,
+   moved between two focus points (fractions of the photo's height: the pink
+   flower at 0.11, the pollen at 0.70), each centered in the frame and clamped
+   so the photo never leaves it. cqw/cqh are the hero frame (container-type:
+   size). 36s loop: rest on pink, ease down, rest on pollen, ease back up. The
+   soft copies fade with it: the yellow one while the pink flower is in focus,
+   the pink one while the pollen is. The bee's-eye shader (ZinniaTiltCover,
+   beeEye.ts) takes over from this on the same keyframes; keep them in step. */
+.zinnia-tilt {
+  --zinnia-h: calc(100cqw * 2000 / 1107);
+  --zinnia-pink: calc(-1 * clamp(0px, 0.11 * var(--zinnia-h) - 50cqh, var(--zinnia-h) - 100cqh));
+  --zinnia-pollen: calc(-1 * clamp(0px, 0.7 * var(--zinnia-h) - 50cqh, var(--zinnia-h) - 100cqh));
+  translate: 0 var(--zinnia-pollen);
+  animation: zinnia-tilt 36s infinite;
+  will-change: translate;
+}
+.zinnia-soft-yellow,
+.zinnia-soft-pink {
+  opacity: 0;
+}
+.zinnia-soft-yellow {
+  animation: zinnia-soft-yellow 36s infinite;
+}
+.zinnia-soft-pink {
+  animation: zinnia-soft-pink 36s infinite;
+}
+@keyframes zinnia-tilt {
+  0% { translate: 0 var(--zinnia-pink); }
+  12% { translate: 0 var(--zinnia-pink); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  42% { translate: 0 var(--zinnia-pollen); }
+  66% { translate: 0 var(--zinnia-pollen); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  100% { translate: 0 var(--zinnia-pink); }
+}
+@keyframes zinnia-soft-yellow {
+  0%, 10% { opacity: 1; }
+  30%, 80% { opacity: 0; }
+  96%, 100% { opacity: 1; }
+}
+@keyframes zinnia-soft-pink {
+  0%, 20% { opacity: 0; }
+  40%, 68% { opacity: 0.85; }
+  86%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .zinnia-tilt,
+  .zinnia-soft-yellow,
+  .zinnia-soft-pink {
+    animation: none;
+  }
+}
+
+/* Stack builder (components/depend/BuildYourStack): pen strokes (./ink)
+   draw themselves in as they mount, staggered row by row via --ink-delay, and
+   wait until the block is on screen. The bar's segments grow to their share
+   and CAN.'s lines slide in as services turn on */
+.ink-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ink-draw 600ms cubic-bezier(0.65, 0, 0.35, 1) var(--ink-delay, 0ms) forwards;
+}
+.ink-draw--slow {
+  animation-duration: 850ms;
+}
+.stack[data-paused] .ink-draw {
+  animation-play-state: paused;
+}
+@keyframes ink-draw {
+  to { stroke-dashoffset: 0; }
+}
+.stack-bar > span {
+  transition: flex-grow 750ms cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.stack-builds li {
+  animation: stack-in 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes stack-in {
+  from { opacity: 0; translate: -6px 0; }
+}
+/* A page turn slides in from the side it came from (--turn: 1 or -1) */
+.stack-page {
+  animation: stack-page 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes stack-page {
+  from { opacity: 0; translate: calc(var(--turn, 1) * 14px) 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ink-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .stack-bar > span {
+    transition: none;
+  }
+  .stack-builds li,
+  .stack-page {
+    animation: none;
+  }
+}
+
+/* SetupCurriculum rings (StepNumberOverlay inside .step-rings): once the list
+   is in view (.is-in) each ring draws itself from 12 o'clock, its tint fades
+   in, then the numeral pops with a small overshoot, staggered row by row via
+   --i. On hover the ring wobbles and the numeral hops. */
+.step-rings .step-ring__stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  rotate: -90deg;
+}
+.step-rings .step-ring__fill,
+.step-rings .step-ring__numeral {
+  opacity: 0;
+}
+.step-rings .step-ring__numeral {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: translate 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.step-rings.is-in .step-ring__stroke {
+  animation: step-ring-draw 650ms cubic-bezier(0.65, 0, 0.35, 1) calc(min(var(--i, 0), 14) * 55ms) forwards;
+}
+.step-rings.is-in .step-ring__fill {
+  animation: step-ring-tint 400ms ease-out calc(min(var(--i, 0), 14) * 55ms + 200ms) forwards;
+}
+.step-rings.is-in .step-ring__numeral {
+  animation: step-ring-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(min(var(--i, 0), 14) * 55ms + 380ms) forwards;
+}
+.step-rings .group:hover .step-ring svg {
+  animation: step-ring-wobble 520ms ease-in-out;
+}
+.step-rings .group:hover .step-ring__numeral {
+  translate: 0 -1.5px;
+}
+@keyframes step-ring-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes step-ring-tint {
+  to { opacity: 0.08; }
+}
+@keyframes step-ring-pop {
+  from { opacity: 0; scale: 0.4; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes step-ring-wobble {
+  25% { rotate: -14deg; }
+  55% { rotate: 9deg; }
+  80% { rotate: -4deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-rings .step-ring__stroke { stroke-dashoffset: 0; animation: none !important; }
+  .step-rings .step-ring__fill { opacity: 0.08; animation: none !important; }
+  .step-rings .step-ring__numeral { opacity: 1; animation: none !important; transition: none; }
+  .step-rings .group:hover .step-ring svg { animation: none; }
+}
+
+/* Aspect ratio variants */
+.image-container-cover {
+  aspect-ratio: 16/9;
+  max-height: 600px;
+}
+
+/* A type hub's cover (unppp/[type]/TypeHub): the same frame, as tall as its
+   content rather than 16:9, so it opens shorter than an article's */
+.image-container-cover.cover-hub {
+  aspect-ratio: auto;
+  max-height: none;
+}
+/* As the pinned cover shrinks to its band, its definition fades rather than
+   being cut through the middle of a line */
+.cover-hub__definition {
+  transition: opacity 200ms ease;
+}
+.cover-hub[data-shrunk] .cover-hub__definition {
+  opacity: 0;
+}
+
+.image-container-square {
+  aspect-ratio: 1/1;
+  max-height: 400px;
+}
+
+.image-container-portrait {
+  aspect-ratio: 3/4;
+  max-height: 500px;
+}
+
+/* Circular cover variant — echoes the circle motif started in DiscoBallScene
+   and EffortVisualization. Fixed diameter (not full-bleed like .image-container-cover)
+   so it always renders as a true circle; default width matches the 280px
+   ScrollRow tile that DiscoBallScene commonly sits in.
+   mask-image (rather than relying on overflow:hidden alone) works around a
+   WebKit bug where border-radius clipping on an animated/transformed child
+   (see .image-fade-in's transform: scale) can flash square corners on iOS
+   Safari mid-transition. translateZ(0) forces its own compositing layer so
+   the circle stays crisp instead of being resampled with the rest of the page. */
+.image-container-cover-circle {
+  aspect-ratio: 1/1;
+  width: 260px;
+  max-width: 100%;
+  margin-inline: auto;
+  border-radius: 50%;
+  -webkit-mask-image: radial-gradient(#fff, #fff);
+  mask-image: radial-gradient(#fff, #fff);
+  transform: translateZ(0);
+}
+
+@media (max-width: 640px) {
+  .image-container-cover-circle {
+    width: 160px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .image-container-cover-circle {
+    width: 200px;
+  }
+}
+
+
+/* Image loading states */
+.image-loading-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--background-highlight) 0%,
+    color-mix(in srgb, var(--brand-color) 10%, transparent) 50%,
+    var(--background-highlight) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Optimized image transitions */
+.image-fade-in {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.image-fade-in.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Responsive image grid utilities */
+.image-grid-responsive {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .image-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.375rem;
+  }
+  
+  .image-container-cover {
+    max-height: 300px;
+  }
+  
+  .image-container-square {
+    max-height: 250px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .image-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .image-container-cover {
+    max-height: 450px;
+  }
+  
+  .image-container-square {
+    max-height: 350px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .image-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .image-container-cover {
+    max-height: 600px;
+  }
+  
+  .image-container-square {
+    max-height: 400px;
+  }
+}
+
+/* Performance optimization classes */
+.image-optimized {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.image-hover-subtle {
+  transition: transform 0.2s ease;
+}
+
+.image-hover-subtle:hover {
+  transform: scale(1.02);
+}
+
+/* Dark mode adjustments */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) .image-loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    color-mix(in srgb, var(--brand-color) 15%, transparent) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+/* =================================================================
+   EDITORIAL INLINE FORMATTING STYLES
+   ================================================================= */
+
+/* Strikethrough styling */
+del {
+  text-decoration: line-through;
+  text-decoration-color: #9ca3af;
+  text-decoration-thickness: 1px;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+del:hover {
+  opacity: 1;
+  text-decoration-color: #6b7280;
+}
+
+/* Dark mode strikethrough */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) del {
+  text-decoration-color: #6b7280;
+}
+
+:where(.dark) del:hover {
+  text-decoration-color: #9ca3af;
+}
+
+/* Bold styling */
+strong {
+  font-weight: 700;
+  color: inherit;
+}
+
+/* Italic styling */
+em {
+  font-style: italic;
+  color: inherit;
+}
+
+/* Inline code styling — scoped to inline <code> only; snippets inside
+   <pre> blocks (CodeBlock) style themselves without the highlight chip */
+code:not(pre code) {
+  background: color-mix(in srgb, var(--brand-color) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brand-color) 20%, transparent);
+  border-radius: 4px;
+  padding: 0.125rem 0.25rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 0.875em;
+  font-weight: 500;
+  color: inherit;
+}
+
+/* Dark mode inline code */
+/* dark theme (was: @media (prefers-color-scheme: dark)) */
+:where(.dark) code:not(pre code) {
+  background: color-mix(in srgb, var(--brand-color) 15%, transparent);
+  border-color: color-mix(in srgb, var(--brand-color) 30%, transparent);
+}
+
+/* Hide scrollbar while preserving scroll behavior */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ProjectBelt's conveyor: one set of items slides its own width (plus the
+   gap), then the copy behind it has taken its place. Stops while hovered,
+   focused or held (a tap toggles data-held). Reduced motion never runs it */
+@keyframes belt {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--belt-shift)); }
+}
+.belt-track {
+  animation: belt var(--belt-time, 30s) linear infinite;
+}
+.belt:hover .belt-track,
+.belt:focus-within .belt-track,
+.belt[data-held] .belt-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .belt-track { animation: none; }
+}
+
+/* RowTable (#572): the house table, measured on its own width, not the
+   window's. Narrow (a phone, an article's column), each record is a
+   circle-then-text row showing one column's value, picked from the lens of
+   column labels; from 560px of its own width every column lines up in
+   --row-table-columns, under labels that sort */
+.row-table {
+  container-type: inline-size;
+}
+.row-table__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.row-table__head,
+.row-table__cell,
+.row-table__wide-only {
+  display: none;
+}
+.row-table__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 300ms cubic-bezier(0.65, 0, 0.35, 1), opacity 200ms ease;
+}
+.row-table__panel[data-open] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+@container (min-width: 560px) {
+  .row-table__head,
+  .row-table__row {
+    display: grid;
+    grid-template-columns: var(--row-table-columns);
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .row-table__cell,
+  .row-table__wide-only {
+    display: flex;
+  }
+  .row-table__lens,
+  .row-table__lens-value {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .row-table__panel {
+    transition: none;
+  }
+}

@@ -1,0 +1,6 @@
+INVESTIGATION_ID=SIT-2025-06-02-001
+CATEGORY=build-errors
+DESCRIPTION=dependency-test
+BRANCH_NAME=investigation/2025-06-02/build-errors/dependency-test
+CREATED_DATE=2025-06-02
+STATUS=tir_created

@@ -1,0 +1,635 @@
+#!/bin/bash
+
+# Investigation Workflow CLI Tool
+# Based on investigation-workflow-guide.md and git integration
+# Usage: ./scripts/investigate <command> [options]
+
+set -e
+
+# Configuration
+INVESTIGATIONS_DIR="investigations"
+CURRENT_DATE=$(date +%Y-%m-%d)
+CURRENT_MONTH=$(date +%Y-%m)
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Logging functions
+log_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
+
+log_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+log_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+log_error() {
+    echo -e "${RED}❌ $1${NC}"
+    exit 1
+}
+
+# Helper functions
+show_help() {
+    cat << EOF
+Investigation Workflow CLI Tool
+
+USAGE:
+    ./scripts/investigate <command> [options]
+
+COMMANDS:
+    init <category> <description>     Initialize new investigation with git branch
+    sit                              Create System Investigation Template with build analysis
+    tir                              Create Technical Investigation Report with solution
+    complete                         Complete investigation, push to remote, and create PR
+    list                             List all investigations
+    status                           Show current investigation status
+    help                             Show this help message
+
+CATEGORIES:
+    typescript-errors                TypeScript/ESLint issues
+    build-errors                     Compilation failures
+    dependency-conflicts             Package/module issues
+    performance-issues               Optimization problems
+    security-vulnerabilities         Security concerns
+    configuration-problems           Setup/config issues
+    test-failures                    Testing framework issues
+    deployment-issues                CI/CD pipeline problems
+
+EXAMPLES:
+    ./scripts/investigate init typescript-errors admin-any-types
+    ./scripts/investigate sit
+    ./scripts/investigate tir
+    ./scripts/investigate complete
+    ./scripts/investigate list
+
+EOF
+}
+
+# Validation functions
+validate_category() {
+    local category=$1
+    local valid_categories=(
+        "typescript-errors"
+        "build-errors" 
+        "dependency-conflicts"
+        "performance-issues"
+        "security-vulnerabilities"
+        "configuration-problems"
+        "test-failures"
+        "deployment-issues"
+    )
+    
+    for valid in "${valid_categories[@]}"; do
+        if [[ "$category" == "$valid" ]]; then
+            return 0
+        fi
+    done
+    
+    log_error "Invalid category: $category. Valid categories: ${valid_categories[*]}"
+}
+
+# Get next investigation ID
+get_next_id() {
+    local existing_files=$(find . -name "system-investigation-${CURRENT_DATE}-*.md" 2>/dev/null | wc -l)
+    printf "%03d" $((existing_files + 1))
+}
+
+# Initialize investigation
+init_investigation() {
+    local category=$1
+    local description=$2
+    
+    if [[ -z "$category" || -z "$description" ]]; then
+        log_error "Usage: ./scripts/investigate init <category> <description>"
+    fi
+    
+    validate_category "$category"
+    
+    local investigation_id="SIT-${CURRENT_DATE}-$(get_next_id)"
+    local branch_name="investigation/${CURRENT_DATE}/${category}/${description}"
+    
+    log_info "Initializing investigation: $investigation_id"
+    log_info "Category: $category"
+    log_info "Description: $description"
+    
+    # Create investigations directory structure
+    mkdir -p "${INVESTIGATIONS_DIR}/${CURRENT_MONTH}"
+    
+    # Create investigation branch
+    log_info "Creating investigation branch: $branch_name"
+    git checkout -b "$branch_name"
+    
+    # Store investigation metadata
+    cat > .investigation-meta << EOF
+INVESTIGATION_ID=$investigation_id
+CATEGORY=$category
+DESCRIPTION=$description
+BRANCH_NAME=$branch_name
+CREATED_DATE=$CURRENT_DATE
+STATUS=initialized
+EOF
+    
+    log_success "Investigation $investigation_id initialized"
+    log_info "Next step: ./scripts/investigate sit"
+}
+
+# Create SIT document
+create_sit() {
+    if [[ ! -f ".investigation-meta" ]]; then
+        log_error "No active investigation. Run: ./scripts/investigate init <category> <description>"
+    fi
+    
+    source .investigation-meta
+    
+    local sit_file="${INVESTIGATIONS_DIR}/${CURRENT_MONTH}/system-investigation-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md"
+    
+    log_info "Creating SIT document: $sit_file"
+    
+    # Run build to capture current errors
+    log_info "Running build to capture current state..."
+    local build_output
+    if ! build_output=$(npm run build 2>&1); then
+        log_info "Build errors detected - perfect for investigation"
+    else
+        log_warning "Build passed - no errors to investigate"
+    fi
+    
+    # Generate SIT template with pre-filled data
+    cat > "$sit_file" << EOF
+# System Investigation Template (SIT)
+**Based on IEEE 1044 Software Anomaly Classification Standards**
+
+---
+
+## Document Control
+| Field | Value |
+|-------|--------|
+| **Investigation ID** | ${INVESTIGATION_ID} |
+| **Investigator** | Project Manager/Lead |
+| **Date Created** | ${CURRENT_DATE} |
+| **Priority Level** | High |
+| **Build/System** | theunpartyapp - Next.js with TypeScript |
+| **Investigation Status** | In Progress |
+
+---
+
+## 1. Initial Anomaly Detection
+
+### 1.1 Build Output Analysis
+**Source:** npm run build
+
+\`\`\`
+${build_output}
+\`\`\`
+
+### 1.2 Anomaly Classification
+| Type | Count | Severity | Pattern Detected |
+|------|--------|-----------|------------------|
+| Compilation Errors | [#] | Blocking | [Yes/No] |
+| Warnings | [#] | Non-blocking | [Yes/No] |
+| Linting Issues | [#] | Quality | [Yes/No] |
+| Dependency Issues | [#] | Blocking | [Yes/No] |
+
+### 1.3 Error Distribution Analysis
+\`\`\`
+File Path                           | Error Count | Error Types
+-----------------------------------|-------------|------------------
+[file1]                            | [#]         | [type1, type2]
+[file2]                            | [#]         | [type3]
+\`\`\`
+
+---
+
+## 2. Pattern Recognition (No Assumptions)
+
+### 2.1 File Relationship Mapping
+**Question:** Do errors cluster around related functionality?
+
+**Methodology:** Analyze file paths and error locations
+- [ ] **Single File Issues:** Isolated problems
+- [ ] **Module-Wide Issues:** Related files affected
+- [ ] **Cross-Module Issues:** Dependencies between modules
+- [ ] **System-Wide Issues:** Configuration or infrastructure
+
+**Observed Patterns:**
+\`\`\`
+Pattern 1: [Description of what is observed, not interpreted]
+Pattern 2: [Description of what is observed, not interpreted]
+\`\`\`
+
+---
+
+## 3. Risk Assessment Matrix
+
+### 3.1 Business Impact
+| Impact Category | Assessment | Justification |
+|-----------------|------------|---------------|
+| **Deployment Blocking** | Yes/No | [Build success required] |
+| **User Experience** | High/Med/Low | [Runtime impact potential] |
+| **Data Integrity** | High/Med/Low | [Data flow affected] |
+| **Security** | High/Med/Low | [Security implications] |
+| **Performance** | High/Med/Low | [Performance degradation risk] |
+
+---
+
+## 4. Investigation Scope Definition
+
+### 4.1 Files Requiring Deep Investigation
+**Based on error clustering analysis:**
+
+| Priority | File Path | Reason for Investigation |
+|----------|-----------|-------------------------|
+| P1 | [file] | [Highest error concentration] |
+| P2 | [file] | [Related to P1 files] |
+
+---
+
+## 5. Technical Investigation Request
+
+### 5.1 Assignment Details
+**Assigned To:** Senior Developer
+**Expected Deliverable:** Technical Investigation Report (TIR)
+**Due Date:** ${CURRENT_DATE} 18:00
+
+### 5.2 Success Criteria
+- [ ] **Root cause identified and documented**
+- [ ] **Solution proposed with impact analysis**
+- [ ] **Implementation plan with risk mitigation**
+- [ ] **Test strategy defined**
+- [ ] **Rollback plan provided**
+
+---
+
+## 6. System Investigation Summary
+
+### 6.1 Recommendation
+- [ ] **Proceed with TIR:** Standard investigation process
+- [ ] **Escalate Immediately:** Critical/security issues identified
+- [ ] **Architecture Review Required:** Systemic issues detected
+
+**Approval for Investigation:**
+**Project Manager:** _________________ **Date:** _________
+**Technical Lead:** _________________ **Date:** _________
+EOF
+    
+    # Update investigation status
+    sed -i '' 's/STATUS=.*/STATUS=sit_created/' .investigation-meta
+    
+    log_success "SIT document created: $sit_file"
+    log_info "Next step: Review SIT and run: ./scripts/investigate tir"
+}
+
+# Create TIR document
+create_tir() {
+    if [[ ! -f ".investigation-meta" ]]; then
+        log_error "No active investigation. Run: ./scripts/investigate init <category> <description>"
+    fi
+    
+    source .investigation-meta
+    
+    if [[ "$STATUS" != "sit_created" ]]; then
+        log_error "SIT must be created first. Run: ./scripts/investigate sit"
+    fi
+    
+    local tir_file="${INVESTIGATIONS_DIR}/${CURRENT_MONTH}/technical-investigation-report-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md"
+    
+    log_info "Creating TIR document: $tir_file"
+    
+    # Generate TIR template
+    cat > "$tir_file" << EOF
+# Technical Investigation Report (TIR)
+**Based on IEEE 1044 Software Anomaly Classification & ITIL Incident Management Standards**
+
+---
+
+## Document Control
+| Field | Value |
+|-------|--------|
+| **TIR ID** | TIR-${CURRENT_DATE}-$(get_next_id) |
+| **Related SIT** | ${INVESTIGATION_ID} |
+| **Investigator** | Senior Developer |
+| **Reviewer** | Technical Lead |
+| **Date Created** | ${CURRENT_DATE} |
+| **Investigation Duration** | [Hours] |
+| **Status** | Draft |
+
+---
+
+## 1. Investigation Summary
+
+### 1.1 Executive Summary
+**Problem Statement:** [One sentence description]
+
+**Root Cause:** [One sentence - specific, not general]
+
+**Recommended Action:** [Go/No-Go with brief justification]
+
+**Risk Level:** Critical / High / Medium / Low
+
+---
+
+## 2. Evidence Collection
+
+### 2.1 Current State Documentation
+
+#### 2.1.1 File Analysis
+\`\`\`bash
+# Commands used to investigate
+find . -name "*.ts" -o -name "*.tsx" | head -10
+grep -r "problematic_pattern" src/ --include="*.ts"
+\`\`\`
+
+**Results:**
+| File Path | Issues Found | Impact |
+|-----------|--------------|--------|
+| [path] | [issues] | [impact] |
+
+---
+
+## 3. Root Cause Analysis
+
+### 3.1 Primary Root Cause Classification
+**Select ONE primary cause based on evidence:**
+
+- [ ] **Missing Type Definitions:** No interfaces exist
+- [ ] **Import Issues:** Types exist but not imported correctly
+- [ ] **Configuration Issues:** Build tools, dependencies
+- [ ] **Developer Knowledge Gaps:** Incorrect usage patterns
+
+### 3.2 Supporting Evidence
+\`\`\`typescript
+// Example showing the root cause
+[paste code that proves the selected root cause]
+\`\`\`
+
+---
+
+## 4. Solution Design
+
+### 4.1 Proposed Solution
+**Selected Strategy:** [Brief description of approach]
+
+\`\`\`typescript
+// Proposed implementation
+[paste actual code for the solution]
+\`\`\`
+
+### 4.2 Implementation Plan
+
+#### 4.2.1 File-by-File Changes
+**File:** \`src/path/to/file.tsx\`
+\`\`\`typescript
+// BEFORE (Current problematic code)
+const [data, setData] = useState<any>([])
+
+// AFTER (Proposed solution)
+const [data, setData] = useState<ProperType[]>([])
+\`\`\`
+
+---
+
+## 5. Risk Assessment & Mitigation
+
+| Risk | Probability | Impact | Mitigation Strategy |
+|------|-------------|---------|-------------------|
+| Breaking changes | Low/Med/High | Low/Med/High | [specific strategy] |
+
+### 5.1 Rollback Plan
+\`\`\`bash
+git stash
+git reset --hard HEAD~1
+npm install && npm run build && npm test
+\`\`\`
+
+---
+
+## 6. Implementation Timeline
+
+| Phase | Task | Duration | Validation |
+|-------|------|----------|------------|
+| 1 | [task] | [time] | [how to verify] |
+
+---
+
+## 7. Approval Requirements
+
+### 7.1 Go/No-Go Decision
+**Decision:** GO / NO-GO
+
+**Justification:** [Based on evidence and analysis above]
+
+**Next Steps:** [Immediate actions required]
+
+**Technical Lead Approval:** _________________ **Date:** _________
+**Project Manager Approval:** _________________ **Date:** _________
+EOF
+    
+    # Update investigation status
+    sed -i '' 's/STATUS=.*/STATUS=tir_created/' .investigation-meta
+    
+    log_success "TIR document created: $tir_file"
+    log_info "Next step: Complete investigation and run: ./scripts/investigate complete"
+}
+
+# Complete investigation
+complete_investigation() {
+    if [[ ! -f ".investigation-meta" ]]; then
+        log_error "No active investigation found"
+    fi
+    
+    source .investigation-meta
+    
+    if [[ "$STATUS" != "tir_created" ]]; then
+        log_error "TIR must be created first. Run: ./scripts/investigate tir"
+    fi
+    
+    log_info "Completing investigation: $INVESTIGATION_ID"
+    
+    # Add investigation documents to git
+    git add "${INVESTIGATIONS_DIR}/${CURRENT_MONTH}/"*.md
+    git add .investigation-meta
+    
+    # Create commit following our standards
+    git commit -m "Investigation: Complete ${CATEGORY} analysis
+
+${INVESTIGATION_ID}
+Category: ${CATEGORY}
+Description: ${DESCRIPTION}
+
+- SIT document created and reviewed
+- TIR document created with solution
+- Ready for implementation review
+
+🤖 Generated with Investigation CLI
+Co-Authored-By: Investigation-Workflow <investigation@unparty.app>"
+    
+    # Update status
+    sed -i '' 's/STATUS=.*/STATUS=completed/' .investigation-meta
+    
+    log_success "Investigation completed!"
+    log_info "Created commit on branch: $BRANCH_NAME"
+    
+    # Auto-push to remote
+    log_info "Pushing branch to remote..."
+    if git push -u origin "$BRANCH_NAME"; then
+        log_success "Branch pushed successfully!"
+        
+        # Auto-create PR if GitHub CLI is available
+        if command -v gh &> /dev/null; then
+            log_info "Creating pull request..."
+            
+            local pr_title="Investigation: ${CATEGORY} analysis - ${DESCRIPTION}"
+            local pr_body="## Investigation Summary
+**Investigation ID:** ${INVESTIGATION_ID}
+**Issue Category:** ${CATEGORY}
+**Risk Level:** Medium
+
+## Problem Statement
+Investigation of ${CATEGORY} issues in ${DESCRIPTION} components.
+
+## Investigation Documents
+- 📋 SIT: [system-investigation-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md](${INVESTIGATIONS_DIR}/${CURRENT_MONTH}/system-investigation-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md)
+- 🔍 TIR: [technical-investigation-report-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md](${INVESTIGATIONS_DIR}/${CURRENT_MONTH}/technical-investigation-report-${CURRENT_DATE}-${CATEGORY}-${DESCRIPTION}.md)
+
+## Investigation Status
+- [x] SIT document created and reviewed
+- [x] TIR document created with detailed solution
+- [ ] Technical solution implementation (next step)
+- [ ] Tests validation
+- [ ] Code review completion
+
+## Approval Checklist
+- [ ] Technical Lead Review
+- [ ] Project Manager Approval
+- [ ] Implementation Plan Approved
+- [ ] Ready for Development Phase
+
+## Next Steps
+1. Review investigation documents
+2. Approve implementation plan from TIR
+3. Assign developer for implementation
+4. Validate solution with tests
+
+---
+
+🤖 Generated with Investigation CLI
+Investigation Workflow: SIT → TIR → Implementation"
+            
+            if pr_url=$(gh pr create --title "$pr_title" --body "$pr_body" 2>/dev/null); then
+                log_success "Pull request created: $pr_url"
+                log_info "Investigation workflow complete!"
+                log_info "Next steps:"
+                log_info "  1. Review PR: $pr_url"
+                log_info "  2. Request technical review"
+                log_info "  3. Approve implementation plan"
+            else
+                log_warning "Failed to create PR automatically"
+                log_info "Manual PR creation required:"
+                log_info "  Visit: https://github.com/$(git remote get-url origin | sed 's/.*github.com[:/]\([^.]*\).*/\1/')/compare/$BRANCH_NAME?expand=1"
+            fi
+        else
+            log_warning "GitHub CLI not available for automatic PR creation"
+            log_info "Install 'gh' CLI for automatic PR creation"
+            log_info "Manual PR creation required:"
+            log_info "  Visit: https://github.com/$(git remote get-url origin | sed 's/.*github.com[:/]\([^.]*\).*/\1/')/compare/$BRANCH_NAME?expand=1"
+        fi
+    else
+        log_error "Failed to push branch to remote"
+        log_info "Manual push required: git push -u origin $BRANCH_NAME"
+    fi
+}
+
+# List investigations
+list_investigations() {
+    log_info "Listing all investigations:"
+    
+    if [[ -d "$INVESTIGATIONS_DIR" ]]; then
+        find "$INVESTIGATIONS_DIR" -name "*.md" | sort | while read -r file; do
+            echo "  📋 $file"
+        done
+    else
+        log_warning "No investigations directory found"
+    fi
+    
+    # Show current investigation if exists
+    if [[ -f ".investigation-meta" ]]; then
+        echo
+        log_info "Current active investigation:"
+        source .investigation-meta
+        echo "  🔍 ID: $INVESTIGATION_ID"
+        echo "  📂 Category: $CATEGORY"
+        echo "  📝 Description: $DESCRIPTION"
+        echo "  🌿 Branch: $BRANCH_NAME"
+        echo "  ✅ Status: $STATUS"
+    fi
+}
+
+# Show investigation status
+show_status() {
+    if [[ ! -f ".investigation-meta" ]]; then
+        log_warning "No active investigation"
+        return
+    fi
+    
+    source .investigation-meta
+    
+    log_info "Investigation Status:"
+    echo "  🔍 ID: $INVESTIGATION_ID"
+    echo "  📂 Category: $CATEGORY"
+    echo "  📝 Description: $DESCRIPTION"
+    echo "  🌿 Branch: $BRANCH_NAME"
+    echo "  📅 Created: $CREATED_DATE"
+    echo "  ✅ Status: $STATUS"
+    
+    # Show next steps based on status
+    case "$STATUS" in
+        "initialized")
+            log_info "Next step: ./scripts/investigate sit"
+            ;;
+        "sit_created")
+            log_info "Next step: ./scripts/investigate tir"
+            ;;
+        "tir_created")
+            log_info "Next step: ./scripts/investigate complete"
+            ;;
+        "completed")
+            log_info "Investigation complete! Create PR and request review."
+            ;;
+    esac
+}
+
+# Main command handling
+case "${1:-help}" in
+    "init")
+        init_investigation "$2" "$3"
+        ;;
+    "sit")
+        create_sit
+        ;;
+    "tir")
+        create_tir
+        ;;
+    "complete")
+        complete_investigation
+        ;;
+    "list")
+        list_investigations
+        ;;
+    "status")
+        show_status
+        ;;
+    "help"|"--help"|"-h")
+        show_help
+        ;;
+    *)
+        log_error "Unknown command: $1. Run './scripts/investigate help' for usage."
+        ;;
+esac
