@@ -56,7 +56,7 @@ export const SETUP_STEPS: SetupStep[] = [
     chapter: 'OWN',
     title: 'Set up GitHub',
     description:
-      'Create a GitHub account (or sign in to yours) and turn on two-factor authentication. GitHub is where your copy of the code lives, how you receive it, and how your site deploys.',
+      'Create a GitHub account (or sign in to yours) and turn on two-factor authentication. GitHub is where your copy of the code lives, and how your site deploys.',
     link: '/article/setup-github',
     articleSlug: 'setup-github',
   },
@@ -76,7 +76,7 @@ export const SETUP_STEPS: SetupStep[] = [
     chapter: 'OWN',
     title: 'Get your copy',
     description:
-      'Accept your GitHub invitation, create your own private repository with Use this template, clone it with GitHub Desktop, and open it in your editor.',
+      'Click one button: a private repository on your own GitHub account and a live site on your own Vercel account, with no keys. Download it with GitHub Desktop when you want to change it.',
     link: '/article/setup-get-your-copy',
     articleSlug: 'setup-get-your-copy',
   },
@@ -104,7 +104,7 @@ export const SETUP_STEPS: SetupStep[] = [
     chapter: 'SHIP',
     title: 'Deploy',
     description:
-      'Import your repository into Vercel (Node 24.x) and deploy. It needs no keys. Any you added later go in Vercel too, with a CRON_SECRET once you have a database.',
+      'Used the button? You are already live, and pushing to main publishes. Otherwise, import your repository into Vercel (Node 24.x) and deploy. It needs no keys. Any you add later go in Vercel too, with a CRON_SECRET once you have a database.',
     link: '/article/setup-deploy',
     articleSlug: 'setup-deploy',
     sourceDoc: 'docs/guides/DEPLOYMENT.md + src/app/theunpartyapp/VERCEL_ENV_SETUP.md',

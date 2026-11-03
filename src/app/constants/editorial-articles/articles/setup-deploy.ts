@@ -9,11 +9,11 @@ import type { EditorialArticle } from '../types';
 export const SETUP_DEPLOY_ARTICLE: EditorialArticle = {
   slug: 'setup-deploy',
   title: 'DEPLOY.',
-  subtitle: 'Your site has only ever run on your computer. Put it on the internet, where anyone can open it.',
+  subtitle: 'Used the button? Your site is already live, and this is how it stays that way. If not, put it on the internet, where anyone can open it.',
   description: 'How non-technical founders deploy their own Next.js site to Vercel: import the GitHub repository, deploy with no keys, and check the live site. If you added a database or sign-in, paste those keys into Vercel with a CRON_SECRET for the scheduled jobs.',
   category: 'SETUP.',
   date: '2026-09-29',
-  updated: '2026-11-02',
+  updated: '2026-11-03',
   published: true,
   author: 'justin-murry',
   readTime: '7 min',
@@ -30,6 +30,11 @@ export const SETUP_DEPLOY_ARTICLE: EditorialArticle = {
       type: 'paragraph',
       content: 'Until now, your site has only lived at **localhost:3000**, an address that works on your computer and nowhere else. This step gives it a real address anyone can open. **Vercel** does the work: it watches your repository on GitHub, builds your site whenever the code changes, and serves it to the world. You set it up once, and from then on, publishing is a push.',
       metadata: { dropCap: true }
+    },
+    {
+      id: 'button-note',
+      type: 'personal',
+      content: '(Used the button in [Get your copy](/article/setup-get-your-copy)? Your repository is already connected and live. Skip to **What Changes Now**. Keys you add later still go in Vercel, as **2️⃣** shows.)'
     },
     {
       id: 'where-table',

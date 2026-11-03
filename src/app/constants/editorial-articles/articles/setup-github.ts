@@ -8,7 +8,7 @@ export const SETUP_GITHUB_ARTICLE: EditorialArticle = {
   description: 'A step-by-step GitHub setup guide for non-technical founders and small business owners. Create a GitHub account, choose a username you can keep, turn on two-factor authentication, and store your recovery codes, so your codebase has a safe home before you receive your copy of unparty-app.',
   category: 'SETUP.',
   date: '2026-09-28',
-  updated: '2026-11-02',
+  updated: '2026-11-03',
   published: true,
   author: 'justin-murry',
   readTime: '5 min',
@@ -39,7 +39,7 @@ export const SETUP_GITHUB_ARTICLE: EditorialArticle = {
     {
       id: 'what-list',
       type: 'list',
-      content: '**Receives your copy** — your repository gets shared to your GitHub account|**Remembers everything** — every change is saved as a commit you can look back at, compare, or undo|**Publishes your site** — Vercel watches your repository and deploys whenever it changes|**Keeps it private** — free accounts include private repositories, so no one sees your code unless you invite them'
+      content: '**Holds your copy** — the button puts your repository in your GitHub account|**Remembers everything** — every change is saved as a commit you can look back at, compare, or undo|**Publishes your site** — Vercel watches your repository and deploys whenever it changes|**Keeps it private** — free accounts include private repositories, so no one sees your code unless you invite them'
     },
     {
       id: 'challenge-setup',

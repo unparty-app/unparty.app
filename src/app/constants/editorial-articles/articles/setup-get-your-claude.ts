@@ -11,7 +11,7 @@ export const SETUP_GET_YOUR_CLAUDE_ARTICLE: EditorialArticle = {
   description: 'How non-technical founders and small business owners set up Claude as a building partner: create a Claude account, choose between the Free plan, Pro, and pay-as-you-go API credits, install Claude Code, turn on Claude in GitHub, and keep safe habits with an LLM in your own codebase.',
   category: 'SETUP.',
   date: '2026-09-28',
-  updated: '2026-10-12',
+  updated: '2026-11-03',
   published: true,
   author: 'justin-murry',
   readTime: '8 min',
@@ -236,7 +236,7 @@ export const SETUP_GET_YOUR_CLAUDE_ARTICLE: EditorialArticle = {
     {
       id: 'prompts',
       type: 'code',
-      content: 'I am a non-technical founder setting up a Next.js website from a\ncodebase I bought. I will go step by step and paste errors as I hit\nthem. Explain each one in plain words before suggesting a fix.\n\nHere is a screenshot of the screen I am stuck on. What does it want\nfrom me, and what should I click next?\n\n(In Claude Code, inside your copy)\nGive me a tour of this project. Which folders matter for changing\nwhat my homepage says? Explain, don\'t change anything.',
+      content: 'I am a non-technical founder setting up a Next.js website from a\ncodebase I own. I will go step by step and paste errors as I hit\nthem. Explain each one in plain words before suggesting a fix.\n\nHere is a screenshot of the screen I am stuck on. What does it want\nfrom me, and what should I click next?\n\n(In Claude Code, inside your copy)\nGive me a tour of this project. Which folders matter for changing\nwhat my homepage says? Explain, don\'t change anything.',
       metadata: { language: 'prompt', emphasis: true, caption: 'Copy any of these and swap in your own details' }
     },
     {
@@ -252,7 +252,7 @@ export const SETUP_GET_YOUR_CLAUDE_ARTICLE: EditorialArticle = {
     {
       id: 'closing-para',
       type: 'paragraph',
-      content: 'Keep Claude open for the rest of setup. Next up is **Get your copy**: your repository arrives in the GitHub account you set up in [the last step](/article/setup-github), and then Claude Code has something to work in.'
+      content: 'Keep Claude open for the rest of setup. Next up is **Get your copy**: one button puts your repository in the GitHub account you set up in [the last step](/article/setup-github), and then Claude Code has something to work in.'
     },
     {
       id: 'final-quote',

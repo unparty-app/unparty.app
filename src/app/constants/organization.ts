@@ -171,6 +171,11 @@ export const SITE_EMAIL: string = (config.site as { email?: string }).email ?? '
 // The GitHub user or organization whose repositories this site describes
 // (/founders shows repo data only for repos owned by it)
 export const SITE_GITHUB = config.site.github;
+// The public repository people copy this site from ("owner/repo"): the Deploy
+// Button and the setup steps read it. Without one, the button doesn't show
+const SITE_SOURCE: string = (config.site as { source?: string }).source ?? '';
+export const SOURCE_REPO_URL = SITE_SOURCE ? `https://github.com/${SITE_SOURCE}` : '';
+export const DEPLOY_URL = SOURCE_REPO_URL ? `https://vercel.com/new/clone?repository-url=${encodeURIComponent(SOURCE_REPO_URL)}` : '';
 
 // The logo's path inside public/, for places that load it from this site
 // (the Clerk sign-in card)

@@ -48,6 +48,14 @@ export const SETUP_START_HERE_ARTICLE: EditorialArticle = {
       content: '**You own** the code, the content, and the history you build from here. It sits in your repo.|**You depend on** two services: GitHub stores your code and Vercel hosts your site. Each is an account in your name, and each can be switched out for whatever you want.|**You choose** the rest. A database, sign-in, payments, email, Slack, music and more are optional steps you add when and if you want them'
     },
     {
+      id: 'deploy-button',
+      type: 'component',
+      metadata: {
+        componentName: 'BuildYours',
+        componentProps: { deploy: true, action: 'deploy your copy', pitch: 'Yours is already live. Anyone reading this can get their own with one button.', placement: 'start-here' }
+      }
+    },
+    {
       id: 'path-heading',
       type: 'heading',
       content: 'Where to start'
@@ -100,7 +108,7 @@ export const SETUP_START_HERE_ARTICLE: EditorialArticle = {
     {
       id: 'closing-para',
       type: 'paragraph',
-      content: 'Start with what you own, then [set up GitHub](/article/setup-github). Take one step at a time. Each one is done when its checklist is, and none of them is a race.'
+      content: 'Start with what you own, then [set up GitHub](/article/setup-github) and [get your copy](/article/setup-get-your-copy). Take one step at a time. Each one is done when its checklist is, and none of them is a race.'
     },
     {
       id: 'final-quote',

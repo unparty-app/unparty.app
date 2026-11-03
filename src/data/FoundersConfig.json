@@ -9,6 +9,7 @@
     "legalName": "my site",
     "email": "",
     "github": "",
+    "source": "unparty-app/unparty.app",
     "logo": {
       "path": "/logo.png",
       "width": 512,

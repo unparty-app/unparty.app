@@ -165,6 +165,11 @@ if (url && !/^https:\/\/[^/\s]+$/.test(url.replace(/\/+$/, ''))) {
   errors.push(`site.url must look like https://www.yourname.com (got "${url}")`);
 }
 
+const source = get('site.source');
+if (source !== undefined && source !== '' && (typeof source !== 'string' || !/^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/.test(source))) {
+  errors.push('site.source must be "owner/repo", the public repository people copy your site from (or left out for no Deploy Button)');
+}
+
 const github = get('site.github');
 if (typeof github !== 'string') {
   errors.push('site.github is missing (use "" if you have no GitHub user or organization yet)');

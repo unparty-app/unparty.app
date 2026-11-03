@@ -1,17 +1,20 @@
 import type { EditorialArticle } from '../types';
+import { SOURCE_REPO_URL } from '../../organization';
 
-// SETUP. curriculum step 3 (prisma/setup-steps.ts, #1094)
+// SETUP. curriculum step 3 (prisma/setup-steps.ts, #1094): the Deploy Button
+// first (#1310). The button itself comes from `site.source` in FoundersConfig
 export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
   slug: 'setup-get-your-copy',
   title: 'GET YOUR COPY.',
-  subtitle: 'Turn access into ownership: your own private repository, on your own GitHub account, open on your own computer.',
-  description: 'A step-by-step guide for non-technical founders to receive their copy of unparty-app. Accept your GitHub invitation, create your own private repository with Use this template, download it with GitHub Desktop, and open it in Visual Studio Code, no terminal required.',
+  subtitle: 'One button: your own private repository on your GitHub account, and a live site on your Vercel account.',
+  description: 'A step-by-step guide for non-technical founders to get their own copy of this site. Click one button to create a private repository on your GitHub account and put it online with Vercel, then download it with GitHub Desktop when you want to change it. No keys and no terminal required.',
   category: 'SETUP.',
   date: '2026-09-28',
+  updated: '2026-11-03',
   published: true,
   author: 'justin-murry',
-  readTime: '6 min',
-  tags: ['GitHub', 'GitHub Desktop', 'Visual Studio Code', 'Setup', 'Non-Technical Founders', 'Software You Own'],
+  readTime: '5 min',
+  tags: ['GitHub', 'Vercel', 'GitHub Desktop', 'Visual Studio Code', 'Setup', 'Non-Technical Founders', 'Software You Own'],
   sections: [
     {
       id: 'hero-copy',
@@ -22,13 +25,13 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
     {
       id: 'intro',
       type: 'paragraph',
-      content: 'When you buy unparty-app, you get access to the original repository on GitHub. Access is not the same as owning it. This step turns that access into a copy that is entirely yours: your own private repository, in your own account, downloaded to your own computer. After this, the original can change or disappear, and your copy stays exactly where you put it.',
+      content: 'One button makes a copy of this whole site that belongs to you: a private repository in your own GitHub account, and a live site on your own Vercel account. It needs no keys. After this, the original can change or disappear, and your copy stays exactly where you put it.',
       metadata: { dropCap: true }
     },
     {
-      id: 'borrowed-note',
+      id: 'already-note',
       type: 'personal',
-      content: '(Access is borrowed. A copy is owned. This step is the difference.)'
+      content: '(Already reading this on your own site? You did this part. Skip to **Download It**.)'
     },
     {
       id: 'where-heading',
@@ -42,8 +45,8 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
         headers: ['Place', 'What it is', 'Why it matters'],
         rows: [
           ['Your GitHub account', 'A private repository you own', 'The official version of your site, with every change saved'],
-          ['Your computer', 'A downloaded copy (a clone)', 'Where you and Claude make changes before they go live'],
-          ['Vercel (later)', 'Your live website', 'It publishes whatever is in your GitHub repository']
+          ['Vercel', 'Your live website', 'It publishes whatever is in your GitHub repository'],
+          ['Your computer (later)', 'A downloaded copy (a clone)', 'Where you and Claude make changes before they go live']
         ]
       }
     },
@@ -53,50 +56,58 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
       userPrompt: 'GET YOUR COPY.',
       label: 'BUILD.',
       pollEnabled: false,
-      stepOne: { emoji: '1️⃣', action: 'Accept.', description: 'Accept your invitation on GitHub.' },
-      stepTwo: { emoji: '2️⃣', action: 'Make it yours.', description: 'Create your own private repository.' },
-      stepThree: { emoji: '3️⃣', action: 'Open it.', description: 'Download it and open it in your editor.' },
-      successMetric: 'your copy is on your computer.'
+      stepOne: { emoji: '1️⃣', action: 'Click.', description: 'Deploy your copy with one button.' },
+      stepTwo: { emoji: '2️⃣', action: 'Check it.', description: 'Open your new site and your new repository.' },
+      stepThree: { emoji: '3️⃣', action: 'Open it.', description: 'Download it when you want to change it.' },
+      successMetric: 'your copy is live, at an address of its own.'
     },
     {
-      id: 'divider-accept',
+      id: 'divider-deploy',
       type: 'divider'
     },
     {
-      id: 'accept-heading',
+      id: 'deploy-heading',
       type: 'heading',
-      content: '1️⃣ Accept Your Invitation'
+      content: '1️⃣ Click the Button'
     },
     {
-      id: 'accept-para',
-      type: 'paragraph',
-      content: 'After you purchase, GitHub sends an invitation to the email on your GitHub account, the one you set up in [the GitHub step](/article/setup-github). Open it and click **View invitation**, then **Accept invitation**. If you cannot find the email, sign in to GitHub and check [github.com/notifications](https://github.com/notifications).'
+      id: 'deploy-button',
+      type: 'component',
+      metadata: {
+        componentName: 'BuildYours',
+        componentProps: { deploy: true, action: 'deploy your copy', pitch: 'A private copy on your GitHub, live on your Vercel. It needs no keys.', placement: 'get-your-copy' }
+      }
     },
     {
-      id: 'accept-note',
-      type: 'personal',
-      content: 'Invitations expire after seven days. If yours did, ask for a new one. Nothing is lost.'
-    },
-    {
-      id: 'template-heading',
-      type: 'heading',
-      content: '2️⃣ Make Your Own Repository'
-    },
-    {
-      id: 'template-para',
-      type: 'paragraph',
-      content: 'You now have access to the original. Use it once, to create a repository that belongs only to you:'
-    },
-    {
-      id: 'template-steps',
+      id: 'deploy-steps',
       type: 'list',
-      content: 'On the original repository\'s page, click the green **Use this template** button, then **Create a new repository**|**Owner** — choose your own account|**Repository name** — your business or site name, lowercase with dashes (for example, **my-studio-site**)|**Visibility** — choose **Private**|Click **Create repository**',
+      content: 'Sign in to Vercel with **Continue with GitHub**, using the account from [the GitHub step](/article/setup-github). New to Vercel? This creates your account|Choose a **Repository name**: your business or site name, lowercase with dashes (for example, **my-studio-site**)|Leave your repository **private**. That is the default|Click **Create**, and wait a few minutes while Vercel builds your site',
       metadata: { numbered: true }
     },
     {
-      id: 'template-why',
+      id: 'deploy-plan',
       type: 'paragraph',
-      content: 'Your new repository starts with a single commit: the entire app. Everything after that is your history, not mine. Do not use **Fork** instead. A fork of a private repository stays attached to the original, and it is removed if your access to the original ever ends. A repository made from the template is independent from the first click.'
+      content: 'Vercel asks you to pick a plan. The free **Hobby** plan is for personal, non-commercial projects. If your site is for a business or makes money, Vercel\'s terms call for **Pro**. Compare them at [vercel.com/pricing](https://vercel.com/pricing), and choose knowing what your site is for.'
+    },
+    {
+      id: 'check-heading',
+      type: 'heading',
+      content: '2️⃣ Check It'
+    },
+    {
+      id: 'check-list',
+      type: 'list',
+      content: '**Your site** opens at an address ending in **.vercel.app**, with this same setup path on its homepage|**Your repository** is on your GitHub account, marked **Private**, with a single commit. Everything after that is your history, not mine|**/admin** sends you to a sign-in page that says there is no sign-in yet. That is expected, and adding it is an optional step'
+    },
+    {
+      id: 'updates-para',
+      type: 'paragraph',
+      content: `Your copy is independent from the first click, so later releases of the original do not reach it on their own. New releases appear at [the source repository](${SOURCE_REPO_URL}), and you take what you want from them.`
+    },
+    {
+      id: 'template-note',
+      type: 'personal',
+      content: `Button not working? Open [the source repository](${SOURCE_REPO_URL}), click **Use this template**, choose **Private**, then follow [Deploy](/article/setup-deploy).`
     },
     {
       id: 'template-quote',
@@ -107,17 +118,17 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
     {
       id: 'clone-heading',
       type: 'heading',
-      content: '3️⃣ Download It With GitHub Desktop'
+      content: '3️⃣ Download It'
     },
     {
       id: 'clone-para',
       type: 'paragraph',
-      content: 'Downloading a repository is called **cloning**. [GitHub Desktop](https://desktop.github.com) does it with a few clicks, and it brings everything it needs along with it, so you do not have to install anything else first:'
+      content: 'You can stop here and come back. To change your site, you need it on your computer. Downloading a repository is called **cloning**. [GitHub Desktop](https://desktop.github.com) does it with a few clicks, and it brings everything it needs along with it, so you do not have to install anything else first:'
     },
     {
       id: 'clone-steps',
       type: 'list',
-      content: 'Download GitHub Desktop, open it, and sign in with your GitHub account|Choose **File → Clone repository**|On the **GitHub.com** tab, pick the repository you just created (under your username, not the original)|Set **Local path** to a folder you will remember, like **Documents/Projects**|Click **Clone**',
+      content: 'Download GitHub Desktop, open it, and sign in with your GitHub account|Choose **File → Clone repository**|On the **GitHub.com** tab, pick the repository you just created|Set **Local path** to a folder you will remember, like **Documents/Projects**|Click **Clone**',
       metadata: { numbered: true }
     },
     {
@@ -143,7 +154,7 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
     {
       id: 'map-list',
       type: 'list',
-      content: '**src/app** — your pages. Each folder is a web address on your site|**public** — images, covers, and anything else visitors can download|**prisma** — the shape of your database|**.env.example** — the list of keys you will fill in during the next few steps|**CLAUDE.md** — instructions that teach Claude Code how this codebase works. It reads this file on its own'
+      content: '**src/app** — your pages. Each folder is a web address on your site|**public** — images, covers, and anything else visitors can download|**prisma** — the shape of your database|**.env.example** — the list of keys you can add later, each one optional|**CLAUDE.md** — instructions that teach Claude Code how this codebase works. It reads this file on its own'
     },
     {
       id: 'terminal-heading',
@@ -168,7 +179,7 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
     {
       id: 'private-list',
       type: 'list',
-      content: 'Leave your repository **Private**. Your content, your customers\' pages, and your settings history live in it|Invite people only through **Settings → Collaborators**, and only people you would hand your office keys to|Your keys still never go in the repository. They arrive in the next steps, in a file called **.env**, which git ignores',
+      content: 'Leave your repository **Private**. Your content, your customers\' pages, and your settings history live in it|Invite people only through **Settings → Collaborators**, and only people you would hand your office keys to|Your keys never go in the repository. If you add any, they go in a file called **.env**, which git ignores',
       metadata: { style: 'accent' }
     },
     {
@@ -195,12 +206,12 @@ export const SETUP_GET_YOUR_COPY_ARTICLE: EditorialArticle = {
     {
       id: 'done-list',
       type: 'list',
-      content: 'A **private** repository exists under **your** username, created from the template, not forked|GitHub Desktop shows it with **No local changes**|The folder is open in your editor, and you can see **CLAUDE.md**, **package.json**, and **src**'
+      content: 'Your **.vercel.app** address opens your own site|A **private** repository exists under **your** username|When you are ready to change it: GitHub Desktop shows it with **No local changes**, and the folder is open in your editor'
     },
     {
       id: 'closing-para',
       type: 'paragraph',
-      content: 'That is the moment unparty-app becomes yours. Next is **Install the tools**: the few programs your computer needs to run the site, so you can see your copy working before you change a single word.'
+      content: 'That is the moment this site becomes yours. Next is **Install the tools**: the few programs your computer needs to run it, so you can see your copy working there before you change a single word.'
     },
     {
       id: 'final-quote',

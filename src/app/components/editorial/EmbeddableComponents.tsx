@@ -27,6 +27,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import FounderCta from '../../founders/components/FounderCta';
 import BuildYoursCard from '../build-yours/BuildYoursCard';
+import { DEPLOY_URL } from '../../constants/organization';
 import BuildYourStack from '../depend/BuildYourStack';
 import InkPath from '../resume/InkPath';
 import InkSystem from '../resume/InkSystem';
@@ -350,8 +351,10 @@ export const EmbeddableCta: React.FC<Record<string, unknown>> = (props) => {
  * article is one section; label, href, pitch, action and placement override.
  */
 export const EmbeddableBuildYours: React.FC<Record<string, unknown>> = (props) => {
-  const { label, href, pitch, action, placement } = props as { label?: string; href?: string; pitch?: string; action?: string; placement?: string };
-  return <BuildYoursCard label={label} href={href} pitch={pitch} action={action} placement={placement} />;
+  const { label, href, pitch, action, placement, deploy } = props as { label?: string; href?: string; pitch?: string; action?: string; placement?: string; deploy?: boolean };
+  // deploy: the Deploy Button, from FoundersConfig site.source. No source, no button
+  if (deploy && !DEPLOY_URL) return null;
+  return <BuildYoursCard label={label} href={deploy ? DEPLOY_URL : href} pitch={pitch} action={action} placement={placement} />;
 };
 
 /**
