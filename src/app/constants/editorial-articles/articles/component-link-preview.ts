@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_LINK_PREVIEW_ARTICLE: EditorialArticle = {
   slug: 'component-link-preview',
   title: 'LINK PREVIEW.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'what people see when you share your link.',
+  description: 'Your real share card, as it shows up in Messages, X and Slack. type a title and it redraws.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
   // Runs on nothing but the site itself: /api/og draws the card from FoundersConfig
@@ -25,7 +26,7 @@ export const COMPONENT_LINK_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'your real share card, as it shows up in Messages, X and Slack. type a title and it redraws.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_LINK_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. pick one of your pages, or type your own title.'
     },
     {
       id: 'embed',
@@ -57,21 +58,21 @@ export const COMPONENT_LINK_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'where-og',
       type: 'personal',
-      content: 'TODO.',
+      content: 'links.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/og' },
     },
     // /theunpartychatty · Chatty
     {
       id: 'where-theunpartychatty',
       type: 'personal',
-      content: 'TODO.',
+      content: 'chatty.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/setup-identity · MAKE IT YOURS.
     {
       id: 'where-article-setup-identity',
       type: 'personal',
-      content: 'TODO.',
+      content: 'make it yours.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/article/setup-identity' },
     }
   ]

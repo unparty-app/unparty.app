@@ -9,7 +9,7 @@ export const COMPONENT_ARTICLE_TABLE_ARTICLE: EditorialArticle = {
   description: 'Every published article in one searchable, paginated table. Tag links from any article land here narrowed to that tag, across every unppp, with a hand-drawn × back to everything.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs, found by npm run create:component-article -- --needs:

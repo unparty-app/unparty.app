@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_DELETE_YOUR_DOUBTS_ARTICLE: EditorialArticle = {
   slug: 'component-delete-your-doubts',
   title: 'DELETE YOUR DOUBTS.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'two minutes. write them. delete them.',
+  description: 'A two minute timer to write down every doubt, then delete them one at a time with a stroke of the pen.',
   category: 'MAKE.',
   date: '2026-10-15',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   presents: { component: 'DeleteYourDoubts', needs: ['clerk'] },
@@ -24,7 +25,7 @@ export const COMPONENT_DELETE_YOUR_DOUBTS_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a two minute timer to write down every doubt, then delete them one at a time with a stroke of the pen.'
     },
     {
       id: 'component',
@@ -39,7 +40,7 @@ export const COMPONENT_DELETE_YOUR_DOUBTS_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. your doubts stay yours unless you are the owner and choose to keep them.'
     },
     {
       id: 'embed',
@@ -56,7 +57,7 @@ export const COMPONENT_DELETE_YOUR_DOUBTS_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-unppp-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'do you unppp?.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/article/setup-start-here' },
     }
   ]

@@ -19,6 +19,7 @@ import {
   type DependPlan,
 } from '@/utils/dependCosts';
 import { SETUP_START_HERE } from '../editorial/SetupCurriculum';
+import { FOUNDER_CTA } from '../../constants/organization';
 import HandDrawnArrow from '../HandDrawnArrow';
 import SleekTabs from '../SleekTabs';
 import Pager from './Pager';
@@ -155,11 +156,11 @@ function useTween(value: number, ms = 650) {
 
 interface BuildYourStackProps {
   lens?: string; // Starting point: try (default), build or sell
-  href?: string; // Where "start building" goes (default /article/setup-start-here)
+  href?: string; // Where "start building" goes (default the site's ask, founder.cta)
   placement?: string; // cta_clicked placement (default: the page's path)
 }
 
-export default function BuildYourStack({ lens: initialLens = 'try', href = SETUP_START_HERE, placement }: BuildYourStackProps) {
+export default function BuildYourStack({ lens: initialLens = 'try', href = FOUNDER_CTA?.href ?? SETUP_START_HERE, placement }: BuildYourStackProps) {
   const { colorValue } = useTheme();
   const pathname = usePathname();
   const [rootRef, inView] = useInView<HTMLDivElement>();

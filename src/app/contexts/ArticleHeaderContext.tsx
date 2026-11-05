@@ -10,12 +10,16 @@ type ArticleHeaderContextType = {
   article: EditorialArticle | null;
   setArticle: (article: EditorialArticle) => void;
   clearArticle: (ifCurrent?: EditorialArticle) => void;
+  // A control the page adds to the byline row, beside the category
+  dockAction: React.ReactNode;
+  setDockAction: (action: React.ReactNode) => void;
 };
 
 const ArticleHeaderContext = createContext<ArticleHeaderContextType | undefined>(undefined);
 
 export function ArticleHeaderProvider({ children }: { children: React.ReactNode }) {
   const [article, setArticleState] = useState<EditorialArticle | null>(null);
+  const [dockAction, setDockAction] = useState<React.ReactNode>(null);
 
   const setArticle = useCallback((next: EditorialArticle) => {
     setArticleState(next);
@@ -31,6 +35,8 @@ export function ArticleHeaderProvider({ children }: { children: React.ReactNode 
     article,
     setArticle,
     clearArticle,
+    dockAction,
+    setDockAction,
   };
 
   return (

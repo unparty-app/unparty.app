@@ -10,7 +10,7 @@ export const COMPONENT_YOUR_WORDS_ARTICLE: EditorialArticle = {
   category: 'MAKE.',
   date: '2026-10-19',
   updated: '2026-10-19',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
   // needs: none. It reads /api/words, which counts this site's own writing

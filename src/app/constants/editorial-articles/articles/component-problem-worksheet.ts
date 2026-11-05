@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_PROBLEM_WORKSHEET_ARTICLE: EditorialArticle = {
   slug: 'component-problem-worksheet',
   title: 'PROBLEM WORKSHEET.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'your problem, in words you pick.',
+  description: 'Answer each question by picking five words from your site\'s word cloud. the words point to the kind of build your problem is.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs, what it can't run without (/build locks it until the stack has both):
@@ -29,7 +30,7 @@ export const COMPONENT_PROBLEM_WORKSHEET_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'answer each question by picking five words from your site\'s word cloud. the words point to the kind of build your problem is.'
     },
     {
       id: 'component',
@@ -44,7 +45,7 @@ export const COMPONENT_PROBLEM_WORKSHEET_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. the more you write, the more words it offers.'
     },
     {
       id: 'embed',
@@ -61,14 +62,14 @@ export const COMPONENT_PROBLEM_WORKSHEET_ARTICLE: EditorialArticle = {
     {
       id: 'where-waitlist-apply',
       type: 'personal',
-      content: 'TODO.',
+      content: 'the waitlist/apply page.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/waitlist/apply' },
     },
     // /story/mood · MOOD.
     {
       id: 'where-story-mood',
       type: 'personal',
-      content: 'TODO.',
+      content: 'mood.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

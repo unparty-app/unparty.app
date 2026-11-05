@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_ABOUT_ARTICLE: EditorialArticle = {
   slug: 'component-about',
   title: 'ABOUT.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'your project, told by your own site.',
+  description: 'A project\'s own page: its hours, the stories and docs about it, and where it leads, from what your site already holds.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs, found by npm run create:component-article -- --needs:
@@ -28,7 +29,7 @@ export const COMPONENT_ABOUT_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a project\'s own page: its hours, the stories and docs about it, and where it leads, from what your site already holds.'
     },
     {
       id: 'component',
@@ -43,7 +44,7 @@ export const COMPONENT_ABOUT_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it a project id. its chapters fill in as you write about that project.'
     },
     {
       id: 'embed',
@@ -61,42 +62,42 @@ export const COMPONENT_ABOUT_ARTICLE: EditorialArticle = {
     {
       id: 'where-about',
       type: 'personal',
-      content: 'TODO.',
+      content: 'the about page.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/about' },
     },
     // /theunpartyapi · unparty - Building an API for Non-Technical Founders & Small Business Owners
     {
       id: 'where-theunpartyapi',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unparty - building an api for non-technical founders & small business owners.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /theunpartyapp · unparty-app
     {
       id: 'where-theunpartyapp',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unparty-app.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /theunpartybq · Brand Guidelines & CSS Generator for Founders
     {
       id: 'where-theunpartybq',
       type: 'personal',
-      content: 'TODO.',
+      content: 'brand guidelines & css generator for founders.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /theunpartybrand · theunpartybrand
     {
       id: 'where-theunpartybrand',
       type: 'personal',
-      content: 'TODO.',
+      content: 'theunpartybrand.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /theunpartybudget · theunpartybudget
     {
       id: 'where-theunpartybudget',
       type: 'personal',
-      content: 'TODO.',
+      content: 'theunpartybudget.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

@@ -201,6 +201,16 @@ export function Database(props: HandDrawnIconProps) {
   );
 }
 
+export function Wave(props: HandDrawnIconProps) {
+  return (
+    <HandDrawnIcon {...props} name="Wave">
+      <path d="M2.6 16.8c3-1.7 4.6-5.8 7.8-8.9 2.7-2.6 6.6-3.2 9-1.3 1.5 1.2 1.3 3.5-.3 3.9-1.2.3-2.2-.7-1.9-1.7" />
+      <path d="M10.4 7.9c-.7 3.3.8 6.7 4.4 8.6" />
+      <path d="M2.4 20.7c3.2-1.3 5.3.9 8.7 0 3.5-.9 6-.3 10.3-1" />
+    </HandDrawnIcon>
+  );
+}
+
 export function Cloud(props: HandDrawnIconProps) {
   return (
     <HandDrawnIcon {...props} name="Cloud">

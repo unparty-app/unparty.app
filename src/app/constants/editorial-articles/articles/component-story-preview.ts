@@ -10,8 +10,8 @@ export const COMPONENT_STORY_PREVIEW_ARTICLE: EditorialArticle = {
   description: "A story inside an article, as a row of its highlights: the story's card, then the lines its author set big, one card each. Swipe them on a phone, see them side by side on a wide screen, and read the whole story in one tap.",
   category: 'MAKE.',
   date: '2026-10-09',
-  updated: '2026-10-29',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -59,35 +59,35 @@ export const COMPONENT_STORY_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-app-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unparty.app.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/unparty-quit-story · YOU DO NOT HAVE HATERS. 
     {
       id: 'where-article-unparty-quit-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'you do not have haters.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/unparty-runway-story · RULE 01:
     {
       id: 'where-article-unparty-runway-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'rule 01.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/unparty-unppp-story · do you unppp?
     {
       id: 'where-article-unparty-unppp-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'do you unppp?.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/xcode-shortcuts-guide-macos-ios-development · XCODE SHORTCUTS.
     {
       id: 'where-article-xcode-shortcuts-guide-macos-ios-development',
       type: 'personal',
-      content: 'TODO.',
+      content: 'xcode shortcuts.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

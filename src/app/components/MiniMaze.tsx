@@ -1,457 +1,326 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { AlertCircle } from '@/app/components/icons';
-import MazeInstructions from './MazeInstructions';
-import { useInModal } from '../context/ModalContext';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { track } from '@vercel/analytics';
 import { useTheme } from '../contexts/ThemeContext';
+import { FOUNDER_CTA } from '../constants/organization';
 import { useHydrated } from '@/hooks/useHydrated';
-import Image from 'next/image';
+import BuildYours from './build-yours/BuildYours';
+import { iconByName } from './icons/byName';
+import { wobble } from './ink/pen';
 
+const SIZE = 5;
+const WALL_ODDS = 0.28;
+// Few enough walls and the doubts never get their say
+const MIN_WALLS = 4;
+const STEP_MS = 130;
+const FIRST_WORDS = 'tap where you want to go.';
+// As big as its column allows, and never taller than what fits on screen under
+// the pinned cover and above the dock. Beside the words from md up
+const BOARD = 'w-[min(100%,max(18rem,calc(100svh-19rem)))] md:w-[min(60%,max(18rem,calc(100svh-19rem)))]';
 
-const gridSize = 5;
-const emptyCell = ' ';
-const funCell = 'J';
-const wallCell = 'W';
-const goalCell = 'G';
-const playerStart = { x: 0, y: 0 };
-const SWIPE_THRESHOLD = 50;
-
-// Asset collections for visual variety
-const obstacles = [
-  '/svgs/unparty/Pyramid-Wood.png',
-  '/svgs/unparty/Pyramid-Sponge.png', 
-  '/svgs/unparty/Pyramid-Mesh.png',
-  '/svgs/unparty/Pyramid-Ref Blue.png'
+// What stands between someone and building, each with its answer. Tapping one
+// (or walking into it) reads the answer, so the maze says what a page would
+const WALLS = [
+  { icon: 'Clock', answer: 'no time? it is one button.' },
+  { icon: 'HelpCircle', answer: 'not technical? you do not need to be.' },
+  { icon: 'Bot', answer: 'need an LLM? with or without.' },
+  { icon: 'AlertTriangle', answer: 'what if it breaks? fix it, it is yours.' },
+  { icon: 'Cloud', answer: 'too expensive? free to start.' },
+];
+// What a site of your own holds. Each one picked up joins the list by the board
+const IDEAS = [
+  { icon: 'Edit3', words: 'your words.' },
+  { icon: 'Camera', words: 'your photos.' },
+  { icon: 'Users', words: 'your people.' },
 ];
 
-const goals = [
-  '/svgs/unparty/Cube-Mesh.png',
-  '/svgs/unparty/Cube-Checkered.png',
-  '/svgs/unparty/Cube-Wood.png'
-];
+type Cell =
+  | { kind: 'open' }
+  | { kind: 'wall'; icon: string; answer: string }
+  | { kind: 'idea'; icon: string; words: string }
+  | { kind: 'goal' };
+type Spot = { row: number; col: number };
 
-const getRandomObstacle = () => obstacles[Math.floor(Math.random() * obstacles.length)];
-const getRandomGoal = () => goals[Math.floor(Math.random() * goals.length)];
+const START: Spot = { row: 0, col: 0 };
+const GOAL: Spot = { row: SIZE - 1, col: SIZE - 1 };
+const same = (a: Spot, b: Spot) => a.row === b.row && a.col === b.col;
+const STEPS = [{ row: 1, col: 0 }, { row: -1, col: 0 }, { row: 0, col: 1 }, { row: 0, col: -1 }];
+const center = (n: number) => (n + 0.5) * (100 / SIZE);
+const shuffled = <T,>(items: T[]) => items.map((item) => [Math.random(), item] as const).sort((a, b) => a[0] - b[0]).map(([, item]) => item);
 
-// Function to check if there's a valid path using BFS
-const isValidMaze = (maze: string[][], start: { x: number; y: number }, goal: { x: number; y: number }) => {
-  const directions = [
-    { x: 1, y: 0 },
-    { x: -1, y: 0 },
-    { x: 0, y: 1 },
-    { x: 0, y: -1 },
-  ];
-  const visited = Array.from(Array(gridSize), () => Array(gridSize).fill(false));
-  const queue = [{ x: start.x, y: start.y }];
-  
-  visited[start.x][start.y] = true;
-
-  while (queue.length > 0) {
-    const { x, y } = queue.shift()!;
-    if (x === goal.x && y === goal.y) return true;
-
-    for (const dir of directions) {
-      const newX = x + dir.x;
-      const newY = y + dir.y;
-
-      if (
-        newX >= 0 && newX < gridSize &&
-        newY >= 0 && newY < gridSize &&
-        !visited[newX][newY] &&
-        maze[newX][newY] !== wallCell
-      ) {
-        visited[newX][newY] = true;
-        queue.push({ x: newX, y: newY });
+/** The shortest way from one cell to another around the walls, or null */
+function routeTo(maze: Cell[][], from: Spot, to: Spot): Spot[] | null {
+  const key = (spot: Spot) => spot.row * SIZE + spot.col;
+  const came = new Map<number, Spot | null>([[key(from), null]]);
+  const queue = [from];
+  while (queue.length) {
+    const at = queue.shift()!;
+    if (same(at, to)) {
+      const route: Spot[] = [];
+      for (let spot: Spot | null | undefined = at; spot && !same(spot, from); spot = came.get(key(spot))) route.unshift(spot);
+      return route;
+    }
+    for (const step of STEPS) {
+      const next = { row: at.row + step.row, col: at.col + step.col };
+      const cell = maze[next.row]?.[next.col];
+      if (cell && cell.kind !== 'wall' && !came.has(key(next))) {
+        came.set(key(next), at);
+        queue.push(next);
       }
     }
   }
+  return null;
+}
 
-  return false;
-};
-
-const generateRandomMaze = () => {
-  let maze = Array(gridSize)
-    .fill(null)
-    .map(() => Array(gridSize).fill(emptyCell));
-
-  do {
-    maze = maze.map(row =>
-      row.map(() => (Math.random() < 0.3 ? wallCell : emptyCell))
+/** A new maze: walls anywhere but the two ends, with the goal and every idea reachable */
+function newMaze(): Cell[][] {
+  for (;;) {
+    const answers = shuffled(WALLS);
+    let dealt = 0;
+    const maze: Cell[][] = Array.from({ length: SIZE }, (_, row) =>
+      Array.from({ length: SIZE }, (_, col): Cell => {
+        const spot = { row, col };
+        if (same(spot, START)) return { kind: 'open' };
+        if (same(spot, GOAL)) return { kind: 'goal' };
+        return Math.random() < WALL_ODDS ? { kind: 'wall', ...answers[dealt++ % answers.length] } : { kind: 'open' };
+      })
     );
-
-    maze[playerStart.x][playerStart.y] = emptyCell;
-    maze[gridSize - 1][gridSize - 1] = goalCell;
-
-    let placedFunCells = 0;
-    while (placedFunCells < 3) {
-      const randX = Math.floor(Math.random() * gridSize);
-      const randY = Math.floor(Math.random() * gridSize);
-
-      if (maze[randX][randY] === emptyCell) {
-        maze[randX][randY] = funCell;
-        placedFunCells++;
-      }
-    }
-
-  } while (!isValidMaze(maze, playerStart, { x: gridSize - 1, y: gridSize - 1 }));
-
-  return maze;
-};
-
-const MiniMaze = () => {
-  const [playerPosition, setPlayerPosition] = useState(playerStart);
-  // Random, so only rendered once hydrated (keeps SSR deterministic)
-  const [maze, setMaze] = useState(generateRandomMaze);
-  const hydrated = useHydrated();
-  const [bgColor, setBgColor] = useState('bg-clear');
-  const [invalidMove, setInvalidMove] = useState<{ x: number; y: number } | null>(null);
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [moves, setMoves] = useState(0);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [showInstructionsPopup, setShowInstructionsPopup] = useState(false);
-  const [finalMoveCount, setFinalMoveCount] = useState<number | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const mazeRef = useRef<HTMLDivElement>(null);
-  const { colorValue } = useTheme();
-  const isInModal = useInModal();
-
-  useEffect(() => {
-    // Auto-focus the maze on mount for better UX
-    setTimeout(() => {
-      if (mazeRef.current) {
-        mazeRef.current.focus();
-      }
-    }, 100);
-  }, []);
-  
-
-  // Increase difficulty by adding more walls
-  const increaseDifficulty = useCallback(() => {
-    setIsAnimating(true);
-    let newMaze = [...maze];
-
-    // Randomly add walls while ensuring the maze remains solvable
-    let attempts = 0;
-    do {
-      newMaze = maze.map((row) =>
-        row.map((cell) => {
-          if (cell === emptyCell && Math.random() < 0.3) {
-            return wallCell;
-          }
-          return cell;
-        })
-      );
-      attempts++;
-    } while (!isValidMaze(newMaze, playerPosition, { x: gridSize - 1, y: gridSize - 1 }) && attempts < 10);
-
-    setMaze(newMaze);
-    setTimeout(() => setIsAnimating(false), 500);
-  }, [maze, playerPosition]);
-
-  // Handle player movement with boundaries and cell checks
-  const movePlayer = useCallback((newX: number, newY: number) => {
-
-    if (newX >= 0 && newX < gridSize && newY >= 0 && newY < gridSize) {
-      const cell = maze[newX][newY];
-
-      if (cell === wallCell) {
-        setInvalidMove({ x: newX, y: newY });
-        setTimeout(() => setInvalidMove(null), 500);
-        return;
-      }
-
-      setPlayerPosition({ x: newX, y: newY });
-      setMoves(prev => prev + 1);
-
-      if (cell === funCell) {
-        setBgColor('bg-yellow-50');
-        setTimeout(() => setBgColor('bg-clear'), 1000);
-        increaseDifficulty();
-      }
-
-      if (cell === goalCell) {
-        setTimeout(() => {
-          setFinalMoveCount(moves + 1); // Include the final move to goal
-          setShowSuccessPopup(true);
-        }, 500);
-      }
-    }
-  }, [maze, moves, increaseDifficulty]);
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    // Only handle keys when maze is focused
-    if (!isFocused) return;
-    
-    const { x, y } = playerPosition;
-    
-    switch (e.key) {
-      case 'ArrowUp': 
-        e.preventDefault();
-        movePlayer(x - 1, y); 
-        break;
-      case 'ArrowDown': 
-        e.preventDefault();
-        movePlayer(x + 1, y); 
-        break;
-      case 'ArrowLeft': 
-        e.preventDefault();
-        movePlayer(x, y - 1); 
-        break;
-      case 'ArrowRight': 
-        e.preventDefault();
-        movePlayer(x, y + 1); 
-        break;
-    }
-  }, [playerPosition, movePlayer, isFocused]);
-
-  // Handle focus and blur events
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
-  
-  // Handle clicks to focus the maze
-  const handleMazeClick = () => {
-    if (mazeRef.current) {
-      mazeRef.current.focus();
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
+    if (dealt < MIN_WALLS || !routeTo(maze, START, GOAL)) continue;
+    const spots = maze.flatMap((cells, row) =>
+      cells.flatMap((cell, col) => {
+        const spot = { row, col };
+        return cell.kind === 'open' && !same(spot, START) && routeTo(maze, START, spot) ? [spot] : [];
+      })
+    );
+    if (spots.length < IDEAS.length) continue;
+    shuffled(spots).slice(0, IDEAS.length).forEach((spot, index) => {
+      maze[spot.row][spot.col] = { kind: 'idea', ...IDEAS[index] };
     });
-  };
+    return maze;
+  }
+}
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStart) return;
-  
-    const deltaX = e.changedTouches[0].clientX - touchStart.x;
-    const deltaY = e.changedTouches[0].clientY - touchStart.y;
-    const { x, y } = playerPosition;
-  
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
-        if (deltaX > 0) {
-          movePlayer(x, y + 1); // Swipe right
-        } else {
-          movePlayer(x, y - 1); // Swipe left
-        }
-      }
-    } else {
-      if (Math.abs(deltaY) > SWIPE_THRESHOLD) {
-        if (deltaY > 0) {
-          movePlayer(x + 1, y); // Swipe down
-        } else {
-          movePlayer(x - 1, y); // Swipe up
-        }
-      }
+/** One step of the path as a pen makes it: a slight bow, never ruled */
+function penStep(from: Spot, to: Spot, index: number): string {
+  const [ax, ay, bx, by] = [center(from.col), center(from.row), center(to.col), center(to.row)];
+  return `M${ax} ${ay}Q${(ax + bx) / 2 + wobble(index, 1.4)} ${(ay + by) / 2 + wobble(index + 11, 1.4)} ${bx} ${by}`;
+}
+
+/**
+ * MiniMaze - walk your icon to the heart, past what stops people from building.
+ * The player is the Poem icon (or `player`), so someone who drew their own walks
+ * it in their own hand.
+ *
+ * Walls are the doubts: tapping one, or walking into it, reads its answer. Ideas
+ * are what a site of your own holds: each one picked up joins the list by the
+ * board, which fills in as you go. The heart is the site's ask (founder.cta),
+ * not a score. Tapping any cell walks there the short way, and arrow keys step,
+ * so the page keeps its own scrolling and the board can be as big as the screen
+ * allows. It never takes focus by itself. Reduced motion shows every step
+ * finished and still.
+ */
+export default function MiniMaze({ player = 'Poem' }: { player?: string }) {
+  const { colorValue } = useTheme();
+  const hydrated = useHydrated();
+  // Random, so it only renders once hydrated
+  const [maze, setMaze] = useState(newMaze);
+  const [path, setPath] = useState<Spot[]>([START]);
+  const [ahead, setAhead] = useState<Spot[]>([]);
+  const [held, setHeld] = useState<{ key: string; icon: string; words: string }[]>([]);
+  const [line, setLine] = useState(FIRST_WORDS);
+  const [bump, setBump] = useState<Spot | null>(null);
+  const bumpTimer = useRef<number | undefined>(undefined);
+  const askRef = useRef<HTMLDivElement>(null);
+  useEffect(() => () => window.clearTimeout(bumpTimer.current), []);
+
+  const at = path[path.length - 1];
+  const won = same(at, GOAL);
+  const Player = iconByName(player) ?? iconByName('Poem')!;
+  const Goal = iconByName('Heart')!;
+  const cta = FOUNDER_CTA;
+
+  // The ask lands above the dock, not behind it
+  useEffect(() => {
+    if (!won) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    askRef.current?.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+  }, [won]);
+
+  const hitWall = useCallback((row: number, col: number, answer: string) => {
+    setAhead([]);
+    setLine(answer);
+    setBump({ row, col });
+    window.clearTimeout(bumpTimer.current);
+    bumpTimer.current = window.setTimeout(() => setBump(null), 520);
+  }, []);
+
+  const arrive = useCallback((spot: Spot) => {
+    const cell = maze[spot.row][spot.col];
+    setPath((current) => [...current, spot]);
+    if (cell.kind === 'idea') {
+      const key = `${spot.row}-${spot.col}`;
+      setHeld((current) => (current.some((idea) => idea.key === key) ? current : [...current, { key, icon: cell.icon, words: cell.words }]));
+      setLine(cell.words);
     }
+    if (cell.kind === 'goal') {
+      setAhead([]);
+      setLine('you got there.');
+      track('maze_finished', { player });
+    }
+  }, [maze, player]);
+
+  // Walk the route a step at a time, so a tap reads as walking there
+  useEffect(() => {
+    if (!ahead.length) return;
+    const timer = window.setTimeout(() => {
+      arrive(ahead[0]);
+      setAhead((current) => current.slice(1));
+    }, STEP_MS);
+    return () => window.clearTimeout(timer);
+  }, [ahead, arrive]);
+
+  const tap = (row: number, col: number) => {
+    if (won) return;
+    const cell = maze[row][col];
+    if (cell.kind === 'wall') return hitWall(row, col, cell.answer);
+    setAhead(routeTo(maze, at, { row, col }) ?? []);
   };
 
-  const resetGame = () => {
-    setPlayerPosition(playerStart);
-    setBgColor('bg-clear');
-    setMaze(generateRandomMaze());
-    setMoves(0);
-    setIsAnimating(false);
+  const onKey = (event: React.KeyboardEvent) => {
+    const step = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[event.key];
+    if (!step) return;
+    event.preventDefault();
+    if (won) return;
+    const row = at.row + step[0];
+    const col = at.col + step[1];
+    const cell = maze[row]?.[col];
+    if (!cell) return;
+    if (cell.kind === 'wall') return hitWall(row, col, cell.answer);
+    setAhead([]);
+    arrive({ row, col });
   };
 
-    useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  const again = () => {
+    setMaze(newMaze());
+    setPath([START]);
+    setAhead([]);
+    setHeld([]);
+    setBump(null);
+    setLine(FIRST_WORDS);
+  };
 
-  if (!hydrated) return null;
+  // Keeps its room before it hydrates, so the page doesn't jump
+  if (!hydrated) return <div className={`aspect-square ${BOARD}`} aria-hidden="true" />;
 
   return (
-    <div className={`mx-auto w-full max-w-2xl ${isInModal ? 'scale-75' : 'scale-100'}`}>
-      
-      {/* Premium Header with Visual Hierarchy */}
-      <div className="mb-8 space-y-4">
-        {/* Primary Heading - PageAsterisk */}
-        
-        
-        {/* Secondary Info Row */}
-        <div className="flex items-center justify-between">
-          
-          
-          {moves > 0 && (
-            <div className="flex flex-col gap-1 text-right">
-              <span className="font-['Brandon-Grotesque'] text-sm font-bold uppercase tracking-wider" style={{ color: colorValue }}>
-                MOVES
-              </span>
-              <span className="font-google-sans-code text-lg font-bold" style={{ color: colorValue }}>
-                {moves}
-              </span>
-            </div>
+    <div className="flex flex-col gap-6 text-left md:flex-row md:items-start md:gap-8">
+      <div
+        role="application"
+        tabIndex={0}
+        aria-label="A five by five maze. Use the arrow keys to reach the heart."
+        onKeyDown={onKey}
+        className={`relative aspect-square shrink-0 select-none overflow-hidden rounded-2xl border-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${BOARD}`}
+        style={{ borderColor: colorValue, outlineColor: colorValue }}
+      >
+        <div className="grid size-full grid-cols-5 grid-rows-5">
+          {maze.map((cells, row) =>
+            cells.map((cell, col) => {
+              const Icon = cell.kind === 'wall' || cell.kind === 'idea' ? iconByName(cell.icon) : null;
+              const bumped = bump?.row === row && bump?.col === col;
+              const gone = cell.kind === 'idea' && held.some((idea) => idea.key === `${row}-${col}`);
+              return (
+                <button
+                  key={`${row}-${col}`}
+                  type="button"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  onClick={() => tap(row, col)}
+                  className="grid cursor-pointer place-items-center border transition-colors hover:bg-[var(--background-highlight)]"
+                  style={{ borderColor: `${colorValue}1f`, backgroundColor: gone ? `${colorValue}1f` : undefined }}
+                >
+                  {cell.kind === 'wall' && Icon && (
+                    <span className={`grid size-[56%] place-items-center ${bumped ? 'maze-bump' : ''}`}>
+                      <Icon size="100%" style={{ color: bumped ? colorValue : 'var(--text-muted)' }} />
+                    </span>
+                  )}
+                  {cell.kind === 'idea' && Icon && !gone && (
+                    <span className="grid size-[56%] place-items-center">
+                      <Icon size="100%" color={colorValue} />
+                    </span>
+                  )}
+                  {cell.kind === 'goal' && (
+                    <span className={`relative grid place-items-center ${won ? 'maze-bump size-[92%]' : 'size-[70%] animate-pulse motion-reduce:animate-none'}`}>
+                      <Goal size="100%" color={colorValue} />
+                      {/* There: your icon, inside the heart */}
+                      {won && <span className="absolute inset-0 m-auto grid size-[36%] place-items-center"><Player size="100%" color={colorValue} /></span>}
+                    </span>
+                  )}
+                </button>
+              );
+            })
           )}
         </div>
-        
-        {/* Instructional Text - Tertiary Level */}
-        {!isFocused && (
-          <div className="text-center font-google-sans-code text-xs text-black/50 opacity-75 dark:text-white/50">
-            Click maze to focus, then use arrow keys to navigate
+
+        {/* The way you came, in pen, one stroke a step */}
+        <svg viewBox="0 0 100 100" className="pointer-events-none absolute inset-0 size-full" aria-hidden="true" fill="none" stroke={colorValue} strokeWidth={1.4} strokeLinecap="round" opacity={0.75}>
+          {path.slice(1).map((spot, index) => (
+            <path key={index} className="maze-step" pathLength={1} d={penStep(path[index], spot, index)} />
+          ))}
+        </svg>
+
+        {!won && (
+          <div
+            className="pointer-events-none absolute left-0 top-0 grid size-[20%] place-items-center transition-transform ease-linear motion-reduce:transition-none"
+            style={{ transform: `translate(${at.col * 100}%, ${at.row * 100}%)`, transitionDuration: `${STEP_MS}ms` }}
+          >
+            {/* Waddles, a side a step, like a poem's icon does */}
+            <span
+              className="grid size-[78%] place-items-center rounded-full bg-[var(--background)] transition-transform motion-reduce:transition-none"
+              style={{ transform: `rotate(${path.length % 2 ? -8 : 8}deg)`, transitionDuration: `${STEP_MS}ms` }}
+            >
+              <Player size="84%" color={colorValue} />
+            </span>
           </div>
         )}
       </div>
 
-      {/* Edge-to-edge Premium Maze */}
-      <div
-        ref={mazeRef}
-        tabIndex={0}
-        className={`
-          mx-auto grid aspect-square w-full max-w-lg grid-cols-5 gap-0
-          ${bgColor} overflow-hidden rounded-2xl border-2 
-          outline-none transition-colors duration-300 ease-in-out
-          ${isFocused ? 'ring-4 ring-opacity-30' : 'border-opacity-20'}
-        `}
-        style={{
-          borderColor: isFocused ? colorValue : '#F9C22E'
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onClick={handleMazeClick}
-      >
-        {maze.map((row, rowIndex) =>
-          row.map((cell, colIndex) => {
-            const isPlayer = playerPosition.x === rowIndex && playerPosition.y === colIndex;
-            const isInvalidMove = invalidMove?.x === rowIndex && invalidMove?.y === colIndex;
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-5">
+        <p className="min-h-[3.5rem] font-vt323 text-3xl leading-none text-[var(--foreground)] md:min-h-[5rem] md:text-4xl" aria-live="polite">{line}</p>
+
+        <ul className="flex flex-col gap-3" aria-label="What you picked up">
+          {held.map((idea) => {
+            const Icon = iconByName(idea.icon);
             return (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={`
-                  flex size-full items-center justify-center
-                  ${isPlayer 
-                    ? 'border-0 bg-transparent' 
-                    : 'border border-[#F9C22E]/20 hover:border-[#F9C22E]/30'
-                  }
-                  ${isAnimating ? 'animate-pulse' : ''}
-                  ${isInvalidMove ? 'border-[#F9C22E]/40 bg-[#F9C22E]/10' : ''}
-                  transition-all duration-300 ease-in-out
-                  ${!isPlayer ? 'hover:bg-[#F9C22E]/5' : ''}
-                `}
-                style={{
-                  backgroundColor: isPlayer ? 'transparent' : undefined,
-                  borderColor: !isPlayer ? `${colorValue}20` : undefined
-                }}
-              >
-                {isPlayer && (
-                  <div className={`transition-transform duration-300 ease-in-out ${isAnimating ? 'scale-110' : ''}`}>
-                    <Image
-                      src="/svgs/unparty/Sphere-Wood.png"
-                      alt="Player - Wood Sphere"
-                      width={28}
-                      height={28}
-                      className="opacity-90 w-auto h-auto"
-                      priority
-                    />
-                  </div>
-                )}
-                {cell === wallCell && (
-                  <div className="flex size-full items-center justify-center">
-                    <Image
-                      src={getRandomObstacle()}
-                      alt="Obstacle"
-                      width={30}
-                      height={30}
-                      className={`transition-opacity duration-300 w-auto h-auto ${isAnimating ? 'opacity-60' : 'opacity-85'}`}
-                    />
-                  </div>
-                )}
-                {cell === funCell && (
-                  <div className="flex size-full items-center justify-center">
-                    <Image
-                      src={getRandomObstacle()}
-                      alt="Challenge"
-                      width={28}
-                      height={28}
-                      className="animate-bounce opacity-80 w-auto h-auto"
-                    />
-                  </div>
-                )}
-                {cell === goalCell && (
-                  <div className="flex size-full items-center justify-center">
-                    <Image
-                      src={getRandomGoal()}
-                      alt="Goal"
-                      width={30}
-                      height={30}
-                      className="animate-pulse opacity-90 w-auto h-auto"
-                    />
-                  </div>
-                )}
-                {isInvalidMove && (
-                  <AlertCircle className="absolute animate-ping text-black/50" size={16} />
-                )}
-              </div>
+              <li key={idea.key} className="maze-pop flex items-center gap-3 font-space-grotesk text-sm text-[var(--foreground)]">
+                {Icon && <Icon size={24} color={colorValue} />}
+                {idea.words}
+              </li>
             );
-          })
+          })}
+        </ul>
+
+        {won && (
+          <div ref={askRef} className="maze-pop flex scroll-mb-28 flex-col items-start gap-3">
+            {cta?.pitch && <p className="font-space-grotesk text-sm text-[var(--text-muted)]">{cta.pitch}</p>}
+            {cta && (
+              <Link
+                href={cta.href}
+                onClick={() => track('cta_clicked', { cta: cta.label, placement: 'maze' })}
+                aria-label={cta.label}
+                className="inline-flex min-h-12 items-center rounded-full px-5 py-2 transition-transform hover:-translate-y-px"
+                style={{ backgroundColor: colorValue }}
+              >
+                <BuildYours color={colorValue} words="always" />
+              </Link>
+            )}
+            <button type="button" onClick={again} className="min-h-10 font-google-sans-code text-[10px] uppercase tracking-wide text-[var(--text-muted)] underline underline-offset-4">
+              walk it again
+            </button>
+          </div>
         )}
-      </div>
-      {showSuccessPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm dark:bg-black/40">
-          <div className="border-l-2 border-black bg-white p-6 font-google-sans-code dark:border-white dark:bg-black">
-            <h2 className="mb-4 text-xl text-black dark:text-white">Congratulations!</h2>
-            <p className="text-black dark:text-white">You completed the maze in {finalMoveCount} moves!</p> 
-            <button
-              onClick={() => {
-                setFinalMoveCount(null);
-                setShowSuccessPopup(false);
-                resetGame();
-              }}
-              className="mt-6 bg-black px-4 py-2 font-google-sans-code text-sm text-white transition-colors hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
-            >
-              Play Again
-            </button>
-          </div>
-        </div>
-      )}
-      
-      {showInstructionsPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm dark:bg-black/40">
-          <div className="max-w-md border-l-2 border-black bg-white p-6 font-google-sans-code dark:border-white dark:bg-black">
-            <h2 className="mb-4 text-xl text-black dark:text-white">How to Play</h2>
-            <div className="mb-4">
-              <MazeInstructions />
-            </div>
-            <button
-              onClick={() => setShowInstructionsPopup(false)}
-              className="mt-2 bg-black px-4 py-2 font-google-sans-code text-sm text-white transition-colors hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {/* Premium Brandon G styled buttons */}
-      <div className="mx-auto mt-6 flex max-w-md flex-col justify-center gap-3 sm:flex-row">
-        <button
-          onClick={() => setShowInstructionsPopup(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-[#F9C22E] px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:bg-[#F9C22E]/5"
-          style={{ backgroundColor: 'transparent', color: 'var(--foreground)' }}
-        >
-          <span className="font-['Brandon-Grotesque'] uppercase tracking-wide">Instructions</span>
-        </button>
-        <button
-          onClick={resetGame}
-          className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200"
-          style={{ 
-            backgroundColor: colorValue, 
-            color: 'var(--background)',
-            boxShadow: `0 2px 8px ${colorValue}20`
-          }}
-        >
-          <span className="font-['Brandon-Grotesque'] uppercase tracking-wide">
-            {moves === 0 ? "Start Game" : "Reset Game"}
-          </span>
-        </button>
       </div>
     </div>
   );
-};
-
-export default MiniMaze;
+}

@@ -105,7 +105,11 @@ function ConnectedSignIn({ onClose, className = '' }: SignInProps) {
 
   const cta = FOUNDER_CTA;
   const external = cta ? /^(https?:|mailto:)/.test(cta.href) : false;
-  const onCta = () => cta && track('cta_clicked', { cta: cta.label, placement: 'sign-in' });
+  // The modal covers the page, so it closes for the tap to land anywhere
+  const onCta = () => {
+    if (cta) track('cta_clicked', { cta: cta.label, placement: 'sign-in' });
+    onClose?.();
+  };
 
   return (
     <div className={`relative w-full max-w-md text-left ${className}`}>
@@ -152,12 +156,12 @@ function ConnectedSignIn({ onClose, className = '' }: SignInProps) {
         <div className="mt-10">
           <p className="mb-3 font-google-sans-code text-[10px] uppercase tracking-wide text-[var(--text-muted)]">no account here?</p>
           {external ? (
-            <a href={cta.href} target="_blank" rel="noopener noreferrer" onClick={onCta} className="inline-flex rounded-full px-4 py-2 transition-transform hover:-translate-y-px" style={{ backgroundColor: colorValue }} aria-label={cta.label}>
-              <BuildYours color={colorValue} />
+            <a href={cta.href} target="_blank" rel="noopener noreferrer" onClick={onCta} className="inline-flex min-h-11 items-center rounded-full px-4 py-2 transition-transform hover:-translate-y-px" style={{ backgroundColor: colorValue }} aria-label={cta.label}>
+              <BuildYours color={colorValue} words="always" />
             </a>
           ) : (
-            <Link href={cta.href} onClick={onCta} className="inline-flex rounded-full px-4 py-2 transition-transform hover:-translate-y-px" style={{ backgroundColor: colorValue }} aria-label={cta.label}>
-              <BuildYours color={colorValue} />
+            <Link href={cta.href} onClick={onCta} className="inline-flex min-h-11 items-center rounded-full px-4 py-2 transition-transform hover:-translate-y-px" style={{ backgroundColor: colorValue }} aria-label={cta.label}>
+              <BuildYours color={colorValue} words="always" />
             </Link>
           )}
           {cta.pitch && <p className="mt-3 max-w-sm font-space-grotesk text-xs text-[var(--text-muted)]">{cta.pitch}</p>}

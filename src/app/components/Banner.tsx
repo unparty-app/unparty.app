@@ -33,7 +33,7 @@ import { ICON_DEFAULTS } from '../constants/organization'
  */
 export default function Banner() {
   const { colorValue } = useTheme()
-  const { article } = useArticleHeader()
+  const { article, dockAction } = useArticleHeader()
   const pathname = usePathname()
   const [isMetadataModalOpen, setIsMetadataModalOpen] = useState(false)
 
@@ -150,6 +150,8 @@ export default function Banner() {
           )}
 
           {/* Subtitle — from lg up (below that the dock gives the title the room), tappable for the modal */}
+          {dockAction}
+
           {article.subtitle && (
             <p
               onClick={() => setIsMetadataModalOpen(true)}

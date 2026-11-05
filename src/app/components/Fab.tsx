@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { track } from '@vercel/analytics';
 
-import BuildYours from './build-yours/BuildYours';
+import BuildYours, { inkOn } from './build-yours/BuildYours';
 import { useTheme } from '../contexts/ThemeContext';
-import SignIn from './SignIn';
+import { FOUNDER_CTA } from '../constants/organization';
 import {
   UserButton,
   SignedIn,
@@ -21,9 +21,29 @@ const DotIcon = () => {
   );
 };
 
+/**
+ * The site's one ask, from anywhere (FoundersConfig founder.cta). With none,
+ * the Fab is how to sign in. Clicks send the same consent-gated event as the
+ * /founders ask (FounderCta), so one funnel compares them.
+ */
+function FabAsk({ color }: { color: string }) {
+  const cta = FOUNDER_CTA;
+  const label = cta?.label ?? 'sign in';
+  const href = cta?.href ?? '/sign-in';
+  const className = 'fab-button flex h-full min-w-11 items-center justify-center overflow-hidden rounded-full sm:min-w-[52px] sm:pl-3 sm:pr-5';
+  const style = { backgroundColor: color, borderColor: color };
+  const onClick = () => track('cta_clicked', { cta: label, placement: 'fab' });
+  // "build yours" in its own hand; any other ask as set text
+  const face = label.trim().toLowerCase() === 'build yours'
+    ? <BuildYours color={color} />
+    : <span className="px-3 font-vt323 text-lg leading-none" style={{ color: inkOn(color) }}>{label}</span>;
+  return /^(https?:|mailto:)/.test(href)
+    ? <a href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer" onClick={onClick} aria-label={label} className={className} style={style}>{face}</a>
+    : <Link href={href} onClick={onClick} aria-label={label} className={className} style={style}>{face}</Link>;
+}
+
 const Fab = () => {
   const { colorValue } = useTheme();
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
   const slotRef = useRef<HTMLDivElement>(null);
 
   // Publish the Fab's live width as --fab-width, so the Banner dock can leave
@@ -43,15 +63,6 @@ const Fab = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isSignInOpen) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsSignInOpen(false);
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isSignInOpen]);
-
   return (
     <div className="pointer-events-none fixed inset-0 z-50 p-4">
       {/* One shell for both states, the same treatment as the Banner dock's
@@ -67,24 +78,7 @@ const Fab = () => {
         <SignedOut>
           {/* Icon-only circle on phones; from sm up a pill that says what it
               does, since an unlabeled icon doesn't tell a new visitor */}
-          <button 
-            onClick={() => {
-              // Same event as the /founders ask (FounderCta), so one funnel
-              // compares them; consent-gated, a no-op until analytics is accepted
-              track('cta_clicked', { cta: 'build yours', placement: 'fab' });
-              setIsSignInOpen(true);
-            }}
-            aria-label="build yours"
-            className="fab-button flex h-full min-w-11 items-center justify-center overflow-hidden rounded-full sm:min-w-[52px] sm:pl-3 sm:pr-5"
-            style={{ 
-              backgroundColor: colorValue,
-              borderColor: colorValue,
-            }}
-          >
-            {/* The brand brain beside the words, hand-written; below sm the
-                brain alone (components/build-yours) */}
-            <BuildYours color={colorValue} />
-          </button>
+          <FabAsk color={colorValue} />
         </SignedOut>
 
         <SignedIn>
@@ -113,23 +107,6 @@ const Fab = () => {
           </UserButton>
         </SignedIn>
       </div>
-
-      {/* Sign-In Modal */}
-      {isSignInOpen && createPortal(
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 backdrop-blur-sm" style={{ backgroundColor: 'var(--background)' }}>
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-200">
-            <SignIn onClose={() => setIsSignInOpen(false)} />
-          </div>
-          
-          {/* Click outside to close */}
-          <div 
-            className="absolute inset-0 -z-10" 
-            onClick={() => setIsSignInOpen(false)}
-            aria-label="Close sign-in modal"
-          />
-        </div>,
-        document.body
-      )}
     </div>
   );
 };

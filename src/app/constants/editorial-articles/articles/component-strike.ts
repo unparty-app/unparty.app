@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_STRIKE_ARTICLE: EditorialArticle = {
   slug: 'component-strike',
   title: 'STRIKE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'cross it out.',
+  description: 'Text with a line through it, for the idea you left behind.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_STRIKE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'text with a line through it, for the idea you left behind.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_STRIKE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it text. font, style and color are optional.'
     },
     {
       id: 'embed',

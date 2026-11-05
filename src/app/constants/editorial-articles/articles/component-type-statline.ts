@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_TYPE_STATLINE_ARTICLE: EditorialArticle = {
   slug: 'component-type-statline',
   title: 'TYPE STATLINE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'what you build, as one line.',
+  description: 'Your work by kind of build, as one line in each kind\'s color. point at a segment to read it.',
   category: 'MAKE.',
   date: '2026-10-21',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any
@@ -25,7 +26,7 @@ export const COMPONENT_TYPE_STATLINE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'your work by kind of build, as one line in each kind\'s color. point at a segment to read it.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_TYPE_STATLINE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. highlight raises one kind.'
     },
     {
       id: 'embed',
@@ -57,14 +58,14 @@ export const COMPONENT_TYPE_STATLINE_ARTICLE: EditorialArticle = {
     {
       id: 'where-home',
       type: 'personal',
-      content: 'TODO.',
+      content: 'every page (the site layout).',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/' },
     },
     // /about · about
     {
       id: 'where-about',
       type: 'personal',
-      content: 'TODO.',
+      content: 'about.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/about' },
     }
   ]

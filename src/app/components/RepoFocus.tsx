@@ -211,7 +211,7 @@ export default function RepoFocus({ weeks, recent, rows, focus, totalHours, rate
       )}
 
       <p className="mt-6 font-vt323 text-base" style={{ color: 'var(--text-muted)' }}>
-        {hours(totalHours)} hours across {rows.reduce((n, r) => n + (r.folded ?? 1), 0)} repos{rate ? `, worth ${dollars(totalHours * rate)} at your baseline's rate` : ''}.
+        {hours(totalHours)} hours across {rows.reduce((n, r) => n + (r.folded ?? 1), 0)} {rows.reduce((n, r) => n + (r.folded ?? 1), 0) === 1 ? 'repo' : 'repos'}{rate ? `, worth ${dollars(totalHours * rate)} at your baseline's rate` : ''}.
       </p>
 
       {/* sr-only on a wrapper: a table sizes to its content and ignores

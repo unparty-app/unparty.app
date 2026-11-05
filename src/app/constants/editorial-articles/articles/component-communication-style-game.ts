@@ -9,7 +9,7 @@ export const COMPONENT_COMMUNICATION_STYLE_GAME_ARTICLE: EditorialArticle = {
   description: 'The same question, four ways to answer it — direct, story, visual, practical. Pick the voice you would actually use, problem after problem, and find the communication style you lean on.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any
   presents: { component: 'CommunicationStyleGame', needs: [] },

@@ -7,7 +7,7 @@ export const EDITORIAL_SECTION_GUIDE: EditorialArticle = {
   description: 'A reference for every section type available in the unparty editorial system.',
   category: '📖',
   date: '2026-06-26',
-  updated: '2026-11-02',
+  updated: '2026-11-04',
   published: true,
   author: 'portrait',
   authorPage: '/founders',
@@ -198,7 +198,7 @@ export const EDITORIAL_SECTION_GUIDE: EditorialArticle = {
       id: 'personal-code',
       type: 'code',
       content: `{ id: 'personal-1', type: 'personal', content: 'small meta note or aside.' }`,
-      metadata: { language: 'typescript', caption: 'personal — a small italicized aside, for notes that feel off-the-record.' }
+      metadata: { language: 'typescript', caption: 'personal: a short row. Add metadata.step (a numbered ring), metadata.icon (a hand-drawn icon) or metadata.avatar (a photo). Put rows in columns for steps.' }
     },
 
     // ── STRIKE BLOCK ─────────────────────────────────────────────────────────

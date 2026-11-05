@@ -9,7 +9,7 @@ export const COMPONENT_PRIORITY_TABLE_ARTICLE: EditorialArticle = {
   description: 'Every unppp ranked by one effort-driven priority score: recent commit activity, step links and story mentions merged into a sortable table — the same scores behind the /status dashboard.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs, found by npm run create:component-article -- --needs:

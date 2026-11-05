@@ -235,7 +235,7 @@ if (cta !== undefined) {
   if (!cta || typeof cta.label !== 'string' || cta.label.trim() === '') errors.push('founder.cta needs a label, like "work with me"');
   if (!cta || typeof cta.href !== 'string' || !/^(\/|https:\/\/|mailto:)/.test(cta.href)) errors.push('founder.cta needs an href starting with /, https:// or mailto:');
   if (cta && cta.pitch !== undefined && typeof cta.pitch !== 'string') errors.push('founder.cta.pitch must be a sentence (or left out)');
-  if (cta && cta.href === '/article/setup-start-here') warnings.push(`founder.cta is still unparty's ("${cta.label}" → the setup curriculum); point it at how people work with you, or remove it to use your first link`);
+  if (cta && cta.href === '/article/setup-get-your-copy') warnings.push(`founder.cta is still unparty's ("${cta.label}" → getting a copy); point it at how people work with you, or remove it to use your first link`);
 }
 
 // iconDefaults: { poem?, category? }, each an icon's export name ("Heart")

@@ -1,11 +1,19 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import ScrollRow from '@/components/HorizontalRow';
 import { useTheme } from '../../contexts/ThemeContext';
+import ActionPill from '../build-yours/ActionPill';
+import { BUILD_YOURS_DONE } from '../build-yours/BuildYours';
 import HandDrawnIcon from './HandDrawnIcon';
 import { iconByName } from './byName';
 import { DRAWABLE_ICONS, FIRST_ICONS } from './drawable';
 import { setVisitorIcon, visitorIcons } from './visitorIcons';
+
+const HandDrawnFallback = iconByName('Heart')!;
+// Only a visitor who took their drawing ever loads the game
+const MiniMaze = dynamic(() => import('../MiniMaze'), { ssr: false });
 
 type Point = [number, number];
 type Drawings = Record<string, string[]>;
@@ -28,6 +36,11 @@ const ORDER = [...DRAWABLE_ICONS].sort((a, b) => Number(FIRST.has(b)) - Number(F
 const DRAFTS_KEY = 'icon-pad-drafts';
 const VISITOR_DRAFTS_KEY = 'icon-pad-visitor-drafts';
 const FLASH_KEY = 'icon-pad-saved';
+// Fewer icons than this fit without a search
+const SEARCH_FROM = 9;
+
+/** An icon's name as a person says it: "CheckCircle2" is "check circle 2" */
+const spoken = (icon: string) => icon.replace(/([a-z])([A-Z0-9])/g, '$1 $2').toLowerCase();
 
 function load<T>(key: string, storage: () => Storage, fallback: T): T {
   try {
@@ -102,20 +115,31 @@ function toStroke(raw: Point[]): string {
  * (visitorIcons), where it replaces that icon on every page they open, and
  * nothing is sent anywhere. /admin uses mode="owner". `compact` stacks the
  * pad over its controls at every width, for a column in a story.
+ *
+ * The icons sit in a scroll row, found by name, so all of them are there
+ * without a wall of choices. `start` picks the first one to draw.
+ *
+ * `invite` is the pad for someone who has never seen it (the first article):
+ * small enough that a phone can still scroll past it, with no previews or
+ * instructions. A stroke brings up "take it", and taking it opens MiniMaze below
+ * with their icon walking it, which ends on the site's ask.
  */
-export default function IconDrawPad({ mode = 'visitor', icons, compact = false }: {
+export default function IconDrawPad({ mode = 'visitor', icons, compact = false, start, invite = false }: {
   mode?: 'visitor' | 'owner';
-  // The icons to offer (default: the 20 seen most for a visitor, all for the
-  // owner). A story's directive can't hold a list, so "Heart|User" works too
+  // The icons to offer (default: all, the ones seen most first). A story's
+  // directive can't hold a list, so "Heart|User" works too
   icons?: string[] | string;
   compact?: boolean;
+  start?: string; // The icon to draw first (default: the first offered)
+  invite?: boolean;
 }) {
   const owner = mode === 'owner';
   const draftsKey = owner ? DRAFTS_KEY : VISITOR_DRAFTS_KEY;
   const iconList = typeof icons === 'string' ? icons.split('|').map((icon) => icon.trim()) : icons;
-  const offered = iconList?.length ? iconList.filter((icon) => DRAWABLE_ICONS.includes(icon)) : owner ? ORDER : [...FIRST_ICONS];
+  const offered = iconList?.length ? iconList.filter((icon) => DRAWABLE_ICONS.includes(icon)) : ORDER;
   const { colorValue } = useTheme();
-  const [name, setName] = useState<string>(offered[0] ?? FIRST_ICONS[0]);
+  const [name, setName] = useState<string>(start && DRAWABLE_ICONS.includes(start) ? start : offered[0] ?? FIRST_ICONS[0]);
+  const [query, setQuery] = useState('');
   const [mine, setMine] = useState<string[]>([]);
   const [drafts, setDrafts] = useState<Drawings>({});
   const [live, setLive] = useState<Point[] | null>(null);
@@ -239,6 +263,21 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
     setSave(strokes.length ? { state: 'now', count: 1 } : { state: 'idle' });
   };
   const outline = { borderColor: colorValue, color: colorValue };
+  const found = useMemo(() => {
+    const words = query.trim().toLowerCase();
+    if (!words) return offered;
+    return offered.filter((icon) => spoken(icon).includes(words) || icon.toLowerCase().includes(words));
+  }, [query, offered]);
+  // The icon an invited visitor walks: what they just drew, else one from before
+  const walker = invite ? (mine.includes(name) ? name : mine[0]) : undefined;
+  const mazeRef = useRef<HTMLDivElement>(null);
+  const tookIt = useRef(false);
+  useEffect(() => {
+    if (!tookIt.current || !walker) return;
+    tookIt.current = false;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    mazeRef.current?.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+  }, [walker]);
 
   return (
     <div className="flex flex-col gap-6 text-left">
@@ -246,7 +285,7 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
         <svg
           ref={pad}
           viewBox="0 0 24 24"
-          className="aspect-square w-full max-w-[360px] shrink-0 cursor-crosshair touch-none select-none rounded-xl border"
+          className={`aspect-square w-full shrink-0 cursor-crosshair ${invite ? 'max-w-[240px]' : 'max-w-[360px]'} touch-none select-none rounded-xl border`}
           style={{ borderColor: colorValue, WebkitUserSelect: 'none', WebkitTouchCallout: 'none' } as React.CSSProperties}
           onPointerDown={down}
           onPointerMove={move}
@@ -275,13 +314,15 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <div>
-            <p className={LABEL}>{name}{FIRST.has(name) ? ' · seen most' : ''}</p>
-            <p className="mt-1 font-space-grotesk text-sm text-[var(--text-muted)]">
-              draw it in a few strokes, the way your hand does. let lines overshoot and loops run past where they start.
-            </p>
+            <p className={LABEL}>{spoken(name)}{FIRST.has(name) && !invite ? ' · seen most' : ''}</p>
+            {!invite && (
+              <p className="mt-1 font-space-grotesk text-sm text-[var(--text-muted)]">
+                draw it in a few strokes, the way your hand does. let lines overshoot and loops run past where they start.
+              </p>
+            )}
           </div>
 
-          <div className="flex items-end gap-6">
+          {!invite && <div className="flex items-end gap-6">
             <div>
               <p className={`${LABEL} mb-2`}>now</p>
               <div className="flex items-end gap-3 text-[var(--foreground)]">
@@ -296,9 +337,59 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
                 ))}
               </div>
             </div>
+          </div>}
+
+          {/* The picker: everything, in one row, found by name */}
+          <div className="min-w-0">
+            {offered.length >= SEARCH_FROM && (
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="find an icon"
+                aria-label="Find an icon by name"
+                className="mb-2 min-h-10 w-full max-w-xs border-b bg-transparent font-space-grotesk text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--text-muted)]"
+                style={{ borderColor: `${colorValue}66` }}
+              />
+            )}
+            {found.length ? (
+              <ScrollRow
+                ariaLabel="Icons to draw"
+                itemClassName="w-11"
+                items={found.map((icon) => {
+                  const Icon = iconByName(icon);
+                  const chosen = icon === name;
+                  const draft = Boolean(drafts[icon]?.length);
+                  return (
+                    <button
+                      key={icon}
+                      type="button"
+                      title={spoken(icon)}
+                      aria-label={`Draw ${spoken(icon)}${draft ? ' (drawn, not saved)' : drawnHere(icon) ? ' (drawn)' : ''}`}
+                      aria-pressed={chosen}
+                      onClick={() => setName(icon)}
+                      className="relative flex size-11 items-center justify-center rounded-lg border transition hover:bg-[var(--background-highlight)]"
+                      style={{ borderColor: chosen ? colorValue : 'transparent', color: chosen ? colorValue : 'var(--foreground)' }}
+                    >
+                      {Icon && <Icon size={18} />}
+                      {(draft || drawnHere(icon)) && (
+                        <span
+                          className="absolute right-1 top-1 size-1.5 rounded-full border"
+                          style={{ borderColor: colorValue, backgroundColor: draft ? 'transparent' : colorValue }}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              />
+            ) : (
+              <p className="min-h-11 font-space-grotesk text-sm text-[var(--text-muted)]">no icon called that.</p>
+            )}
+            {!invite && <p className={`${LABEL} mt-2`}>{owner ? '● saved · ○ drawn, not saved yet' : '● yours · ○ drawn, not used yet'}</p>}
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className={`flex-wrap gap-2 ${invite && !strokes.length ? 'hidden' : 'flex'}`}>
             <button type="button" className={BUTTON} style={outline} disabled={!strokes.length} onClick={() => setDrawing(name, strokes.length > 1 ? strokes.slice(0, -1) : null)}>undo</button>
             <button type="button" className={BUTTON} style={outline} disabled={!strokes.length} onClick={() => setDrawing(name, null)}>clear</button>
             {saved?.site[name]?.length ? (
@@ -308,7 +399,19 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
             ) : null}
           </div>
 
-          {!owner && (
+          {invite && strokes.length > 0 && (
+            <div className="build-yours" style={BUILD_YOURS_DONE}>
+              <ActionPill verb="take it" icon={iconByName(name) ?? HandDrawnFallback} color={colorValue} label={`Use your ${spoken(name)} on this site, on this device`} onClick={() => { tookIt.current = true; keepMine(strokes); }} />
+            </div>
+          )}
+          {invite && mine.includes(name) && !strokes.length && (
+            <div className="flex flex-col items-start gap-3">
+              <p className="font-space-grotesk text-sm text-[var(--foreground)]">that is your hand now, on this device. the whole site could be.</p>
+              <button type="button" className="font-google-sans-code text-[10px] uppercase tracking-wide text-[var(--text-muted)] underline underline-offset-4" onClick={() => keepMine([])}>put the site&apos;s back</button>
+            </div>
+          )}
+
+          {!owner && !invite && (
             <div className="flex flex-wrap gap-2 border-t border-theme-line pt-4">
               <button
                 type="button"
@@ -359,7 +462,7 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
             {save.state === 'saving' && 'saving…'}
             {save.state === 'now' && (owner
               ? `saved ${save.count}. they show everywhere now.`
-              : `${name} is yours now, on this device only. every ${name} on this site draws your way until you put the site's back.`)}
+              : invite ? null : `${spoken(name)} is yours now, on this device only. every one on this site draws your way until you put the site's back.`)}
             {save.state === 'after-deploy' && (
               <>saved {save.count} as one pull request. they show once it deploys, in a few minutes. <a href={save.prUrl} target="_blank" rel="noopener noreferrer" className="underline" style={{ color: colorValue }}>see the change ↗</a></>
             )}
@@ -368,39 +471,12 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false }
           </p>
         </div>
       </div>
-
-      <div>
-        <p className={`${LABEL} mb-3`}>{owner ? `pick an icon · the first ${FIRST_ICONS.length} are the ones people see most` : 'pick an icon to make yours'}</p>
-        <div className="flex flex-wrap gap-1.5">
-          {offered.map((icon) => {
-            const Icon = iconByName(icon);
-            const chosen = icon === name;
-            const draft = Boolean(drafts[icon]?.length);
-            return (
-              <button
-                key={icon}
-                type="button"
-                title={icon}
-                aria-label={`Draw ${icon}${draft ? ' (drawn, not saved)' : drawnHere(icon) ? ' (drawn)' : ''}`}
-                aria-pressed={chosen}
-                onClick={() => setName(icon)}
-                className="relative flex size-11 items-center justify-center rounded-lg border transition hover:bg-[var(--background-highlight)]"
-                style={{ borderColor: chosen ? colorValue : 'transparent', color: chosen ? colorValue : 'var(--foreground)' }}
-              >
-                {Icon && <Icon size={18} />}
-                {(draft || drawnHere(icon)) && (
-                  <span
-                    className="absolute right-1 top-1 size-1.5 rounded-full border"
-                    style={{ borderColor: colorValue, backgroundColor: draft ? 'transparent' : colorValue }}
-                    aria-hidden="true"
-                  />
-                )}
-              </button>
-            );
-          })}
+      {/* Past the article's narrow phone column, landing under the pinned cover */}
+      {walker && (
+        <div ref={mazeRef} className="-mx-8 mt-6 scroll-mt-36 md:mx-0 md:scroll-mt-52">
+          <MiniMaze key={walker} player={walker} />
         </div>
-        <p className={`${LABEL} mt-3`}>{owner ? '● saved · ○ drawn, not saved yet' : '● yours · ○ drawn, not used yet'}</p>
-      </div>
+      )}
     </div>
   );
 }

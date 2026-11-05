@@ -3255,6 +3255,23 @@ html[data-tray-open] .page-navigation {
   .step-rings .group:hover .step-ring svg { animation: none; }
 }
 
+/* MiniMaze: the path draws a stroke per step, whatever you run into wobbles, and what you pick up pops in */
+.maze-step {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: step-ring-draw 200ms ease-out forwards;
+}
+.maze-bump {
+  animation: step-ring-wobble 520ms ease-in-out;
+}
+.maze-pop {
+  animation: step-ring-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .maze-step { stroke-dashoffset: 0; animation: none; }
+  .maze-bump, .maze-pop { animation: none; }
+}
+
 /* Aspect ratio variants */
 .image-container-cover {
   aspect-ratio: 16/9;

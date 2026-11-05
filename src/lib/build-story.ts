@@ -20,7 +20,7 @@
 import 'server-only';
 import UnpppTypesConfig from '@/data/UnpppTypesConfig.json';
 import { BASELINE, BRAND_COLORS, FOUNDER, FOUNDER_CTA, SITE_NAME } from '@/app/constants/organization';
-import { hourName, peakHour, rhythmYears } from '@/lib/baseline';
+import { hourName, peakHour, rhythmYears, type BaselineRhythmYear } from '@/lib/baseline';
 import { focusData, focusRepos } from '@/lib/focus';
 import { findProjectById, listFounderProjects } from '@/lib/projects';
 import { allReleases } from '@/lib/releases';
@@ -45,6 +45,12 @@ import {
 // The last weeks that count as now, against the ones before (as RepoFocus)
 const RECENT = 4;
 const RISING = 1.25;
+
+// What every copy starts on: the two accounts it needs, on their free plans
+const YOURS_STACK = [
+  { id: 'github', name: 'GitHub', plan: 'free', monthly: 0 },
+  { id: 'vercel', name: 'Vercel', plan: 'hobby', monthly: 0 },
+];
 
 const sum = (values: number[]) => values.reduce((total, value) => total + value, 0);
 const repoName = (gh?: string | null) => gh?.replace(/\.git$/, '').split('/').filter(Boolean).pop();
@@ -102,6 +108,79 @@ export function liveEffortByType(): EffortByType | null {
     return { type: t.id as NavCategory, color: colorOf(t.id as NavCategory), commitsPerMonth: 0, share: entry.hours / total, projects: entry.projects, rising: entry.rising, hours: entry.hours };
   });
   return { types, generatedAt: measured.generatedAt, total, weeks: measured.weeks.length };
+}
+
+// What a chart shows before its data exists: the same chart, at zero
+const zeroed = <T extends { count: number }>(months: T[]) => months.map((m) => ({ ...m, count: 0 }));
+
+/**
+ * /build's YOURS view: the same article, with every chart and sentence at
+ * zero, as the visitor's own site would start. Sections the article didn't
+ * have stay out; sections that only make sense with data drop. Chart section
+ * ids change, so each one draws itself again when the view flips.
+ */
+export function buildToYours(article: EditorialArticle): EditorialArticle {
+  const props = (s: EditorialSection) => (s.metadata?.componentProps ?? {}) as Record<string, unknown>;
+  const chart = (s: EditorialSection, componentProps: Record<string, unknown>): EditorialSection => ({
+    ...s,
+    id: `${s.id}-yours`,
+    metadata: { ...s.metadata, componentProps },
+  });
+  const words = (s: EditorialSection, content: string): EditorialSection => ({ ...s, id: `${s.id}-yours`, content });
+
+  const sections = article.sections.flatMap((s): EditorialSection[] => {
+    switch (s.id) {
+      case 'focus-line': return [words(s, '0 hours so far.')];
+      case 'focus-chart': {
+        const { weeks } = props(s) as { weeks: string[] };
+        return [chart(s, {
+          weeks,
+          recent: RECENT,
+          focus: 0,
+          totalHours: 0,
+          rate: null,
+          sentence: 'your hours show up here.',
+          rows: [{ name: 'your site', hours: weeks.map(() => 0), total: 0, trend: 'new', lastWeek: -1, releases: [], price: null, take: [] }],
+        })];
+      }
+      case 'kinds-line': return [words(s, 'no kinds of builds yet.')];
+      case 'kinds-line-chart': {
+        const { effort } = props(s) as { effort: EffortByType };
+        return [chart(s, { effort: { ...effort, total: 1, types: effort.types.map((t) => ({ ...t, share: 0, projects: 0, rising: 0, hours: 0 })) } })];
+      }
+      case 'rhythm-line': return [words(s, 'your rhythm starts here.')];
+      case 'rhythm-growth': return [];
+      case 'rhythm-chart': {
+        const { years } = props(s) as { years: BaselineRhythmYear[] };
+        const last = years[years.length - 1];
+        return [chart(s, { years: [{ year: last.year, commits: 0, hours: last.hours.map(() => 0), days: last.days.map(() => 0) }] })];
+      }
+      case 'built-line': return [words(s, '0 projects, 0 out in the world.')];
+      case 'built-row': return [];
+      case 'effort-timeline': {
+        const { series, label } = props(s) as { series: Array<{ name: string; months: Array<{ month: string; count: number }> }>; label: string };
+        return [chart(s, { label, series: series.map((line) => ({ ...line, months: zeroed(line.months) })) })];
+      }
+      case 'shipped-line': return [words(s, '0 pieces published.')];
+      case 'shipped-timeline':
+      case 'momentum-timeline': {
+        const { months, label } = props(s) as { months: Array<{ month: string; count: number }>; label: string };
+        return [chart(s, { label, months: zeroed(months) })];
+      }
+      case 'shipped-releases': return [];
+      case 'momentum-line': return [words(s, '0 steps finished.')];
+      case 'stack-line': return [words(s, 'runs on $0 a month.')];
+      case 'stack-ledger': return [chart(s, { lines: YOURS_STACK })];
+      case 'views-line': return [words(s, '0 visitors so far.')];
+      case 'views-pageviews': return [];
+      case 'views-chart': {
+        const { days } = props(s) as { days: number[] };
+        return [chart(s, { days: days.map(() => 0), top: [] })];
+      }
+      default: return [s];
+    }
+  });
+  return { ...article, subtitle: 'what yours looks like the day you start.', sections };
 }
 
 // "app", as the type hubs and TypeStatline say it

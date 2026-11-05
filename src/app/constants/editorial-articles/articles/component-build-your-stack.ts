@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_BUILD_YOUR_STACK_ARTICLE: EditorialArticle = {
   slug: 'component-build-your-stack',
   title: 'BUILD YOUR STACK.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'build yours for what you choose to spend.',
+  description: 'Pick what your copy runs on and see the monthly cost, and which features that stack lets you build.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_BUILD_YOUR_STACK_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'pick what your copy runs on and see the monthly cost, and which features that stack lets you build.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_BUILD_YOUR_STACK_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. pick a starting point with lens, and point start building wherever you want.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_BUILD_YOUR_STACK_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-app-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unparty.app.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

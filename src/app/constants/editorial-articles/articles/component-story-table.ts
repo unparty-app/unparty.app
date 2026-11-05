@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_STORY_TABLE_ARTICLE: EditorialArticle = {
   slug: 'component-story-table',
   title: 'STORY TABLE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'every story, one table.',
+  description: 'Every published story, newest first, with columns that sort.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs, found by npm run create:component-article -- --needs:
@@ -26,7 +27,7 @@ export const COMPONENT_STORY_TABLE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'every published story, newest first, with columns that sort.'
     },
     {
       id: 'component',
@@ -41,7 +42,7 @@ export const COMPONENT_STORY_TABLE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. it fills in as you publish.'
     },
     {
       id: 'embed',
@@ -58,7 +59,7 @@ export const COMPONENT_STORY_TABLE_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-stage',
       type: 'personal',
-      content: 'TODO.',
+      content: 'stage.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

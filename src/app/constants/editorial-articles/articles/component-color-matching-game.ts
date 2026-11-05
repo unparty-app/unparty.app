@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_COLOR_MATCHING_GAME_ARTICLE: EditorialArticle = {
   slug: 'component-color-matching-game',
   title: 'COLOR MATCHING GAME.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'watch the lines, tap them back.',
+  description: 'A memory game played on your own colors. it speeds up every three rounds and keeps your best run on your device.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_COLOR_MATCHING_GAME_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a memory game played on your own colors. it speeds up every three rounds and keeps your best run on your device.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_COLOR_MATCHING_GAME_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. change your palette and the game changes with it.'
     },
     {
       id: 'embed',
@@ -57,35 +58,35 @@ export const COMPONENT_COLOR_MATCHING_GAME_ARTICLE: EditorialArticle = {
     {
       id: 'where-color',
       type: 'personal',
-      content: 'TODO.',
+      content: 'the color page.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/color' },
     },
     // /theunpartycharette · Explore Your Ideas, Find Your Focus
     {
       id: 'where-theunpartycharette',
       type: 'personal',
-      content: 'TODO.',
+      content: 'explore your ideas, find your focus.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /article/unparty-brand-story · RULE 02:
     {
       id: 'where-article-unparty-brand-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'rule 02.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /story/source · SOURCE.
     {
       id: 'where-story-source',
       type: 'personal',
-      content: 'TODO.',
+      content: 'source.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /story/i-noticed · I noticed.
     {
       id: 'where-story-i-noticed',
       type: 'personal',
-      content: 'TODO.',
+      content: 'i noticed.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/article/setup-start-here' },
     }
   ]

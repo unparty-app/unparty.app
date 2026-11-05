@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_DEFINITIONS_ARTICLE: EditorialArticle = {
   slug: 'component-definitions',
   title: 'DEFINITIONS.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'the words you mean, defined.',
+  description: 'The terms a project uses, each defined, right where someone is reading.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_DEFINITIONS_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'the terms a project uses, each defined, right where someone is reading.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_DEFINITIONS_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it a project id, and it shows that project\'s terms.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_DEFINITIONS_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-works-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'how unparty-app builds.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

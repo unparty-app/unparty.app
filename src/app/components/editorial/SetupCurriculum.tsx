@@ -24,8 +24,8 @@ import StepNumberOverlay from './StepNumberOverlay';
  * Rings draw in once the list scrolls into view; .step-ring in globals.css.
  *
  * variant="preview" (homepage): one row per chapter, linking to its first step.
- * variant="full" (/article/setup-start-here): every step, then the optional ones;
- * on phones, one chapter at a time behind the house tab bar (SleekTabs).
+ * variant="full" (/article/setup-start-here): every step, then the optional ones,
+ * one chapter at a time behind the house tab bar (SleekTabs).
  */
 
 const MORE: { label: string; promise: string; cover?: string } = {
@@ -135,16 +135,9 @@ export default function SetupCurriculum({ variant = 'full' }: SetupCurriculumPro
 
   return (
     <div ref={fullRef} className={`step-rings w-full text-left ${fullInView ? 'is-in' : ''}`}>
-      {/* sm and up: the whole path in one list */}
-      <ol className="hidden sm:block">
-        {fullRows.map(({ key, row }) => (
-          <Row key={key} {...row} colorValue={colorValue} />
-        ))}
-      </ol>
-
-      {/* Phones: one chapter at a time behind the house tab bar, with the
-          chapter's promise, instead of 27 rows stacked down the screen */}
-      <div className="sm:hidden">
+      {/* One chapter at a time behind the house tab bar, with the chapter's
+          promise, instead of every row stacked down the screen */}
+      <div>
         <SleekTabs
           label="SETUP. chapters"
           tabs={chapterTabs.map((c) => ({ id: c.id, label: `${c.id}.` }))}
@@ -192,10 +185,14 @@ function Row({ index, number, chapter, cover, href, title, blurb, meta, spaced, 
       <span className="step-ring relative size-7 shrink-0" style={{ ['--i' as string]: index }}>
         <StepNumberOverlay number={number} colorValue={colorValue} weight="thin" className="h-full w-full overflow-visible" />
       </span>
-      <UnpppCircle src={cover} color={colorValue} size={28} />
-      <span className="hidden w-14 shrink-0 font-vt323 text-lg leading-none sm:block" style={{ color: colorValue }}>
-        {chapter}.
-      </span>
+      {showChapter && (
+        <>
+          <UnpppCircle src={cover} color={colorValue} size={28} />
+          <span className="hidden w-14 shrink-0 font-vt323 text-lg leading-none sm:block" style={{ color: colorValue }}>
+            {chapter}.
+          </span>
+        </>
+      )}
       <span className="min-w-0 flex-1 font-space-grotesk text-xs leading-relaxed md:text-sm">
         {/* Phones: the chapter rides above the copy instead of taking a column */}
         {showChapter && (

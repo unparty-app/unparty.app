@@ -9,7 +9,7 @@ export const COMPONENT_LANGUAGE_VISUALIZATION_ARTICLE: EditorialArticle = {
   description: 'A D3 pie-or-bars view of every language across your repositories, weighted by bytes of code, drawn from the repo metadata the site already tracks.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any
   presents: { component: 'LanguageVisualization', needs: [] },

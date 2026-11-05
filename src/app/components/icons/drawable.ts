@@ -89,6 +89,7 @@ export const DRAWABLE_ICONS: readonly string[] = [
   'Upload',
   'Volume2',
   'VolumeX',
+  'Wave',
   'Workflow',
   'Wrench',
   'XCircle',

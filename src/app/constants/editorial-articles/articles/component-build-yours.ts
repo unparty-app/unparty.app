@@ -5,12 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_BUILD_YOURS_ARTICLE: EditorialArticle = {
   slug: 'component-build-yours',
   title: 'BUILD YOURS.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'your site\'s one ask, in your color.',
+  description: 'The brain lights up and the words write themselves in. it fills the page with your site\'s ask.',
   category: 'MAKE.',
   date: '2026-10-09',
-  updated: '2026-10-29',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
   presents: { component: 'BuildYours', needs: [] },
@@ -25,7 +25,7 @@ export const COMPONENT_BUILD_YOURS_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'the brain lights up and the words write themselves in. it fills the page with your site\'s ask.'
     },
     {
       id: 'component',
@@ -40,7 +40,7 @@ export const COMPONENT_BUILD_YOURS_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'set the words and link in FoundersConfig founder.cta. every one on your site follows.'
     },
     {
       id: 'embed',
@@ -57,7 +57,7 @@ export const COMPONENT_BUILD_YOURS_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-app-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unparty.app.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

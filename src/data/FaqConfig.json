@@ -103,7 +103,7 @@
       "a": "it can start at $0 a month: every service it needs has a free plan. you choose what to add as you grow, like a domain, email or payments, and see the cost before you add it.",
       "link": {
         "label": "build your stack",
-        "href": "/article/setup-start-here"
+        "href": "/article/component-build-your-stack"
       },
       "group": "cost"
     },

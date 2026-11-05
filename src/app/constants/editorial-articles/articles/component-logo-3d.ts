@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_LOGO_3D_ARTICLE: EditorialArticle = {
   slug: 'component-logo-3d',
   title: 'LOGO 3D.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'your logo, in three dimensions.',
+  description: 'A 3D scene you can move around in, right on the page.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_LOGO_3D_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a 3D scene you can move around in, right on the page.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_LOGO_3D_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. it plays /scene.splinecode, so replace that file with your own scene.'
     },
     {
       id: 'embed',

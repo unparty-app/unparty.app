@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_ARTICLE_PREVIEW_ARTICLE: EditorialArticle = {
   slug: 'component-article-preview',
   title: 'ARTICLE PREVIEW.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'another article, inside this one.',
+  description: 'One article\'s cover and big lines, right where you are writing, each opening that article at that line.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_ARTICLE_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'one article\'s cover and big lines, right where you are writing, each opening that article at that line.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_ARTICLE_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it a slug. or name a component, and that article\'s live component runs here.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_ARTICLE_PREVIEW_ARTICLE: EditorialArticle = {
     {
       id: 'where-article-unparty-charette-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'the future is human or something like that.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

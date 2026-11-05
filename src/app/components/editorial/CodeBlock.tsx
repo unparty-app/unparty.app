@@ -41,7 +41,8 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
           {copied ? 'copied ✓' : 'copy'}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4">
+      {/* A prompt is sentences, so it wraps; code keeps its lines and scrolls */}
+      <pre className={language === 'prompt' ? 'whitespace-pre-wrap break-words p-4' : 'overflow-x-auto p-4'}>
         <code className="font-geist-mono-google text-sm leading-relaxed">{code}</code>
       </pre>
     </div>

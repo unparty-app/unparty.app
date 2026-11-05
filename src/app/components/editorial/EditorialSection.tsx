@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 import { Check, Maximize2 } from '@/app/components/icons';
 import { iconByName } from '@/app/components/icons/byName';
+import PersonalMark from './PersonalMark';
 import { useTheme } from '../../contexts/ThemeContext';
 import { EditorialSection as EditorialSectionType } from '../../constants/editorial-articles';
 import { getVideoEntryByContentUrl } from '../../constants/video-registry';
@@ -562,7 +563,14 @@ const EditorialSection: React.FC<EditorialSectionProps> = ({ section, isVisible 
         </p>
       );
 
-      const row = avatarSetting ? (
+      const step = section.metadata?.step;
+      const markIcon = section.metadata?.icon;
+      const row = step !== undefined || markIcon ? (
+        <div className="group flex items-center gap-3">
+          <PersonalMark step={step} icon={markIcon} />
+          {content}
+        </div>
+      ) : avatarSetting ? (
         <div className="flex items-center gap-3">
           <div className="relative size-8 shrink-0 overflow-hidden rounded-full border border-border">
             <Image src={avatarSrc} alt="" fill sizes="32px" className="object-cover" />
@@ -1814,7 +1822,7 @@ const componentRegistry: Record<ComponentName, React.LazyExoticComponent<React.C
       default: m.default
     }))
   ),
-  // MiniMaze - 5x5 swipe/arrow-key maze with randomized obstacles
+  // MiniMaze - 5x5 maze in hand-drawn icons, by tap or arrow keys
   MiniMaze: React.lazy(() =>
     import('../MiniMaze').then(m => ({
       default: m.default

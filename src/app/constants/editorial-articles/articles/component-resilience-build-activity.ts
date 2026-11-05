@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_RESILIENCE_BUILD_ACTIVITY_ARTICLE: EditorialArticle = {
   slug: 'component-resilience-build-activity',
   title: 'RESILIENCE BUILD ACTIVITY.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'three moments that test a builder.',
+  description: 'Three moments, two ways to meet each, and what your choices say back.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_RESILIENCE_BUILD_ACTIVITY_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'three moments, two ways to meet each, and what your choices say back.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_RESILIENCE_BUILD_ACTIVITY_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. drop it in anywhere someone is deciding whether to start.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_RESILIENCE_BUILD_ACTIVITY_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-deck',
       type: 'personal',
-      content: 'TODO.',
+      content: 'deck.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

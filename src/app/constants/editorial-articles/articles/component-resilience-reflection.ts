@@ -9,7 +9,7 @@ export const COMPONENT_RESILIENCE_REFLECTION_ARTICLE: EditorialArticle = {
   description: 'A values statement standing over three pillars — grounded progress, resilience through reflection, community impact — each with one line for the action you will actually take.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any

@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_MINI_MAZE_ARTICLE: EditorialArticle = {
   slug: 'component-mini-maze',
   title: 'MINI MAZE.',
-  subtitle: 'five by five, swipe to the goal.',
-  description: 'A 5×5 maze you play with swipes or arrow keys: random walls, a prize cell, and a goal that moves every game. One of the first components ever committed to this site, from october 2024.',
+  subtitle: 'five by five, in pen.',
+  description: 'A 5×5 maze in hand-drawn icons: your icon walks it by tap or arrow keys, picking up ideas on the way to the heart, and its path draws itself behind it.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any
@@ -25,7 +26,7 @@ export const COMPONENT_MINI_MAZE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'a 5×5 maze, new every game: walls to route around, a fun cell worth finding, a goal to reach. swipe on a phone, arrow keys at a desk — tap it first so it has your keyboard.'
+      content: 'a 5×5 maze, new every game. your icon walks it, ideas are worth picking up, and the heart is where it ends. the path you took draws itself behind you.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_MINI_MAZE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'no props: drop it in and it builds its own maze. it was committed in october 2024, in the first weeks of the site — a game before there were articles, stories or steps — and it still runs untouched. the grid size, cells and prizes sit at the top of the file.'
+      content: 'drop it in and it builds its own maze. `player` picks the icon that walks it, and anyone who redrew that icon walks it in their own hand. it was committed in october 2024, in the first weeks of the site — a game before there were articles, stories or steps — and it still runs untouched. the grid size, cells and prizes sit at the top of the file.'
     },
     {
       id: 'embed',

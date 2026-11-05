@@ -125,6 +125,7 @@ export interface EditorialSection {
     mobile?: 'stack' | 'peek';        // Phones: stack the columns (default), or swipe them sideways with the next one peeking in
     verticalAlign?: 'start' | 'center' | 'end';  // Cross-axis alignment of the two columns (default: 'start'). 'center' suits a short column (e.g. one line of text) next to a taller one (e.g. a circle video) — 'start' otherwise pins both to the top regardless of content length.
     // Personal metadata
+    step?: number;  // A numbered ring in the avatar's place, drawn like SetupCurriculum's (PersonalMark). metadata.icon puts a hand-drawn icon there instead
     avatar?: boolean | string;  // Show a small circular avatar next to the content line. true = default founders_rocket avatar; a string overrides with a specific image path; omit for text-only (default)
     storyLink?: string;  // Link the personal note to a story (e.g. '/story/cover-001'). When set, the content pops in the theme color and magnifies slightly on hover
     // Strike metadata - Block-level strikethrough text

@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_SPLINE_EMBED_ARTICLE: EditorialArticle = {
   slug: 'component-spline-embed',
   title: 'SPLINE EMBED.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'any 3D scene, on your page.',
+  description: 'Put a Spline scene anywhere in an article.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_SPLINE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'put a Spline scene anywhere in an article.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_SPLINE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it the scene\'s url. width and height are optional.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_SPLINE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-how-to-create-an-about',
       type: 'personal',
-      content: 'TODO.',
+      content: 'how to create an about.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/article/setup-start-here' },
     }
   ]

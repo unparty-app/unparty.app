@@ -9,7 +9,7 @@ export const COMPONENT_BLOG_ARTICLE: EditorialArticle = {
   description: 'The card that announced unppp., the iOS app unparty started as: a phone-frame screenshot, a TestFlight link, and every keyword lit in your theme color. A piece of the site from april 2025, kept working.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any

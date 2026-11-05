@@ -9,7 +9,7 @@ export const COMPONENT_LIVE_SCALE_ARTICLE: EditorialArticle = {
   description: 'A 1-to-10 slider with a readout you can see across the room: every vote joins the list and the average settles live. Made for asking one question out loud.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: none found (npm run create:component-article -- --needs). Add DependConfig.json ids if it runs on any

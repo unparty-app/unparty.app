@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_FIVE_THINGS_CHALLENGE_ARTICLE: EditorialArticle = {
   slug: 'component-five-things-challenge',
   title: 'FIVE THINGS CHALLENGE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'five things to remember.',
+  description: 'Five lines to fill in, for anything a reader should write down.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_FIVE_THINGS_CHALLENGE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'five lines to fill in, for anything a reader should write down.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_FIVE_THINGS_CHALLENGE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'change the prompt and placeholders to ask for anything.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_FIVE_THINGS_CHALLENGE_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-personal-044',
       type: 'personal',
-      content: 'TODO.',
+      content: 'personal.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

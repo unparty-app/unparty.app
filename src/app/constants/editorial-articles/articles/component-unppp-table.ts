@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_UNPPP_TABLE_ARTICLE: EditorialArticle = {
   slug: 'component-unppp-table',
   title: 'UNPPP TABLE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'every project, one table.',
+  description: 'Every project with its price, hours and kind of build, with columns that sort and tabs by kind.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
   presents: { component: 'UnpppTable', needs: [] },
@@ -24,7 +25,7 @@ export const COMPONENT_UNPPP_TABLE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'every project with its price, hours and kind of build, with columns that sort and tabs by kind.'
     },
     {
       id: 'component',
@@ -39,7 +40,7 @@ export const COMPONENT_UNPPP_TABLE_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. it reads your projects.'
     },
     {
       id: 'embed',

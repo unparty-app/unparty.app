@@ -9,7 +9,7 @@ export const COMPONENT_NEXT_STEP_ARTICLE: EditorialArticle = {
   description: 'A map of your projects by stage and where each one leads. A reader picks a starting point and the project to begin with lights up — or, with a model key set, they can say where they are in their own words.',
   category: 'MAKE.',
   date: '2026-10-14',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs, found by npm run create:component-article -- --needs:

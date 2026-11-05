@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_DEPEND_CARD_SCROLL_ARTICLE: EditorialArticle = {
   slug: 'component-depend-card-scroll',
   title: 'DEPEND CARD SCROLL.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'what your site depends on.',
+  description: 'A row of cards for each service your site runs on and what it costs a month.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_DEPEND_CARD_SCROLL_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a row of cards for each service your site runs on and what it costs a month.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_DEPEND_CARD_SCROLL_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'change the title. the cards come from your stack.'
     },
     {
       id: 'embed',
@@ -57,14 +58,14 @@ export const COMPONENT_DEPEND_CARD_SCROLL_ARTICLE: EditorialArticle = {
     {
       id: 'where-goal-budget',
       type: 'personal',
-      content: 'TODO.',
+      content: 'goal.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/goal-budget' },
     },
     // /article/unparty-runway-story · RULE 01:
     {
       id: 'where-article-unparty-runway-story',
       type: 'personal',
-      content: 'TODO.',
+      content: 'rule 01.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

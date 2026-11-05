@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_FORMULA_DISPLAY_ARTICLE: EditorialArticle = {
   slug: 'component-formula-display',
   title: 'FORMULA DISPLAY.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'business math, one line at a time.',
+  description: 'Math written as plain steps, easy to follow without a math background.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'tile',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_FORMULA_DISPLAY_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'math written as plain steps, easy to follow without a math background.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_FORMULA_DISPLAY_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it steps, separated with a bar.'
     },
     {
       id: 'embed',

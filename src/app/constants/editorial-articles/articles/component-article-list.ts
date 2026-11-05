@@ -9,7 +9,7 @@ export const COMPONENT_ARTICLE_LIST_ARTICLE: EditorialArticle = {
   description: 'A project\'s markdown articles as stamped balls, newest first, with a list view for when there are more than a glance can take.',
   category: 'MAKE.',
   date: '2026-10-19',
-  published: false,
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: none. It reads the markdown files in the project's own folder

@@ -5,12 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_WAITLIST_INVITE_ARTICLE: EditorialArticle = {
   slug: 'component-waitlist-invite',
   title: 'WAITLIST INVITE.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'let people ask to join.',
+  description: 'A place for visitors to ask for a spot, when your site runs a waitlist.',
   category: 'MAKE.',
   date: '2026-10-09',
-  updated: '2026-10-10',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   // needs, found by npm run create:component-article -- --needs:
   //   clerk: src/app/components/Invite.tsx
@@ -26,7 +26,7 @@ export const COMPONENT_WAITLIST_INVITE_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a place for visitors to ask for a spot, when your site runs a waitlist.'
     },
     {
       id: 'component',
@@ -58,7 +58,7 @@ export const COMPONENT_WAITLIST_INVITE_ARTICLE: EditorialArticle = {
     {
       id: 'where-home',
       type: 'personal',
-      content: 'TODO.',
+      content: 'every page (the site layout).',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/' },
     }
   ]

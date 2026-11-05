@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_TIKTOK_EMBED_ARTICLE: EditorialArticle = {
   slug: 'component-tiktok-embed',
   title: 'TIKTOK EMBED.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'a TikTok, in your story.',
+  description: 'A TikTok video, right where you are writing about it.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_TIKTOK_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a TikTok video, right where you are writing about it.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_TIKTOK_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it the video\'s url.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_TIKTOK_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-debt-043',
       type: 'personal',
-      content: 'TODO.',
+      content: 'debt.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_FILM_CALCULATOR_ARTICLE: EditorialArticle = {
   slug: 'component-film-calculator',
   title: 'FILM CALCULATOR.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'does your film make its money back?',
+  description: 'Compare ways to release a film, from a distributor to streaming, across a low, middle and high result.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -25,7 +26,7 @@ export const COMPONENT_FILM_CALCULATOR_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'compare ways to release a film, from a distributor to streaming, across a low, middle and high result.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_FILM_CALCULATOR_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'no props. change the numbers and the scenarios follow.'
     },
     {
       id: 'embed',
@@ -57,7 +58,7 @@ export const COMPONENT_FILM_CALCULATOR_ARTICLE: EditorialArticle = {
     {
       id: 'where-film-calculator',
       type: 'personal',
-      content: 'TODO.',
+      content: 'film roi calculator.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

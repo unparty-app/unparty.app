@@ -4,6 +4,8 @@ import ValuesBadge from './ValuesBadge';
 import { FooterAsk, FooterFrame, FooterSponsor, FounderLogos, FOOTER_LINK } from './footer/FooterLinks';
 import { FOUNDER, FOUNDER_CTA, LEGAL_NAME, SITE_TAGLINE, SITE_TITLE, SPONSOR_LINKS } from '../constants/organization';
 import { FAQ_PUBLISHED } from '@/lib/faq';
+import { SignedOut } from '@/lib/auth-stub.client';
+import { CLERK_ON } from '@/lib/clerk-on';
 
 // The /admin settings tokens (admin/components/Settings.tsx): links read like a
 // row's title (FOOTER_LINK), the legal row like its labels
@@ -17,7 +19,8 @@ const LABEL_LINK = `${LABEL} transition-colors hover:text-[var(--foreground)]`;
  * Row one: the site in VT323 with its tagline, the founder's links as their
  * platforms' marks (GitHub, Instagram…) and its values (ValuesBadge), then
  * where to go next: its ask with the brand brain, articles, the FAQ once
- * published, the founder, and sponsoring with a hand-drawn heart. Row two, in the settings' label type:
+ * published, the founder, sponsoring with a hand-drawn heart, and sign in for
+ * anyone signed out, once the copy has sign-in. Row two, in the settings' label type:
  * ©, privacy, terms, cookies, and the Apple Music notice the player requires.
  *
  * Every label and link comes from FoundersConfig and the routes the copy has,
@@ -53,6 +56,12 @@ const Footer = () => {
             <Link key={item.href} href={item.href} className={FOOTER_LINK}>{item.label}</Link>
           ))}
           {sponsor && <FooterSponsor href={sponsor.href} />}
+          {/* With no sign-in connected, there's nothing to sign in to */}
+          {CLERK_ON && (
+            <SignedOut>
+              <Link href="/sign-in" className={FOOTER_LINK}>sign in</Link>
+            </SignedOut>
+          )}
         </nav>
       </div>
 

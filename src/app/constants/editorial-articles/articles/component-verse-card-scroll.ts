@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_VERSE_CARD_SCROLL_ARTICLE: EditorialArticle = {
   slug: 'component-verse-card-scroll',
   title: 'VERSE CARD SCROLL.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'the words you keep coming back to.',
+  description: 'A row of verses or quotes, each on its own card.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
   presents: { component: 'VerseCardScroll', needs: [] },
@@ -24,7 +25,7 @@ export const COMPONENT_VERSE_CARD_SCROLL_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a row of verses or quotes, each on its own card.'
     },
     {
       id: 'component',
@@ -39,7 +40,7 @@ export const COMPONENT_VERSE_CARD_SCROLL_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it a title and a list of cards.'
     },
     {
       id: 'embed',

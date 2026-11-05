@@ -5,11 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_YOUTUBE_EMBED_ARTICLE: EditorialArticle = {
   slug: 'component-youtube-embed',
   title: 'YOUTUBE EMBED.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'a video, in your story.',
+  description: 'A YouTube video, right where you are writing about it.',
   category: 'MAKE.',
   date: '2026-10-09',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
   presents: { component: 'YouTubeEmbed', needs: [] },
@@ -24,7 +25,7 @@ export const COMPONENT_YOUTUBE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a YouTube video, right where you are writing about it.'
     },
     {
       id: 'component',
@@ -39,7 +40,7 @@ export const COMPONENT_YOUTUBE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'give it the video\'s url or id.'
     },
     {
       id: 'embed',
@@ -56,28 +57,28 @@ export const COMPONENT_YOUTUBE_EMBED_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-unppp',
       type: 'personal',
-      content: 'TODO.',
+      content: 'unppp.',
       metadata: { avatar: '/covers/cover-030.png', storyLink: '/article/setup-start-here' },
     },
     // /story/dtla · know your city
     {
       id: 'where-story-dtla',
       type: 'personal',
-      content: 'TODO.',
+      content: 'know your city.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /story/friend · friend.
     {
       id: 'where-story-friend',
       type: 'personal',
-      content: 'TODO.',
+      content: 'friend.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     },
     // /story/synesthesia · SYNESTHESIA
     {
       id: 'where-story-synesthesia',
       type: 'personal',
-      content: 'TODO.',
+      content: 'synesthesia.',
       metadata: { avatar: '/svgs/unparty/founders-rocket-avatar.webp', storyLink: '/article/setup-start-here' },
     }
   ]

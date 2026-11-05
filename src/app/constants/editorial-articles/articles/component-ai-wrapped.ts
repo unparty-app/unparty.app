@@ -5,12 +5,12 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_AI_WRAPPED_ARTICLE: EditorialArticle = {
   slug: 'component-ai-wrapped',
   title: 'AI WRAPPED.',
-  subtitle: 'TODO.',
-  description: 'TODO.',
+  subtitle: 'a year with an LLM, drawn big.',
+  description: 'A year of LLM use as one big picture: the total, the hours, the timeline and the peak days. tap through each view.',
   category: 'MAKE.',
   date: '2026-10-09',
-  updated: '2026-10-30',
-  published: false,
+  updated: '2026-11-04',
+  published: true,
   coverColor: 'theme',
   coverStyle: 'compound-eye',
   // needs: the DependConfig.json ids it runs on, e.g. ['neon', 'clerk']
@@ -27,7 +27,7 @@ export const COMPONENT_AI_WRAPPED_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'TODO. What it does, in a sentence or two.'
+      content: 'a year of LLM use as one big picture: the total, the hours, the timeline and the peak days. tap through each view.'
     },
     {
       id: 'component',
@@ -42,7 +42,7 @@ export const COMPONENT_AI_WRAPPED_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: 'TODO. When to use it, and what to change.'
+      content: 'it ships with unparty\'s year. swap in your own numbers.'
     },
     {
       id: 'embed',
@@ -59,7 +59,7 @@ export const COMPONENT_AI_WRAPPED_ARTICLE: EditorialArticle = {
     {
       id: 'where-story-wrapped',
       type: 'personal',
-      content: 'TODO.',
+      content: 'wrapped.',
       metadata: { avatar: '/covers/cover-001.png', storyLink: '/article/setup-start-here' },
     }
   ]

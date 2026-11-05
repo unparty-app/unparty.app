@@ -3,7 +3,7 @@ title: "Story 051"
 subtitle: "This story is coming soon"
 description: "A story inspired by cover 051"
 author: "unparty"
-date: "2026-11-03"
+date: "2026-11-05"
 category: "STORIES"
 published: false
 ---
