@@ -7,8 +7,9 @@ import InkStage from './ink/InkStage';
 import { InkMark, InkWord } from './ink/primitives';
 import { wobble } from './ink/pen';
 import ActionPill from './build-yours/ActionPill';
+import PriceYours from './build-yours/PriceYours';
 import { BUILD_YOURS_DONE } from './build-yours/BuildYours';
-import { ChevronRight, Hammer, Package } from './icons';
+import { ChevronRight, Package } from './icons';
 import type { FocusData, FocusRow } from './resume/types';
 
 const ReleasesModal = dynamic(() => import('./ReleasesModal'), { ssr: false });
@@ -19,7 +20,6 @@ const BASE = 88; // Each week's stroke rises from here
 const TOP = 6;
 
 const hours = (n: number) => (n < 10 ? n.toFixed(1).replace(/\.0$/, '') : Math.round(n).toLocaleString('en-US'));
-const dollars = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 const weekName = (week: string) =>
   new Date(`${week}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).toLowerCase();
 
@@ -43,7 +43,7 @@ function trendWord(row: FocusRow, weeks: string[]): string {
  *
  * Hours are measured from commits on every build (src/lib/focus.ts).
  */
-export default function RepoFocus({ weeks, recent, rows, focus, totalHours, rate, sentence }: FocusData) {
+export default function RepoFocus({ weeks, recent, rows, focus, totalHours, sentence }: FocusData) {
   const { colorValue } = useTheme();
   const [focused, setFocused] = useState(focus);
   const [week, setWeek] = useState<number | null>(null);
@@ -156,14 +156,7 @@ export default function RepoFocus({ weeks, recent, rows, focus, totalHours, rate
 
           <div className="build-yours mt-5 flex flex-wrap gap-3" style={BUILD_YOURS_DONE}>
             {row.price !== null && (
-              <ActionPill
-                verb="price yours"
-                note={dollars(row.price)}
-                href={priceHref}
-                icon={Hammer}
-                color={colorValue}
-                label={`Price yours: ${row.name} took ${hours(row.total)} hours in ${weeks.length} weeks, about ${dollars(row.price)}`}
-              />
+              <PriceYours hours={row.total} name={row.folded ? `${row.folded} smaller repos` : row.name} href={priceHref} color={colorValue} />
             )}
             {row.take.length > 0 && (
               <ActionPill
@@ -211,7 +204,7 @@ export default function RepoFocus({ weeks, recent, rows, focus, totalHours, rate
       )}
 
       <p className="mt-6 font-vt323 text-base" style={{ color: 'var(--text-muted)' }}>
-        {hours(totalHours)} hours across {rows.reduce((n, r) => n + (r.folded ?? 1), 0)} {rows.reduce((n, r) => n + (r.folded ?? 1), 0) === 1 ? 'repo' : 'repos'}{rate ? `, worth ${dollars(totalHours * rate)} at your baseline's rate` : ''}.
+        {hours(totalHours)} hours across {rows.reduce((n, r) => n + (r.folded ?? 1), 0)} {rows.reduce((n, r) => n + (r.folded ?? 1), 0) === 1 ? 'repo' : 'repos'}.
       </p>
 
       {/* sr-only on a wrapper: a table sizes to its content and ignores

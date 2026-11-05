@@ -2,14 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { BASELINE } from '@/app/constants/organization';
-import { buildCost, hourlyRate } from '@/lib/baseline';
+import { hourlyRate } from '@/lib/baseline';
 import { parseTracked, TRACKED_KEY, writeTracked, type TrackedEntry } from '@/lib/tracked-hours';
 import { useTheme } from '../contexts/ThemeContext';
 import { useInView } from '../hooks/useInView';
 import ActionPill from './build-yours/ActionPill';
+import PriceYours from './build-yours/PriceYours';
 import { BUILD_YOURS_DONE } from './build-yours/BuildYours';
 import { InkUnderline } from './depend/ink';
-import { Download, Hammer, Play, Plus, Square, X } from './icons';
+import { Download, Play, Plus, Square, X } from './icons';
 
 /**
  * Expensd - keep time on what you build, and see what it's worth.
@@ -274,14 +275,7 @@ const Expensd = () => {
           {totalHours > 0 && (
             <div className="mt-6 flex flex-wrap items-center gap-2">
               {BASELINE && (
-                <ActionPill
-                  verb="price yours"
-                  note={`$${Math.round(buildCost(totalHours, BASELINE).total).toLocaleString()}`}
-                  href="/goal-budget?hours=tracked"
-                  icon={Hammer}
-                  color={colorValue}
-                  label={`Price yours from the ${totalHours.toFixed(2)} hours you've tracked`}
-                />
+                <PriceYours hours={totalHours} own href="/goal-budget?hours=tracked" color={colorValue} />
               )}
               <button type="button" onClick={invoice} className={chip} style={{ borderColor: colorValue, outlineColor: colorValue }}>
                 <Download size={13} color={colorValue} />

@@ -1,5 +1,4 @@
 import { BASELINE, SITE_NAME, SITE_URL } from '@/app/constants/organization';
-import { buildCost } from '@/lib/baseline';
 import { findProjectById, listProjects, type ResolvedProject } from '@/lib/projects';
 import { componentLabel, type ComponentName } from '@/lib/component-portfolio';
 import { EDITORIAL_ARTICLES } from '@/app/constants/editorial-articles/registry';
@@ -30,6 +29,9 @@ export interface BeltItem {
   href: string;
   // The full name, for screen readers and agents
   label: string;
+  // A price pill's hours and what they're like: it opens PriceYoursModal, where
+  // the figure comes with its sum; href is the whole plan in Goal Budget
+  price?: { hours: number; name: string };
 }
 
 /**
@@ -61,7 +63,6 @@ export interface ProjectBelt {
 // The repo a project's releases come from: the last part of its GitHub URL, else its id
 const repoOf = (project: ResolvedProject) => project.gh?.replace(/\.git$/, '').split('/').filter(Boolean).pop() || project.id;
 
-const dollars = (n: number) => `$${Math.round(n).toLocaleString()}`;
 
 // A released component to try, once its article is published
 function tryItem(release: Release, tried: Set<string>): BeltItem | null {
@@ -139,8 +140,7 @@ function liveItem(project: ResolvedProject): BeltItem | null {
 // Pricing yours like a measured project: Goal Budget opens with it picked
 function priceItem(id: string, hours: number, label: string): BeltItem | null {
   if (!BASELINE || !hours) return null;
-  const cost = buildCost(hours, BASELINE).total;
-  return { kind: 'price', verb: 'price yours', note: dollars(cost), href: `/goal-budget?like=${encodeURIComponent(id)}`, label: `Price yours: ${label} took ${Math.round(hours)} hours, about ${dollars(cost)}` };
+  return { kind: 'price', verb: 'price yours', note: '', href: `/goal-budget?like=${encodeURIComponent(id)}`, label: `Price yours, like ${label}`, price: { hours, name: label } };
 }
 
 const measuredHours = () => new Map((BASELINE?.projects ?? []).map((p) => [p.id, p.hours]));

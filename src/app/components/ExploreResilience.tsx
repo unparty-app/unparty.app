@@ -3,15 +3,14 @@
 import { useMemo, useRef, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { BASELINE, BASELINE_SITE_HOST } from '../constants/organization';
-import { WEEKDAYS, baselineProjects, buildCost, peakHour, rhythmYears, type Baseline, type BaselineProject, type BaselineRhythmYear } from '@/lib/baseline';
+import { WEEKDAYS, baselineProjects, peakHour, rhythmYears, type Baseline, type BaselineProject, type BaselineRhythmYear } from '@/lib/baseline';
 import { describeBaselineProject } from '../utils/baselineProject';
 import SleekTabs from './SleekTabs';
 import UnpppCircle from './UnpppCircle';
-import ActionPill from './build-yours/ActionPill';
+import PriceYours from './build-yours/PriceYours';
 import InkStage from './ink/InkStage';
 import { InkDot, InkLine, InkMark, InkWord } from './ink/primitives';
 import { penPath, wobble } from './ink/pen';
-import { Hammer } from './icons';
 
 /**
  * ExploreResilience - what it took, and what it means for yours.
@@ -168,7 +167,6 @@ export default function ExploreResilience() {
   const dayMax = Math.max(1, ...year.days);
   const project = choices.find((p) => p.id === projectId) ?? choices[0];
   const perWeek = hours.size * days.size;
-  const worth = project ? Math.round(buildCost(project.hours, BASELINE).total) : 0;
   const projectName = project ? (project.site ? SITE : describeBaselineProject(project).name) : '';
 
   const toggleDay = (i: number) =>
@@ -288,14 +286,7 @@ export default function ExploreResilience() {
             )}
 
             <div className="mt-8">
-              <ActionPill
-                verb="price yours"
-                note={`$${worth.toLocaleString()}`}
-                href={`/goal-budget?like=${encodeURIComponent(project.id)}`}
-                icon={Hammer}
-                color={colorValue}
-                label={`Price yours in Goal Budget, like ${projectName}: ${hoursOf(project.hours)} hours, worth $${worth.toLocaleString()}`}
-              />
+              <PriceYours hours={project.hours} name={projectName} href={`/goal-budget?like=${encodeURIComponent(project.id)}`} color={colorValue} />
             </div>
           </div>
         )}

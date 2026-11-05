@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useInView } from '../hooks/useInView';
 import BuyPill, { BuildYoursPill } from './BuyPill';
 import ActionPill from './build-yours/ActionPill';
+import PriceYours from './build-yours/PriceYours';
 import { BUILD_YOURS_DONE } from './build-yours/BuildYours';
 import { AppWindow, Hammer, Package, Play, type HandDrawnIconComponent } from './icons';
 import type { BeltItem, ProjectBelt as ProjectBeltData } from '@/lib/project-belt';
@@ -93,7 +94,9 @@ export default function ProjectBelt({
   if (belt.items.length === 0) return null;
 
   const pills = [
-    ...belt.items.map((item, i) => (
+    ...belt.items.map((item, i) => (item.price ? (
+      <PriceYours key={item.href} hours={item.price.hours} name={item.price.name} href={item.href} color={colorValue} delayMs={250 + i * STAGGER_MS} />
+    ) : (
       <ActionPill
         key={item.href}
         verb={item.verb}
@@ -104,7 +107,7 @@ export default function ProjectBelt({
         label={item.label}
         delayMs={250 + i * STAGGER_MS}
       />
-    )),
+    ))),
     ...(belt.polarProductId ? [<BuyPill key="ask" polarProductId={belt.polarProductId} />] : belt.ask ? [<BuildYoursPill key="ask" />] : []),
   ];
   const moving = overflows && !still;
