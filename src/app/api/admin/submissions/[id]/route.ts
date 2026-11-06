@@ -46,7 +46,7 @@ export async function PUT(
     const { status, adminResponse } = body
 
     // Approving has to reach Clerk too, or the person stays on the waitlist:
-    // the middleware opens /party from waitlistStatus, not from this row
+    // the proxy opens /party from waitlistStatus, not from this row
     if (status === 'APPROVED') {
       const result = await approveSubmission(id, 'admin')
       if (result.outcome === 'not_found') {

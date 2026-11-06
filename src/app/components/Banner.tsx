@@ -8,13 +8,14 @@ import { useArticleHeader } from '../contexts/ArticleHeaderContext'
 import { useMusicTrackMetadata } from '@/hooks/useMusicTrackMetadata'
 import { parseMarkdownText } from '../utils/textParsing'
 import AuthorAvatar from './editorial/AuthorAvatar'
+import { authorImageOf } from '@/lib/author-image'
 import MusicBanner from './MusicBanner'
 import ThemeColorPicker from './ThemeColorPicker'
 import ArticleMetadataModal from './editorial/ArticleMetadataModal'
 import coverColorsJson from '../covers/cover-colors.json'
 import { getCoverIdFromFilename } from '../covers/covers-data'
-import { iconByName } from './icons/byName'
 import { ICON_DEFAULTS } from '../constants/organization'
+import NamedIcon, { hasNamedIcon } from './icons/NamedIcon'
 
 /**
  * The article byline dock, floating at the bottom of the screen. When an
@@ -50,6 +51,8 @@ export default function Banner() {
   // Stories are rendered through this same shared Banner (converted to
   // EditorialArticle shape), so the base path must follow sourceRoute —
   // hardcoding '/article' here 404'd the reader toggle for every story.
+  // Its own author's picture, else the owner's avatar (FoundersConfig founder.image)
+  const authorImage = authorImageOf(article.authorImage)
   const basePath = article.sourceRoute === 'story' ? '/story' : '/article'
   const visualHref = `${basePath}/${article.slug}`
   const isReaderView = pathname === `${visualHref}/read`
@@ -62,10 +65,10 @@ export default function Banner() {
   // The category as a hand-drawn icon (#589): the article's own, or for an
   // emoji category the owner's default; a word category stays a word
   const emojiCategory = !/[\p{L}\p{N}]/u.test(article.category)
-  const CategoryIcon = iconByName(article.categoryIcon) ?? (emojiCategory ? iconByName(ICON_DEFAULTS.category) : null)
-  const category = CategoryIcon ? (
+  const categoryFallback = emojiCategory ? ICON_DEFAULTS.category : undefined
+  const category = hasNamedIcon(article.categoryIcon, categoryFallback) ? (
     <>
-      <CategoryIcon size={14} strokeWidth={1.8} />
+      <NamedIcon name={article.categoryIcon} fallback={categoryFallback} size={14} strokeWidth={1.8} />
       {!emojiCategory && <span className="ml-1">{article.category}</span>}
       <span className="sr-only">{emojiCategory ? 'category' : ''}</span>
     </>
@@ -111,9 +114,9 @@ export default function Banner() {
             className="-m-px flex size-14 shrink-0 items-center justify-center rounded-full border-2 p-1 sm:size-16"
             style={{ backgroundColor: 'var(--background)', borderColor: colorValue }}
           >
-            {article.authorImage ? (
+            {authorImage ? (
               <div className="size-full overflow-hidden rounded-full transition-transform duration-200 hover:scale-105">
-                <AuthorAvatar src={article.authorImage} alt={article.author} link={article.authorPage} />
+                <AuthorAvatar src={authorImage} alt={article.author} link={article.authorPage} />
               </div>
             ) : (
               <div className="flex size-full items-center justify-center rounded-full" style={{ backgroundColor: colorValue }}>

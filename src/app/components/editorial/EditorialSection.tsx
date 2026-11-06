@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Check, Maximize2 } from '@/app/components/icons';
-import { iconByName } from '@/app/components/icons/byName';
 import PersonalMark from './PersonalMark';
 import { useTheme } from '../../contexts/ThemeContext';
 import { EditorialSection as EditorialSectionType } from '../../constants/editorial-articles';
@@ -42,6 +41,7 @@ import KeywordWrapper from '../KeywordWrapper';
 import CoverVideo from '../CoverVideo';
 import BookModal from '../BookModal';
 import { useStepImageRegistry, type StepImageRegistryEntry } from '@/hooks/useStepImageRegistry';
+import NamedIcon, { hasNamedIcon } from '../icons/NamedIcon';
 
 // Default avatar for `personal` sections when metadata.avatar is `true`
 // rather than a specific image path - a tightly-cropped, rasterized (5.7KB
@@ -444,7 +444,7 @@ const EditorialSection: React.FC<EditorialSectionProps> = ({ section, isVisible 
 
   switch (section.type) {
     case 'hero': {
-      const HeroIcon = iconByName(section.metadata?.icon);
+      const heroIcon = hasNamedIcon(section.metadata?.icon);
       return (
         <div className={`${baseClasses} mb-12 w-screen mx-[calc(50%-50vw)] px-4 sm:px-6 lg:px-12`}>
           <h1
@@ -456,8 +456,8 @@ const EditorialSection: React.FC<EditorialSectionProps> = ({ section, isVisible 
           >
             {/* A chapter's hand-drawn icon, as tall as the hero's words; it
                 draws itself in each time its hero shows (.hero-icon) */}
-            {HeroIcon && <HeroIcon className="hero-icon size-[1em] shrink-0" strokeWidth={1.6} themed />}
-            <span className={HeroIcon && section.metadata?.iconOnly ? 'sr-only' : 'truncate'}>
+            {heroIcon && <NamedIcon name={section.metadata?.icon} className="hero-icon size-[1em] shrink-0" strokeWidth={1.6} themed />}
+            <span className={heroIcon && section.metadata?.iconOnly ? 'sr-only' : 'truncate'}>
               <KeywordWrapper html={section.content || ''} />
             </span>
           </h1>
@@ -1798,7 +1798,7 @@ const componentRegistry: Record<ComponentName, React.LazyExoticComponent<React.C
       default: m.EmbeddableColorPalette
     }))
   ),
-  // Blog - the first product card (unppp. on TestFlight), keyword-highlighted
+  // Blog - one of the owner's projects as a card (cover, name, tagline), its keywords lit
   Blog: React.lazy(() =>
     import('../Blog').then(m => ({
       default: m.default
@@ -1863,6 +1863,13 @@ const componentRegistry: Record<ComponentName, React.LazyExoticComponent<React.C
   LanguageVisualization: React.lazy(() =>
     import('../LanguageVisualization').then(m => ({
       default: m.default
+    }))
+  ),
+  // ComponentTable - the component portfolio as the house table, with the
+  // services each runs on as hand-drawn icons (without=claude: no AI needed)
+  ComponentTable: React.lazy(() =>
+    import('../portfolio/ComponentTable').then(m => ({
+      default: m.default as React.ComponentType<Record<string, unknown>>
     }))
   ),
   // Add more components here as needed

@@ -9,6 +9,7 @@ import { useHydrated } from '@/hooks/useHydrated';
 import BuildYours from './build-yours/BuildYours';
 import { iconByName } from './icons/byName';
 import { wobble } from './ink/pen';
+import NamedIcon from './icons/NamedIcon';
 
 const SIZE = 5;
 const WALL_ODDS = 0.28;
@@ -137,7 +138,6 @@ export default function MiniMaze({ player = 'Poem' }: { player?: string }) {
 
   const at = path[path.length - 1];
   const won = same(at, GOAL);
-  const Player = iconByName(player) ?? iconByName('Poem')!;
   const Goal = iconByName('Heart')!;
   const cta = FOUNDER_CTA;
 
@@ -254,7 +254,7 @@ export default function MiniMaze({ player = 'Poem' }: { player?: string }) {
                     <span className={`relative grid place-items-center ${won ? 'maze-bump size-[92%]' : 'size-[70%] animate-pulse motion-reduce:animate-none'}`}>
                       <Goal size="100%" color={colorValue} />
                       {/* There: your icon, inside the heart */}
-                      {won && <span className="absolute inset-0 m-auto grid size-[36%] place-items-center"><Player size="100%" color={colorValue} /></span>}
+                      {won && <span className="absolute inset-0 m-auto grid size-[36%] place-items-center"><NamedIcon name={player} fallback="Poem" size="100%" color={colorValue} /></span>}
                     </span>
                   )}
                 </button>
@@ -280,7 +280,7 @@ export default function MiniMaze({ player = 'Poem' }: { player?: string }) {
               className="grid size-[78%] place-items-center rounded-full bg-[var(--background)] transition-transform motion-reduce:transition-none"
               style={{ transform: `rotate(${path.length % 2 ? -8 : 8}deg)`, transitionDuration: `${STEP_MS}ms` }}
             >
-              <Player size="84%" color={colorValue} />
+              <NamedIcon name={player} fallback="Poem" size="84%" color={colorValue} />
             </span>
           </div>
         )}

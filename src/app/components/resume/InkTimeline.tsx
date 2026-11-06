@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import InkStage, { beatDelay, useInked } from '../ink/InkStage';
 import { InkDot, InkLine, InkMark, InkWord } from '../ink/primitives';
@@ -36,6 +37,18 @@ const SERIES_OPACITY = [1, 0.62, 0.42, 0.28, 0.2];
  */
 export default function InkTimeline({ label, months, series }: InkTimelineProps) {
   const { colorValue } = useTheme();
+  // The chart's drawn height, px: names closer than a line of text stack apart
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [chartHeight, setChartHeight] = useState(0);
+  useEffect(() => {
+    const el = chartRef.current;
+    if (!el) return;
+    const measure = () => setChartHeight(el.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const lines = series?.length ? series : months?.length ? [{ name: '', months }] : [];
   if (lines.length === 0) return null;
   const multi = !!series?.length;
@@ -57,14 +70,18 @@ export default function InkTimeline({ label, months, series }: InkTimelineProps)
   );
   const last = span.length - 1;
 
-  // Each area is named where its line ends. Two that end close stack a line
-  // apart in pixels, not in percent, so they hold apart on a short phone chart
+  // Each area is named where its line ends. Two that end closer than a line
+  // of text (NAME_PX, measured on the drawn chart, so a short phone chart
+  // counts too) stack a line apart in pixels, not in percent
+  const NAME_PX = 20;
+  const near = chartHeight ? (NAME_PX / chartHeight) * 100 : 9;
   const ends = strokes
     .map((points, lineIndex) => ({ lineIndex, top: (points[last][1] / H) * 100, below: 0 }))
     .sort((a, b) => a.top - b.top);
   for (let index = 1; index < ends.length; index++) {
     const above = ends[index - 1];
-    if (ends[index].top - above.top < 9) Object.assign(ends[index], { top: above.top, below: above.below + 1 });
+    const aboveAt = above.top + (chartHeight ? (above.below * NAME_PX * 100) / chartHeight : 0);
+    if (ends[index].top - aboveAt < near) Object.assign(ends[index], { top: above.top, below: above.below + 1 });
   }
 
   const tallies = !multi ? lines[0].months : [];
@@ -74,7 +91,7 @@ export default function InkTimeline({ label, months, series }: InkTimelineProps)
 
   return (
     <InkStage>
-      <div className={multi ? 'relative pr-24 sm:pr-28' : 'relative'}>
+      <div ref={chartRef} className={multi ? 'relative pr-24 sm:pr-28' : 'relative'}>
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full overflow-visible" role="img" aria-label={label}>
           {!multi && <AreaFill d={`${penPath(strokes[0])} L${x(last)} ${BASE} L${x(0)} ${BASE} Z`} />}
           {strokes.map((points, lineIndex) => (

@@ -1,5 +1,5 @@
 /**
- * UNPARTY Middleware Configuration with Clerk Authentication
+ * UNPARTY proxy (Next 16's name for middleware), with Clerk authentication
  */
 
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'

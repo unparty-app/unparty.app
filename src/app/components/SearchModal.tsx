@@ -121,6 +121,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = '' }: Sear
 
   // Run the query the modal was opened with
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- opening the modal with a query starts that search: an effect responding to the modal opening
     if (isOpen && openedWith) performSearch(openedWith);
   }, [isOpen, openedWith, performSearch]);
 

@@ -57,7 +57,7 @@ read -p "  Subtitle: " subtitle
 read -p "  Read time (e.g. 5 min read): " readtime
 read -p "  Challenge text: " challenge
 read -p "  Author page (e.g. /founders): " authorpage
-read -p "  Author image filename: " authorimage
+read -p "  Author image filename (leave empty for your avatar): " authorimage
 read -p "  Tags (comma-separated, e.g. goal,core,start): " tags_input
 read -p "  Music track ID (e.g. badbunny-dtmf): " musictrackid
 

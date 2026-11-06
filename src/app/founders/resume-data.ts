@@ -28,8 +28,11 @@ import type { EditorialArticle, EditorialSection } from '@/app/constants/editori
 import { getAuthorDisplayName } from '@/app/constants/authors';
 import { resolveCoverSrc } from '@/app/utils/coverPath';
 import { focusData } from '@/lib/focus';
-import { BRAND_COLORS, FOUNDER, FOUNDER_CTA, FOUNDER_RESUME, OWNER_STACK, SITE_NAME, SITE_TITLE } from '@/app/constants/organization';
+import { BASELINE, BRAND_COLORS, FOUNDER, FOUNDER_CTA, FOUNDER_HIRE, FOUNDER_OFFER, FOUNDER_RESUME, OWNER_STACK, SITE_NAME, SITE_TITLE, type FounderOfferLine } from '@/app/constants/organization';
 import { builderShows } from '@/lib/builder-shows';
+import { accountActivity, comparisonChart, ownActivity } from '@/lib/comparisons';
+import { DRAWABLE_ICONS } from '@/app/components/icons/drawable';
+import { allReleases } from '@/lib/releases';
 import { getDependItems, monthlyCost } from '@/utils/dependCosts';
 import { type PathStage, type StackLine, type TimelineMonth, type TimelineSeries, type ViewsData, type WordCount } from '@/app/components/resume/types';
 import { getWordCounts } from '@/lib/word-counts';
@@ -323,6 +326,34 @@ export const monthYear = (date: string) =>
 
 export const plural = (count: number, one: string, many: string) => `${count.toLocaleString('en-US')} ${count === 1 ? one : many}`;
 
+/**
+ * The measured numbers an offer line can name as {word}, so "{projects}
+ * projects" stays true as the work grows: hours, projects, first (the month
+ * the measuring starts), shipped ("5 of 6"), releases, pieces, icons,
+ * components, and, from comparisons.json, prs, issues and year (its start)
+ * for the site's repo, and orgPrs, orgIssues and repos for the whole account
+ */
+export function measuredFacts(resume: FounderResumeData): Record<string, string> {
+  const measured = BASELINE?.projects ?? [];
+  const firsts = measured.map((p) => p.from).filter((d): d is string => !!d).sort();
+  const out = resume.building.filter((p) => p.stage === 'shipped' || p.stage === 'selling').length;
+  const own = ownActivity();
+  const account = accountActivity();
+  const n = (value: number) => value.toLocaleString('en-US');
+  return {
+    hours: n(Math.round(measured.reduce((total, p) => total + p.hours, 0))),
+    projects: n(measured.filter((p) => p.hours > 0).length),
+    ...(firsts[0] ? { first: monthYear(firsts[0]) } : {}),
+    ...(resume.building.length ? { shipped: `${out} of ${resume.building.length}` } : {}),
+    releases: n(allReleases().length),
+    pieces: n(resume.shipped.pieces),
+    icons: n(DRAWABLE_ICONS.length),
+    components: n(COMPONENT_NAMES.length),
+    ...(own ? { prs: n(own.prs), issues: n(own.issues), year: monthYear(own.since) } : {}),
+    ...(account ? { orgPrs: n(account.prs), orgIssues: n(account.issues), repos: n(account.repos) } : {}),
+  };
+}
+
 export const dollars = (value: number) => `$${Math.round(value).toLocaleString('en-US')}`;
 
 // Steady output: at least this many pieces within this many months. The
@@ -387,7 +418,7 @@ export const cardsRow = (id: string, cards: Card[]): EditorialSection => ({
 const pieceCard = (piece: ResumePiece): Card => ({ href: piece.href, cover: piece.cover, title: piece.title, subtitle: piece.description });
 
 /** The founder's charts, by name: what /founders shows and /api/resume serves */
-export const CHART_PARTS = ['shipped', 'effort', 'momentum', 'stack', 'views', 'path', 'focus'] as const;
+export const CHART_PARTS = ['shipped', 'effort', 'momentum', 'stack', 'views', 'path', 'focus', 'compare'] as const;
 export type ChartPart = (typeof CHART_PARTS)[number];
 
 /** Which ink chart draws each part */
@@ -399,6 +430,7 @@ export const CHART_COMPONENT: Record<ChartPart, string> = {
   views: 'ViewsChart',
   path: 'InkPath',
   focus: 'RepoFocus',
+  compare: 'InkTimeline',
 };
 
 /**
@@ -447,6 +479,11 @@ export function chartProps(resume: FounderResumeData, part: ChartPart): Record<s
     case 'focus':
       // Measured from the owner's repos at build (src/lib/focus.ts), not the resume
       return focusData() as Record<string, unknown> | null;
+    case 'compare': {
+      // The owner's pull requests next to small teams' repos (src/lib/comparisons.ts), as on /founders
+      const chart = comparisonChart(FOUNDER.name.split(' ')[0]?.toLowerCase() || 'me');
+      return chart ? { series: chart.series, label: chart.label } : null;
+    }
   }
 }
 
@@ -462,6 +499,8 @@ export const chartSection = (id: string, resume: FounderResumeData, part: ChartP
  * (src/lib/build-story.ts), which a row here leads to.
  *
  * 1. Who: the founder's thesis, bio and links, then the piece people read most.
+ *    What they do and how it translates, and the ask for them, in their own
+ *    words (founder.offer, founder.hire), when they've written them.
  *    BUILDER.: what the work shows about them, each strength linked to its
  *    chart (src/lib/builder-shows.ts, #561).
  * 2. WORK.: the pieces to start with, articles and the components' homes in
@@ -484,13 +523,65 @@ export function resumeToArticle(resume: FounderResumeData): EditorialArticle {
     sections.push(row('most-read', `most read: **${piece.title}**`, piece.href, piece.cover ?? (FOUNDER.cover ? resolveCoverSrc(FOUNDER.cover) : undefined)));
   }
 
+  // What the founder does and how it translates (founder.offer), then the
+  // ask for them (founder.hire), all in their own words from /admin → Your
+  // offer. A {word} in a line is a measured number, filled in here, so the
+  // lines stay true as the work grows (measuredFacts)
+  const facts = measuredFacts(resume);
+  const fill = (text: string) => text.replace(/\{(\w+)\}/g, (token, key: string) => facts[key] ?? token);
+  // A line as the house row: its hand-drawn icon, a bold title, the rest short
+  const offerRow = (id: string, l: FounderOfferLine): EditorialSection => ({
+    id,
+    type: 'personal',
+    content: `**${fill(l.title)}** ${fill(l.text)}`,
+    metadata: { ...(l.icon ? { icon: l.icon } : {}), ...(l.href ? { storyLink: l.href } : {}) },
+  });
+  const offerColumn = (id: string, heading: string, lines: FounderOfferLine[] | undefined) =>
+    lines?.length ? [line(`${id}-line`, heading), ...lines.map((l, k) => offerRow(`${id}-${k}`, l))] : [];
+  const does = offerColumn('offer', 'what I do.', FOUNDER_OFFER.does);
+  const translates = offerColumn('translates', 'how it translates.', FOUNDER_OFFER.translates);
+  // Side by side when both are written, so the two read as one glance
+  if (does.length && translates.length) {
+    // On a phone they swipe, the second peeking in, instead of stacking a screen apart
+    sections.push({ id: 'offer-columns', type: 'columns', metadata: { layout: '1:1', mobile: 'peek' }, leftSections: does, rightSections: translates });
+  } else sections.push(...does, ...translates);
+  if (FOUNDER_HIRE) sections.push(component('hire', 'Cta', { label: FOUNDER_HIRE.label, href: FOUNDER_HIRE.href, placement: 'founders-hire', hand: true }));
+
+  // The proof: the owner's pull requests next to small teams' repos over the
+  // same months (src/lib/comparisons.ts), then how it's counted, a row each
+  const firstName = FOUNDER.name.split(' ')[0]?.toLowerCase() || 'me';
+  const chart = comparisonChart(firstName);
+  if (chart) {
+    const note = (id: string, icon: string, content: string): EditorialSection => ({ id, type: 'personal', content, metadata: { icon } });
+    const teams = chart.comps.map((c) => `[${c.name}](https://github.com/${c.repo})`);
+    const named = teams.length > 1 ? `${teams.slice(0, -1).join(', ')} and ${teams[teams.length - 1]}` : teams[0];
+    sections.push(
+      // Named for the one repo, so it never reads against the account-wide numbers above it
+      line('compare-line', `${plural(chart.mine.prs, 'pull request', 'pull requests')} to ${SITE_TITLE} since ${monthYear(chart.since).split(' ')[0]}, by ${plural(chart.mine.people, 'person', 'people')}.`),
+      component('compare-chart', 'InkTimeline', { series: chart.series, label: chart.label }),
+      {
+        id: 'compare-notes',
+        type: 'columns',
+        metadata: { layout: '1:1', mobile: 'stack' },
+        leftSections: [
+          note('compare-teams', 'GitBranch', `**next to small teams.** ${named}, open-source products.`),
+          note('compare-since', 'Calendar', `**since ${monthYear(chart.since)}.** when the work here moved into pull requests.`),
+        ],
+        rightSections: [
+          note('compare-people', 'Users', `**team size.** the number beside each name is how many people did the work: ${chart.regular} or more merged pull requests each.`),
+          note('compare-size', 'Info', `**merged pull requests, added up.** their size differs from repo to repo.`),
+        ],
+      }
+    );
+  }
+
   // BUILDER.: what the work shows, each card a strength linked to its chart
   // (src/lib/builder-shows.ts), on the owner's brand colors
   const shows = builderShows(resume);
   if (shows.cards.length > 0) {
     sections.push(
       chapter('builder', 'BUILDER.', 'Sparkles'),
-      ...(shows.worth ? [line('builder-line', shows.worth)] : []),
+      ...(shows.measured ? [line('builder-line', shows.measured)] : []),
       cardsRow('builder-row', shows.cards.map((card, i) => ({ ...card, color: BRAND_COLORS.length ? BRAND_COLORS[i % BRAND_COLORS.length] : 'theme' })))
     );
   }

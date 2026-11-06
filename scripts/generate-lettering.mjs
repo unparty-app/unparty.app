@@ -22,7 +22,7 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 
 // The phrases the site writes by hand (besides "build yours", lettering.ts)
-export const PHRASES = ['try it', 'price yours', 'take it', 'start', 'stop', 'releases', 'nah'];
+export const PHRASES = ['try it', 'price yours', 'take it', 'start', 'stop', 'releases', 'nah', 'work with me'];
 
 const ROOT = process.cwd();
 const FONT = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'data', 'hershey-script1.json'), 'utf8'));

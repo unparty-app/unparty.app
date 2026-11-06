@@ -2,41 +2,10 @@
 import { useEffect } from 'react';
 import Chat from '../components/Chat';
 import AuthorAvatar from '../components/editorial/AuthorAvatar';
+import { FOUNDER } from '../constants/organization';
+import { authorImageOf } from '@/lib/author-image';
 import { useTheme } from '../contexts/ThemeContext';
 import { useUserTracking } from '../hooks/useUserTracking';
-
-const ThemeDivider = ({ colorValue }: { colorValue: string }) => (
-  <div className="flex w-screen items-center gap-3 mx-[calc(50%-50vw)]">
-    <div className="h-1.5 flex-1 rounded-full" style={{ backgroundColor: colorValue }} />
-    <div className="flex shrink-0 items-center gap-2">
-      <div className="size-2 rounded-full" style={{ backgroundColor: colorValue }} />
-      <div className="h-0.5 w-2 rounded-full" style={{ backgroundColor: colorValue }} />
-      <div className="size-2 rounded-full" style={{ backgroundColor: colorValue }} />
-    </div>
-    <div className="h-1.5 flex-1 rounded-full" style={{ backgroundColor: colorValue }} />
-  </div>
-);
-
-const STATS = [
-  {
-    eyebrow: 'BUILD ME',
-    value: 'ABOUT',
-    unit: 'UNPARTY',
-    narrative: 'you want to build unparty.app together.',
-  },
-  {
-    eyebrow: 'CONNECT ME',
-    value: 'BUILD',
-    unit: 'TOGETHER',
-    narrative: 'you want to learn about building your own unparty.app.',
-  },
-  {
-    eyebrow: 'LEARN ME',
-    value: 'CONNECT',
-    unit: 'SOLUTIONS',
-    narrative: 'you want to explore your own ideas.',
-  },
-];
 
 export default function Connect() {
   const { colorValue } = useTheme();
@@ -56,10 +25,7 @@ export default function Connect() {
 
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-12 py-8">
-      {/* Theme divider */}
-      <ThemeDivider colorValue={colorValue} />
-
-      {/* Hero */}
+      {/* TODO: SHOULD READ FROM FOUNDERSCONFIG SO THERE IS NOT HARDCODED COPY HERE */}
       <header className="space-y-4 text-left">
         <p
           className="font-vt323 text-xs font-bold uppercase tracking-widest"
@@ -92,7 +58,8 @@ export default function Connect() {
               className="size-12 overflow-hidden rounded-full border-2 transition-transform duration-200 hover:scale-105"
               style={{ borderColor: colorValue }}
             >
-              <AuthorAvatar src="/covers/cover-001.png" alt="" />
+              {/* The owner's avatar (/admin → Your avatar), where /founders' "work with me" leads */}
+              <AuthorAvatar src={authorImageOf(undefined) ?? '/logo.png'} alt={FOUNDER.name} />
             </div>
           </div>
           <div>
@@ -102,7 +69,6 @@ export default function Connect() {
             >
               hello! i am human.
             </h2>
-           
           </div>
         </div>
 
@@ -117,36 +83,7 @@ export default function Connect() {
         </div>
       </section>
 
-      {/* Stat band */}
-      <section
-        className="w-screen px-4 py-12 mx-[calc(50%-50vw)] sm:px-6 lg:px-12"
-        style={{ backgroundColor: `${colorValue}10` }}
-      >
-        <div className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-3">
-          {STATS.map((stat) => (
-            <div key={stat.eyebrow} className="space-y-2">
-              <p
-                className="font-vt323 text-xs font-bold uppercase tracking-widest"
-                style={{ color: colorValue }}
-              >
-                {stat.eyebrow}
-              </p>
-              <p className="font-vt323 text-5xl leading-none md:text-6xl" style={{ color: 'var(--foreground)' }}>
-                {stat.value}
-                <span className="ml-2 font-vt323 text-lg uppercase" style={{ color: 'var(--text-muted)' }}>
-                  {stat.unit}
-                </span>
-              </p>
-              <p className="font-space-grotesk text-xs md:text-sm" style={{ color: 'var(--text-muted)' }}>
-                {stat.narrative}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Closing divider */}
-      <ThemeDivider colorValue={colorValue} />
     </main>
   );
 }

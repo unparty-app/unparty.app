@@ -38,6 +38,7 @@ export default function ProblemFeed({ problems, color, newHref }: ProblemFeedPro
 
   useEffect(() => {
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- the remembered view lives in localStorage, which the server can't read: cards first, then the saved view once mounted
       if (localStorage.getItem(VIEW_KEY) === 'table') setView('table');
     } catch { /* storage blocked: cards */ }
   }, []);

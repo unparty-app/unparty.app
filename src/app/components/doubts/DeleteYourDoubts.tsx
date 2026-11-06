@@ -44,6 +44,7 @@ export default function DeleteYourDoubts() {
     return () => window.clearInterval(timer);
   }, [stage]);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the two minutes running out moves the exercise on: a step driven by the timer
     if (stage === 'write' && left === 0) setStage('delete');
   }, [stage, left]);
   // All deleted: done

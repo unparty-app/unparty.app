@@ -22,6 +22,9 @@ const DEFAULT_GAME_COLORS = [
 
 type GameState = 'start' | 'showing' | 'playing' | 'gameover';
 
+// A random color's index. Only ever called from a tap (start, the next color), never while rendering
+const randomIndex = (count: number) => Math.floor(Math.random() * count);
+
 const W = 640;
 const H = 30;
 const STROKE = 12;
@@ -111,7 +114,7 @@ const ColorMemoryGame = () => {
   };
 
   const startGame = () => {
-    const first = [Math.floor(Math.random() * gameColors.length)];
+    const first = [randomIndex(gameColors.length)];
     setSequence(first);
     setScore(0);
     setMissedColor(null);
@@ -147,7 +150,7 @@ const ColorMemoryGame = () => {
       setSessionBest(newScore);
       writeLocalStorage('colorGameHighScore', newScore.toString());
     }
-    const next = [...sequence, Math.floor(Math.random() * gameColors.length)];
+    const next = [...sequence, randomIndex(gameColors.length)];
     setSequence(next);
     setGameState('showing');
     showSequence(next, Math.floor(newScore / 3) + 1, 1000);

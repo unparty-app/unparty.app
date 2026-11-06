@@ -1,7 +1,7 @@
 import type { EditorialArticle } from '../types';
 
 // SETUP. curriculum step 6 (prisma/setup-steps.ts `sign-in`, #1094).
-// The session-token claim is required by src/middleware.ts and
+// The session-token claim is required by src/proxy.ts and
 // src/utils/roles.ts, which read sessionClaims.metadata.{role,waitlistStatus}.
 // Dashboard paths and JSON checked 2026-09-28 against
 // clerk.com/docs/guides/secure/basic-rbac. Recheck when editing.
@@ -12,7 +12,7 @@ export const SETUP_SIGN_IN_ARTICLE: EditorialArticle = {
   description: 'How non-technical founders connect Clerk authentication to a Next.js site: create a Clerk application, choose sign-in methods, copy the publishable and secret keys into .env, add public metadata to the session token for roles, and sign up as the first user.',
   category: 'SETUP.',
   date: '2026-09-28',
-  updated: '2026-11-03',
+  updated: '2026-11-05',
   published: true,
   author: 'justin-murry',
   readTime: '7 min',
@@ -163,7 +163,7 @@ export const SETUP_SIGN_IN_ARTICLE: EditorialArticle = {
     {
       id: 'llm-prompts',
       type: 'code',
-      content: 'I added Clerk keys to .env in a Next.js project and restarted it, but\n[describe what you see]. Here is the terminal output: [paste it].\nDo not ask me for my secret key. What should I check?\n\n(In Claude Code, inside your copy)\nRead src/middleware.ts and src/types/globals.d.ts. Explain in plain\nwords who can open /party and /admin, and why the session token\nsetting matters. Don\'t change anything.',
+      content: 'I added Clerk keys to .env in a Next.js project and restarted it, but\n[describe what you see]. Here is the terminal output: [paste it].\nDo not ask me for my secret key. What should I check?\n\n(In Claude Code, inside your copy)\nRead src/proxy.ts and src/types/globals.d.ts. Explain in plain\nwords who can open /party and /admin, and why the session token\nsetting matters. Don\'t change anything.',
       metadata: { language: 'prompt', emphasis: true, caption: 'Describe your keys; never paste them' }
     },
     {

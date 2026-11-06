@@ -11,6 +11,9 @@ export interface SleekTab {
  * The house tab bar, from RepoStats' TabbedMetricTable: small uppercase labels,
  * the active one in foreground with an accent underline, a hairline under the
  * whole bar, horizontal scroll when the tabs outgrow it. No boxes, no pills.
+ * It scrolls sideways only: nothing hangs below the bar (the underline sits
+ * on the hairline, not over it), so a swipe across the tabs never wobbles
+ * the row up and down.
  *
  * Used where a set of rows would otherwise stack down a phone screen
  * (challenge steps, the SETUP. curriculum's chapters, table rows): the caller
@@ -27,7 +30,7 @@ const SleekTabs: React.FC<{
   <div
     role="tablist"
     aria-label={label}
-    className={`flex items-center gap-4 overflow-x-auto whitespace-nowrap border-b scrollbar-hide ${className}`}
+    className={`flex items-center gap-4 overflow-x-auto overflow-y-hidden overscroll-x-contain whitespace-nowrap border-b scrollbar-hide ${className}`}
     style={{ borderColor: `${accent}25` }}
   >
     {tabs.map((tab) => {
@@ -39,7 +42,7 @@ const SleekTabs: React.FC<{
           role="tab"
           aria-selected={isActive}
           onClick={() => onChange(tab.id)}
-          className="relative -mb-px inline-flex max-w-[11rem] shrink-0 items-center gap-2 py-3 font-google-sans-code text-xs uppercase tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--foreground)]"
+          className="relative inline-flex max-w-[11rem] shrink-0 items-center gap-2 py-3 font-google-sans-code text-xs uppercase tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--foreground)]"
           style={{ color: isActive ? 'var(--foreground)' : 'var(--text-muted)' }}
         >
           <span className="truncate">{tab.label}</span>

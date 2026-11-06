@@ -73,3 +73,40 @@ export function writeFoundersConfig(
 ): Promise<ConfigWriteResult> {
   return writeRepoFile(CONFIG_PATH, edit, pr)
 }
+
+/**
+ * A new file next to a FoundersConfig change that points at it (the owner's
+ * avatar: public/avatar-….png and founder.image), in one go: both written
+ * locally, or both in one self-merging pull request when deployed. Files are
+ * never overwritten, so a new name also skips any cached copy of the old one.
+ */
+export async function writeFileWithConfig(
+  file: { path: string; data: Buffer },
+  edit: (text: string) => string,
+  pr: { branch: string; title: string; body: string }
+): Promise<ConfigWriteResult> {
+  if (LOCAL) {
+    const config = join(process.cwd(), CONFIG_PATH)
+    const next = edit(await readFile(config, 'utf8')) // a bad edit throws before anything is written
+    await writeFile(join(process.cwd(), file.path), file.data)
+    await writeFile(config, next)
+    return { applied: 'now' }
+  }
+
+  if (!CAN_COMMIT) throw new Error(`No GitHub App: ${file.path} can only be added in the repo`)
+
+  const { readFileText, createArticleBranch, commitJsonFile, openArticlePR, findOpenPullByBranchPrefix } = await import('@/lib/github')
+
+  // One already waiting (an avatar picked minutes ago): this one joins it
+  const open = await findOpenPullByBranchPrefix(`${pr.branch}-`)
+  const branch = open?.branch ?? `${pr.branch}-${Date.now()}`
+  if (!open) await createArticleBranch(branch)
+  const current = await readFileText(CONFIG_PATH, branch)
+  if (current === null) throw new Error(`${CONFIG_PATH} not found on ${branch}`)
+  const next = edit(current)
+  await commitJsonFile(file.path, file.data, pr.title, branch)
+  await commitJsonFile(CONFIG_PATH, next, pr.title, branch)
+  if (open) return { applied: 'after-deploy', prUrl: open.prUrl, autoMergeEnabled: true }
+  const { prUrl, autoMergeEnabled } = await openArticlePR(branch, pr.title, pr.body)
+  return { applied: 'after-deploy', prUrl, autoMergeEnabled }
+}

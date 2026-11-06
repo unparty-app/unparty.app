@@ -14,6 +14,8 @@ import IconDrawPad from '../components/icons/IconDrawPad'
 import IconDefaults from '../components/icons/IconDefaults'
 import WordTags from '../components/WordTags'
 import YourAnswers from '../components/YourAnswers'
+import YourAvatar from '../components/YourAvatar'
+import YourOffer from '../components/YourOffer'
 import TellUnparty from '../components/TellUnparty'
 import DoubtsEditor from './components/DoubtsEditor'
 import { UNPARTY_BUTTON } from '@/lib/unparty-refs'
@@ -163,6 +165,14 @@ export default function AdminSettings() {
         <ValueRow title="Name" value={SITE_TITLE} />
         <ValueRow title="Address" value={SITE_URL.replace(/^https?:\/\//, '')} />
         <ValueRow title="Founder" value={FOUNDER.name} />
+        {/* The picture beside every byline that doesn't name another author (FoundersConfig founder.image) */}
+        <div className="xl:col-span-full">
+          <DisclosureRow title="Your avatar" detail="the picture beside your articles and stories">
+            <div className="pt-4">
+              <YourAvatar />
+            </div>
+          </DisclosureRow>
+        </div>
         {/* The rings open in place: change one color or all five (FoundersConfig
             brandColors). Full width, so opening it doesn't stretch its neighbours */}
         <div className="xl:col-span-full">
@@ -193,6 +203,14 @@ export default function AdminSettings() {
           <DisclosureRow title="Your words" detail="tag the words your site keeps using with the kind of build they point to">
             <div className="pt-4">
               <WordTags />
+            </div>
+          </DisclosureRow>
+        </div>
+        {/* What the owner does, how it translates, and the ask for them, under their bio on /founders */}
+        <div className="xl:col-span-full">
+          <DisclosureRow title="Your offer" detail="what you do, what it means for others, and how to reach you">
+            <div className="pt-4">
+              <YourOffer />
             </div>
           </DisclosureRow>
         </div>

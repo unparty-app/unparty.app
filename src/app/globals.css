@@ -3553,6 +3553,19 @@ code:not(pre code) {
 .row-table__wide-only {
   display: none;
 }
+/* The pages: side by side, a page per swipe, like a ScrollRow. Their layout
+   is inline on RowTable's track; here, a drag pauses the snap (over the
+   inline style) and the cursor says it drags */
+.row-table__track[data-dragging="true"] {
+  scroll-snap-type: none !important;
+  cursor: grabbing;
+  user-select: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .row-table__track[data-paged] {
+    cursor: grab;
+  }
+}
 .row-table__panel {
   display: grid;
   grid-template-rows: 0fr;

@@ -65,7 +65,8 @@ function trendOf(hours: number[], split: number): FocusRow['trend'] {
   return now > before * RISING ? 'rising' : now < before * EASING ? 'easing' : 'steady';
 }
 
-// How the focus moved, in one plain sentence
+// How the focus moved, in one plain sentence, in the owner's own voice: it
+// only shows on public pages (/build, /founders, articles), read by visitors
 function sentenceOf(rows: FocusRow[], weeks: number): string {
   const split = Math.max(0, weeks - RECENT);
   const now = most(rows, split, weeks);
@@ -73,10 +74,10 @@ function sentenceOf(rows: FocusRow[], weeks: number): string {
   const lead = !now
     ? `nothing new in the last ${RECENT} weeks.`
     : before && before !== now
-      ? `your focus moved from ${before.name} to ${now.name}.`
+      ? `my focus moved from ${before.name} to ${now.name}.`
       : before
-        ? `most of your hours went to ${now.name}, and still do.`
-        : `most of your hours went to ${now.name}.`;
+        ? `most of my hours went to ${now.name}, and still do.`
+        : `most of my hours went to ${now.name}.`;
 
   const quiet = rows
     .filter(row => !row.folded && sum(row.hours.slice(split)) === 0 && sum(row.hours.slice(0, split)) >= QUIET_HOURS)

@@ -83,6 +83,7 @@ const Expensd = () => {
       return { startTime, endTime, duration, isManual: e.manual };
     });
     const running = entries[entries.length - 1];
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved entries live in localStorage, which the server can't read: restored after mount so server and browser render the same first
     setTimeEntries(entries);
     if (running && !running.endTime && !running.isManual) {
       setCurrentEntry(running);
@@ -195,7 +196,8 @@ const Expensd = () => {
             TIME. <span className="ml-1 font-google-sans-code text-[10px] uppercase tracking-wide text-[var(--text-muted)]">{running ? 'running' : 'so far'}</span>
           </p>
           <p className="relative mt-2 inline-block font-vt323 text-5xl leading-tight tabular-nums sm:text-6xl" style={{ color: colorValue }} aria-live="off">
-            {running ? clock(Date.now() - running.startTime.getTime()) : `${hoursOf(totalHours)} h`}
+            {/* The running entry's duration, which the interval updates each second: reading the clock here would make rendering impure */}
+            {running ? clock((running.duration ?? 0) * 3_600_000) : `${hoursOf(totalHours)} h`}
             <InkUnderline color={colorValue} className="pointer-events-none absolute -bottom-1 left-0 h-2.5 w-2/3" />
           </p>
 

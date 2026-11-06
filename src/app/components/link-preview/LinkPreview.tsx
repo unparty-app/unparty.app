@@ -44,7 +44,7 @@ export default function LinkPreview({ presets = [], followTheme = false }: { pre
     return () => window.clearTimeout(timer);
   }, [title, subtitle, category, cover, followTheme, colorValue]);
 
-  const usePreset = (preset: LinkPreviewPreset) => {
+  const applyPreset = (preset: LinkPreviewPreset) => {
     setTitle(preset.title);
     setSubtitle(preset.subtitle ?? '');
     setCategory(preset.category);
@@ -111,7 +111,7 @@ export default function LinkPreview({ presets = [], followTheme = false }: { pre
               <button
                 key={preset.label}
                 type="button"
-                onClick={() => usePreset(preset)}
+                onClick={() => applyPreset(preset)}
                 aria-pressed={preset.title === title}
                 className="rounded-full border px-3 py-1.5 font-google-sans-code text-[11px] uppercase tracking-wider text-[var(--foreground)] transition-colors hover:bg-[var(--background-highlight)]"
                 style={{ borderColor: colorValue, backgroundColor: preset.title === title ? `${colorValue}26` : undefined }}

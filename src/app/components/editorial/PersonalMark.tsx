@@ -2,8 +2,8 @@
 
 import { useTheme } from '../../contexts/ThemeContext';
 import { useInView } from '../../hooks/useInView';
-import { iconByName } from '../icons/byName';
 import StepNumberOverlay from './StepNumberOverlay';
+import NamedIcon, { hasNamedIcon } from '../icons/NamedIcon';
 
 /**
  * The mark at the start of a `personal` row, in the avatar's place: a numbered
@@ -15,7 +15,7 @@ import StepNumberOverlay from './StepNumberOverlay';
 export default function PersonalMark({ step, icon }: { step?: number; icon?: string }) {
   const { colorValue } = useTheme();
   const [ref, inView] = useInView<HTMLSpanElement>();
-  const Icon = iconByName(icon);
+  const hasIcon = hasNamedIcon(icon);
   const index = Math.max(0, (step ?? 1) - 1);
 
   if (step !== undefined) {
@@ -27,10 +27,10 @@ export default function PersonalMark({ step, icon }: { step?: number; icon?: str
       </span>
     );
   }
-  if (!Icon) return null;
+  if (!hasIcon) return null;
   return (
     <span ref={ref} className={`grid size-8 shrink-0 place-items-center ${inView ? 'ink-icons' : 'opacity-0'}`}>
-      <Icon size={26} color={colorValue} />
+      <NamedIcon name={icon} size={26} color={colorValue} />
     </span>
   );
 }

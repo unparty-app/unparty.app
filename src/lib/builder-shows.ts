@@ -6,7 +6,9 @@
  * who trusts the process is easy to overlook, so each card says one strength
  * plainly and links to the chart that backs it (/build or /founders):
  *
- * - the worth of the hours: FoundersConfig `baseline`, at its market pay
+ * - the hours: FoundersConfig `baseline`, how many and across how many
+ *   projects, and how they were measured. No price on them: this is a
+ *   resume, and market pay stays a tool for the visitor (Goal Budget)
  * - driven: how long they've kept at it, and that they still are (`baseline.projects`)
  * - focused: where the last weeks went (focus.json, src/lib/focus.ts)
  * - creative: the different places their builds start from (`projects` startsFrom)
@@ -21,15 +23,15 @@
  */
 import 'server-only';
 import { BASELINE } from '@/app/constants/organization';
-import { buildCost, rhythmYears } from '@/lib/baseline';
+import { rhythmYears } from '@/lib/baseline';
 import { focusRepos } from '@/lib/focus';
 import { allReleases } from '@/lib/releases';
 import { findProjectById, listFounderProjects } from '@/lib/projects';
-import { dollars, monthYear, plural, type FounderResumeData } from '@/app/founders/resume-data';
+import { monthYear, plural, type FounderResumeData } from '@/app/founders/resume-data';
 
 export interface BuilderShows {
-  // The sentence that carries the number: the hours, and what they're worth
-  worth: string | null;
+  // The sentence that carries the number: the hours, where, and how they were measured
+  measured: string | null;
   cards: Array<{ title: string; subtitle: string; href: string }>;
 }
 
@@ -65,10 +67,11 @@ export function builderShows(resume: FounderResumeData): BuilderShows {
   const first = firsts[0];
   const last = lasts[lasts.length - 1];
 
-  // What the hours are worth, at the baseline's market pay
-  const worth =
+  // The hours, across how many projects, and how they were measured
+  const projectCount = measured.filter((p) => p.hours > 0).length;
+  const measuredLine =
     BASELINE && hours >= 1
-      ? `${plural(Math.round(hours), 'hour', 'hours')} of building${first ? ` since ${monthYear(first)}` : ''}: ${dollars(Math.round(buildCost(hours, BASELINE).total / 1000) * 1000)} of work at market pay.`
+      ? `${plural(Math.round(hours), 'hour', 'hours')} across ${plural(projectCount, 'project', 'projects')}${first ? ` since ${monthYear(first)}` : ''}, measured from the commits.`
       : null;
 
   // Driven: how long, how often, and still at it
@@ -131,5 +134,5 @@ export function builderShows(resume: FounderResumeData): BuilderShows {
     cards.push({ title: 'grows.', subtitle: `commits by year: ${said.join(', ')}.`, href: '/build#rhythm' });
   }
 
-  return { worth, cards };
+  return { measured: measuredLine, cards };
 }

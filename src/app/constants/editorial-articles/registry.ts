@@ -94,6 +94,7 @@ import { COMPONENT_REPO_FOCUS_ARTICLE } from './articles/component-repo-focus';
 import { COMPONENT_TYPE_STATLINE_ARTICLE } from './articles/component-type-statline';
 import { COMPONENT_BUILD_RHYTHM_ARTICLE } from './articles/component-build-rhythm';
 import { COMPONENT_INK_SYSTEM_ARTICLE } from './articles/component-ink-system';
+import { COMPONENT_COMPONENT_TABLE_ARTICLE } from './articles/component-component-table';
 
 // Editorial Articles Registry
 export const EDITORIAL_ARTICLES: EditorialArticle[] = [
@@ -201,6 +202,9 @@ export const EDITORIAL_ARTICLES: EditorialArticle[] = [
   COMPONENT_TYPE_STATLINE_ARTICLE,
   COMPONENT_BUILD_RHYTHM_ARTICLE,
   COMPONENT_INK_SYSTEM_ARTICLE,
+  
+  COMPONENT_COMPONENT_TABLE_ARTICLE,
+  
   // Add more converted articles here
 ];
 

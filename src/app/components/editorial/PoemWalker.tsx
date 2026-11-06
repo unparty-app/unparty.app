@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { track } from '@vercel/analytics';
-import { ChevronUp, Poem } from '@/app/components/icons';
-import { iconByName } from '@/app/components/icons/byName';
+import { ChevronUp } from '@/app/components/icons';
 import { FOUNDER, ICON_DEFAULTS } from '@/app/constants/organization';
 import { useTheme } from '../../contexts/ThemeContext';
 import PoemVerse from './PoemVerse';
+import NamedIcon from '../icons/NamedIcon';
 
 // One trip across its lane and back, in seconds (globals.css .poem-walker)
 const WALK_SECONDS = 32;
@@ -40,7 +40,6 @@ const PoemWalker: React.FC<PoemWalkerProps> = ({ id, verseHtml, title, icon, ink
   const { colorValue } = useTheme();
   const [open, setOpen] = useState(false);
   // The poem's own icon (```poem Heart), the owner's default (#589), then Poem
-  const Icon = iconByName(icon) ?? iconByName(ICON_DEFAULTS.poem) ?? Poem;
   // Two poems on one page shouldn't walk in step: each starts somewhere
   // else on the trip, the same place every load
   const start = [...id].reduce((sum, c) => sum + c.charCodeAt(0), 0) % WALK_SECONDS;
@@ -77,7 +76,7 @@ const PoemWalker: React.FC<PoemWalkerProps> = ({ id, verseHtml, title, icon, ink
             style={{ borderColor: colorValue }}
           >
             <span className="poem-walker__face flex" style={{ animationDelay: `-${start}s` }}>
-              <Icon size={30} themed className="poem-walker__icon" />
+              <NamedIcon name={icon} fallback={[ICON_DEFAULTS.poem, 'Poem']} size={30} themed className="poem-walker__icon" />
             </span>
           </button>
         </div>

@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { CHART_COMPONENT, CHART_PARTS, chartProps, getFounderResume, type ChartPart } from '@/app/founders/resume-data';
 
 /**
- * GET /api/resume?part=shipped|effort|momentum|stack|views|path|focus
+ * GET /api/resume?part=shipped|effort|momentum|stack|views|path|focus|compare
  *
  * One of the site owner's resume charts, as the props its ink chart takes:
  * { part, component, props }, or 404 when the owner has nothing to show

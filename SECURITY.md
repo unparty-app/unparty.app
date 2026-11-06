@@ -50,7 +50,7 @@ We aim to respond within 5 business days. Please do not publicly disclose vulner
 
 - A formal privacy policy is available at `/privacy`, describing data collection, usage, and user rights.
 - Terms of service are available at `/terms`.
-- A waitlist signup goes through the auth-gated `POST /api/problem/send` (requires a signed-in Clerk user), which creates a reviewable `UserSubmission` and opens a GitHub Discussion for admin review. Moving that discussion to the "Approve" category fires a GitHub webhook (HMAC-SHA256 verified) that sets `Clerk publicMetadata.waitlistStatus = 'approved'`, which middleware checks to gate `/party`.
+- A waitlist signup goes through the auth-gated `POST /api/problem/send` (requires a signed-in Clerk user), which creates a reviewable `UserSubmission` and opens a GitHub Discussion for admin review. Moving that discussion to the "Approve" category fires a GitHub webhook (HMAC-SHA256 verified) that sets `Clerk publicMetadata.waitlistStatus = 'approved'`, which the proxy (`src/proxy.ts`) checks to gate `/party`.
 - User progress data is stored in the database and tied to Clerk user IDs.
 - Analytics data (pageviews, traces) is automatically purged after 30 days via a scheduled cron job.
 

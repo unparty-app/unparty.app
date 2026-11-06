@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useTheme } from '../contexts/ThemeContext';
 import { readPinLine } from '../utils/pinLine';
 import SleekTabs from './SleekTabs';
+import { useDragScroll } from '@/hooks/useDragScroll';
 
 /**
  * RowTable - the house table, mobile first (#572), built around what people
@@ -23,10 +24,13 @@ import SleekTabs from './SleekTabs';
  * - From about 560px of its own width, every column shows, and every label
  *   sorts the same way.
  *
- * The controls stay in reach: while the table is on screen, its bar (filter
- * tabs with their counts, the range and ‹ ›, the header labels) sticks under
- * the site header, or under a pinned article headline (--hero-line). Paging
- * keeps the first row of the new page under the bar.
+ * Pages swipe, like a ScrollRow: they sit side by side in one track that
+ * snaps a page at a time, and a mouse can drag it (useDragScroll). The track
+ * takes the height of the page in view. The controls stay in reach: while
+ * the table is on screen, its bar (filter tabs with their counts, the page
+ * and ‹ ›, the header labels) sticks under the site header, or under a
+ * pinned article headline (--hero-line). Landing on a new page keeps its
+ * first row under the bar.
  *
  * A row opens in place only when it has more to read than its columns (a
  * quote, where a score comes from); otherwise it is a link to its page.
@@ -85,6 +89,8 @@ type Sort = { by: string; dir: 'asc' | 'desc' };
 type Value = number | string | undefined;
 
 const LABEL = 'font-google-sans-code text-[10px] uppercase tracking-wide md:text-xs';
+// Set once the swipe has been shown, or the visitor has swiped a table themselves
+const SWIPE_SHOWN = 'row-table-swipe-shown';
 const blank = (v: Value) => v === undefined || v === '';
 
 function Circle({ circle, colorValue }: { circle: RowCircle; colorValue: string }) {
@@ -142,8 +148,12 @@ export default function RowTable<T>({
   const [lens, setLens] = useState(columns.find((c) => c.id === sort.by)?.id ?? columns[0]?.id);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState<string | null>(null);
-  const [pinTop, setPinTop] = useState(72);
-  const listRef = useRef<HTMLUListElement>(null);
+  // The site header's height: the line the bar sticks to when nothing else is pinned
+  const [chromeTop, setChromeTop] = useState(72);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const pageRefs = useRef<(HTMLUListElement | null)[]>([]);
+  const [trackHeight, setTrackHeight] = useState<number | undefined>(undefined);
+  const settleRef = useRef<{ timer?: ReturnType<typeof setTimeout>; page: number }>({ page: 0 });
   const barRef = useRef<HTMLDivElement>(null);
   const lensRef = useRef<HTMLDivElement>(null);
   // Which edges of the lens hide labels, so a fade there says it swipes
@@ -154,10 +164,11 @@ export default function RowTable<T>({
     setLensEdges({ left: el.scrollLeft > 1, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 1 });
   };
 
-  // Where the bar sticks: under the site header, or a pinned cover band
+  // Where the bar sticks: under the site header, a pinned cover band (--pin-line,
+  // live as a story's cover shrinks) or a pinned headline (--hero-line)
   useEffect(() => {
     const measure = () => {
-      setPinTop(readPinLine());
+      setChromeTop(document.getElementById('site-chrome')?.offsetHeight || 72);
       measureLens();
     };
     measure();
@@ -186,15 +197,23 @@ export default function RowTable<T>({
 
   const pages = Math.max(1, Math.ceil(matching.length / pageSize));
   const current = Math.min(page, pages - 1);
-  const visible = matching.slice(current * pageSize, current * pageSize + pageSize);
+  const pageRows = useMemo(
+    () => (matching.length ? Array.from({ length: Math.ceil(matching.length / pageSize) }, (_, i) => matching.slice(i * pageSize, i * pageSize + pageSize)) : [[]]),
+    [matching, pageSize]
+  );
   const from = matching.length ? current * pageSize + 1 : 0;
   const to = Math.min(matching.length, (current + 1) * pageSize);
   const lensColumn = columns.find((c) => c.id === lens) ?? columns[0];
+  // Filter tabs only when there's more than one to pick between
+  const tabbed = Boolean(filters && filters.length > 1);
   const template = ['minmax(0, 2fr)', ...columns.map(() => 'minmax(0, 1fr)')].join(' ');
 
+  // A new sort, filter or search starts again from the first page
   const restart = () => {
     setPage(0);
     setOpen(null);
+    settleRef.current.page = 0;
+    trackRef.current?.scrollTo({ left: 0 });
   };
 
   // A tapped label sorts by its column (and, narrow, shows it); tapped again, it flips
@@ -207,17 +226,113 @@ export default function RowTable<T>({
   };
 
   // A new page starts with its first row just under the bar
-  const goTo = (next: number) => {
-    setPage(next);
-    setOpen(null);
-    requestAnimationFrame(() => {
-      const list = listRef.current;
-      const bar = barRef.current;
-      if (!list || !bar) return;
-      const target = list.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - pinTop;
-      if (window.scrollY > target) window.scrollTo({ top: target, behavior: 'smooth' });
-    });
+  const toTop = () => {
+    const track = trackRef.current;
+    const bar = barRef.current;
+    if (!track || !bar) return;
+    // Read now, not at load: a story's cover shrinks to a band as it scrolls
+    const heroLine = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hero-line')) || 0;
+    const target = track.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - Math.max(readPinLine(), heroLine);
+    if (window.scrollY > target) window.scrollTo({ top: target, behavior: 'smooth' });
   };
+
+  // ‹ › glide to the page, the same as a swipe
+  const goTo = (next: number) => {
+    const track = trackRef.current;
+    if (track) track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+  };
+
+  // The page in view follows the track; once a swipe settles on a new page,
+  // its first row comes up under the bar and any open row closes
+  const onTrackScroll = () => {
+    const track = trackRef.current;
+    if (!track || !track.clientWidth) return;
+    const inView = Math.round(track.scrollLeft / track.clientWidth);
+    if (inView !== page) setPage(inView);
+    const settle = settleRef.current;
+    clearTimeout(settle.timer);
+    settle.timer = setTimeout(() => {
+      if (settle.page === inView) return;
+      settle.page = inView;
+      try {
+        localStorage.setItem(SWIPE_SHOWN, '1');
+      } catch {}
+      setOpen(null);
+      toTop();
+    }, 140);
+  };
+
+  useDragScroll(trackRef);
+
+  // The first time a paged table comes into view, its pages lean left far
+  // enough to show the next one's edge, then settle back: the swipe, shown
+  // once. Once per browser (any table), and never after a swipe of their own
+  // or with reduced motion
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || pages < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    try {
+      if (localStorage.getItem(SWIPE_SHOWN)) return;
+    } catch {
+      return;
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        timer = setTimeout(() => {
+          if (track.scrollLeft > 1) return; // they've swiped already
+          Array.from(track.children).slice(0, 2).forEach((page) =>
+            (page as HTMLElement).animate(
+              [{ transform: 'translateX(0)' }, { transform: 'translateX(-56px)', offset: 0.45 }, { transform: 'translateX(0)' }],
+              { duration: 1100, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' }
+            )
+          );
+          try {
+            localStorage.setItem(SWIPE_SHOWN, '1');
+          } catch {}
+        }, 400);
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(track);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, [pages]);
+
+  // A new width (a phone turned, a window resized) keeps the same page in
+  // view instead of landing between two
+  const pageInView = useRef(0);
+  useEffect(() => {
+    pageInView.current = current;
+  }, [current]);
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let width = track.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (track.clientWidth === width) return;
+      width = track.clientWidth;
+      track.scrollTo({ left: pageInView.current * width });
+    });
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
+  // The track is as tall as the page in view, and follows it as rows open
+  useEffect(() => {
+    const ul = pageRefs.current[current];
+    if (!ul) return;
+    const measure = () => setTrackHeight(ul.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(ul);
+    return () => observer.disconnect();
+  }, [current, pageRows]);
 
   const arrow = (id: string) => (sort.by === id ? (sort.dir === 'asc' ? ' ↑' : ' ↓') : '');
   const sortLabel = (id: string, text: string) =>
@@ -270,10 +385,13 @@ export default function RowTable<T>({
       )}
 
       {/* The bar: sticks while the table is on screen, so every control stays a tap away */}
-      <div ref={barRef} className="sticky z-20" style={{ top: `max(var(--hero-line, 0px), ${pinTop}px)`, backgroundColor: 'var(--background)' }}>
-        <div className={`flex items-center gap-4 border-b ${filters && filters.length > 1 ? '' : 'row-table__wide-only'}`} style={{ borderColor: `${colorValue}25` }}>
-          <div className="min-w-0 flex-1">
-            {filters && filters.length > 1 ? (
+      <div ref={barRef} className="sticky z-20" style={{ top: `max(var(--hero-line, 0px), var(--pin-line, 0px), ${chromeTop}px)`, backgroundColor: 'var(--background)' }}>
+        {/* Filter tabs, with the range and ‹ › beside them when wide. With no
+            tabs there's no row: the pager sits in the header row instead, at
+            every width, so the table's name never shows twice */}
+        {tabbed && filters && (
+          <div className="flex items-center gap-4 border-b" style={{ borderColor: `${colorValue}25` }}>
+            <div className="min-w-0 flex-1">
               <SleekTabs
                 tabs={filters.map((f) => ({ id: f.id, label: <>{f.label}. <span style={{ color: colorValue }}>{counts[f.id]}</span></> }))}
                 activeId={filterId}
@@ -285,12 +403,10 @@ export default function RowTable<T>({
                 label={`Filter ${label}s`}
                 className="border-b-0"
               />
-            ) : (
-              <span className={`${LABEL} block py-3`} style={{ color: 'var(--text-muted)' }}>{label}s.</span>
-            )}
+            </div>
+            <span className="row-table__wide-only">{pager()}</span>
           </div>
-          <span className="row-table__wide-only">{pager()}</span>
-        </div>
+        )}
 
         {/* Narrow: the name label, and the column labels as a lens over the right-hand value */}
         <div className="row-table__lens flex items-center gap-4 border-b" style={{ borderColor: `${colorValue}25` }}>
@@ -343,24 +459,63 @@ export default function RowTable<T>({
 
         {/* Wide: every column, and every label sorts */}
         <div className="row-table__head border-b" style={{ borderColor: `${colorValue}25` }}>
-          {[{ id: 'name', label, sortable: true }, ...columns.map((c) => ({ id: c.id, label: c.label, sortable: Boolean(c.sort) }))].map((h, i) => (
-            <button
-              key={h.id}
-              type="button"
-              onClick={() => sortBy(h.id)}
-              disabled={!h.sortable}
-              aria-label={h.sortable ? sortLabel(h.id, h.label) : h.label}
-              className={`${LABEL} whitespace-nowrap py-2 transition-colors disabled:cursor-default ${i === 0 ? 'text-left' : 'text-right'}`}
-              style={{ color: sort.by === h.id ? 'var(--foreground)' : 'var(--text-muted)' }}
-            >
-              {h.label}.<span style={{ color: colorValue }}>{arrow(h.id)}</span>
-            </button>
-          ))}
+          {[{ id: 'name', label, sortable: true }, ...columns.map((c) => ({ id: c.id, label: c.label, sortable: Boolean(c.sort) }))].map((h, i) => {
+            const button = (
+              <button
+                key={h.id}
+                type="button"
+                onClick={() => sortBy(h.id)}
+                disabled={!h.sortable}
+                aria-label={h.sortable ? sortLabel(h.id, h.label) : h.label}
+                className={`${LABEL} whitespace-nowrap py-2 transition-colors disabled:cursor-default ${i === 0 ? 'text-left' : 'text-right'}`}
+                style={{ color: sort.by === h.id ? 'var(--foreground)' : 'var(--text-muted)' }}
+              >
+                {h.label}.<span style={{ color: colorValue }}>{arrow(h.id)}</span>
+              </button>
+            );
+            // No tab row to hold it: the pager shares the name's header cell, as on a phone
+            return i === 0 && !tabbed && pages > 1 ? (
+              <div key={h.id} className="flex min-w-0 items-center justify-between gap-2">
+                {button}
+                {pager(true)}
+              </div>
+            ) : (
+              button
+            );
+          })}
         </div>
       </div>
 
-      <ul ref={listRef} aria-label={`${label}s`}>
-        {visible.map((row) => {
+      <div
+        ref={trackRef}
+        onScroll={onTrackScroll}
+        role="region"
+        aria-label={pages > 1 ? `${label}s, page ${current + 1} of ${pages}` : `${label}s`}
+        tabIndex={pages > 1 ? 0 : undefined}
+        className="row-table__track scrollbar-hide focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-[var(--theme-color)]"
+        data-paged={pages > 1 || undefined}
+        // The layout lives here, not only in a stylesheet, so the pages can
+        // never stack and spill over what follows the table if the two load
+        // out of step (the drag cursor and snap pause stay in globals.css)
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          overscrollBehaviorX: 'contain',
+          scrollSnapType: 'x mandatory',
+          height: trackHeight,
+        }}
+      >
+        {pageRows.map((rowsOfPage, pageIndex) => (
+      <ul
+        key={pageIndex}
+        ref={(el) => { pageRefs.current[pageIndex] = el; }}
+        aria-label={pages > 1 ? `page ${pageIndex + 1}` : undefined}
+        inert={pageIndex !== current || undefined}
+        style={{ flex: '0 0 100%', minWidth: 0, scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
+      >
+        {rowsOfPage.map((row) => {
           const key = rowKey(row);
           const isOpen = open === key;
           const link = href?.(row);
@@ -434,16 +589,14 @@ export default function RowTable<T>({
             </li>
           );
         })}
-        {visible.length === 0 && (
+        {rowsOfPage.length === 0 && (
           <li className="py-6 font-google-sans-code text-sm" style={{ color: 'var(--text-muted)' }}>{empty}</li>
         )}
       </ul>
-
-      {/* After the last row: the next page, without going back up */}
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        {footer ? <span className="font-google-sans-code text-xs" style={{ color: 'var(--text-muted)' }}>{footer}</span> : <span />}
-        {pages > 1 && pager()}
+        ))}
       </div>
+
+      {footer && <p className="mt-3 font-google-sans-code text-xs" style={{ color: 'var(--text-muted)' }}>{footer}</p>}
     </div>
   );
 }

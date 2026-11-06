@@ -7,6 +7,7 @@ import { parseMarkdownToSections } from '../utils/storyToEditorialConverter';
 import storiesManifest from '@/data/storiesManifest.json';
 import { resolveCoverSrc } from '../utils/coverPath';
 import UnpppCircle from './UnpppCircle';
+import { authorImageOf } from '@/lib/author-image';
 import StepNumberOverlay from './editorial/StepNumberOverlay';
 import HighlightCards, { HighlightCardsLoading, HIGHLIGHTS, pickHighlights, type Highlight } from './editorial/HighlightCards';
 import MusicBanner from './MusicBanner';
@@ -151,7 +152,7 @@ const StoryPreview: React.FC<StoryPreviewProps> = ({
   // One item per fact; the dates share one (started → updated) with an empty
   // ring, so no number ever sits in a ring and reads like a line number
   const metaItems: Array<{ label: string; value: string; mark: string; image?: string }> = [
-    story.metadata.author && { label: 'By', value: `@${story.metadata.author}`, mark: '@', image: story.metadata.authorImage },
+    story.metadata.author && { label: 'By', value: `@${story.metadata.author}`, mark: '@', image: authorImageOf(story.metadata.authorImage) },
     story.metadata.category && { label: 'Category', value: story.metadata.category, mark: '#' },
     started && {
       label: updated && updated !== started ? 'Started, updated' : 'Started',

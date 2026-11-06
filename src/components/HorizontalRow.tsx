@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ReactNode, useEffect, useRef } from 'react';
 import { useTheme } from '../app/contexts/ThemeContext';
 import HandDrawnArrow from '../app/components/HandDrawnArrow';
+import { useDragScroll } from '../hooks/useDragScroll';
 
 interface ScrollRowProps {
   items: ReactNode[];
@@ -76,65 +77,8 @@ export default function ScrollRow({
     };
   }, [displayItems.length]);
 
-  // Mouse drag to scroll. Snapping pauses while dragging, and a drag never
-  // ends in a click on whatever card it started on
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    let startX = 0;
-    let startScroll = 0;
-    let pointerId: number | null = null;
-    let dragged = false;
-
-    const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      if (track.scrollWidth <= track.clientWidth) return;
-      pointerId = e.pointerId;
-      startX = e.clientX;
-      startScroll = track.scrollLeft;
-      dragged = false;
-    };
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerId !== pointerId) return;
-      const dx = e.clientX - startX;
-      if (!dragged && Math.abs(dx) < 6) return;
-      if (!dragged) {
-        dragged = true;
-        track.setPointerCapture(e.pointerId);
-        track.dataset.dragging = 'true';
-      }
-      track.scrollLeft = startScroll - dx;
-    };
-    const onUp = (e: PointerEvent) => {
-      if (e.pointerId !== pointerId) return;
-      pointerId = null;
-      if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
-      // Snap back on, so the row settles on the nearest item
-      delete track.dataset.dragging;
-    };
-    const onClick = (e: MouseEvent) => {
-      if (!dragged) return;
-      e.preventDefault();
-      e.stopPropagation();
-      dragged = false;
-    };
-    const onDragStart = (e: DragEvent) => e.preventDefault(); // links and images
-
-    track.addEventListener('pointerdown', onDown);
-    track.addEventListener('pointermove', onMove);
-    track.addEventListener('pointerup', onUp);
-    track.addEventListener('pointercancel', onUp);
-    track.addEventListener('click', onClick, true);
-    track.addEventListener('dragstart', onDragStart);
-    return () => {
-      track.removeEventListener('pointerdown', onDown);
-      track.removeEventListener('pointermove', onMove);
-      track.removeEventListener('pointerup', onUp);
-      track.removeEventListener('pointercancel', onUp);
-      track.removeEventListener('click', onClick, true);
-      track.removeEventListener('dragstart', onDragStart);
-    };
-  }, []);
+  // Mouse drag to scroll, the same as RowTable's pages
+  useDragScroll(trackRef);
 
   const heading = title && (
     <h2 className="text-md relative inline-block font-vt323 font-bold transition-all duration-200" style={{ color: 'inherit' }}>

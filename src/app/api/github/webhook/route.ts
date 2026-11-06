@@ -68,7 +68,7 @@ export async function POST(request: Request) {
           const { submissionId } = submissionInfo;
 
           // Same approval as /admin/submissions: record it, set the Clerk label
-          // the middleware checks, and email them when Loops is configured
+          // the proxy checks, and email them when Loops is configured
           const result = await approveSubmission(submissionId, 'github_ui');
           if (result.outcome === 'not_found') {
             return NextResponse.json({ error: 'Submission not found' }, { status: 404 });

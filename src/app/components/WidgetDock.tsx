@@ -23,7 +23,7 @@ const WidgetDock = () => {
   const router = useRouter();
   const { isSignedIn, isLoaded, user } = useUser();
 
-  // Whether this visitor can open a space's page, by the middleware's own
+  // Whether this visitor can open a space's page, by the proxy's own
   // rules: party needs sign-in (and approval, when the waitlist is on),
   // admin an admin. Everyone else gets the space's demo in the panel
   const canOpen = (widget: WidgetConfig) => {

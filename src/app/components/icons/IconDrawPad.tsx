@@ -10,6 +10,7 @@ import HandDrawnIcon from './HandDrawnIcon';
 import { iconByName } from './byName';
 import { DRAWABLE_ICONS, FIRST_ICONS } from './drawable';
 import { setVisitorIcon, visitorIcons } from './visitorIcons';
+import NamedIcon, { hasNamedIcon } from './NamedIcon';
 
 const HandDrawnFallback = iconByName('Heart')!;
 // Only a visitor who took their drawing ever loads the game
@@ -152,6 +153,7 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false, 
   const frame = useRef(0);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- drafts live in localStorage, which the server can't read: restored after mount so server and browser render the same first
     setDrafts(load(draftsKey, () => localStorage, {}));
     setMine(Object.keys(visitorIcons()));
     const flash = load<Save | null>(FLASH_KEY, () => sessionStorage, null);
@@ -252,7 +254,6 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false, 
     }
   };
 
-  const Current = iconByName(name);
   const drawing = live && live.length ? [...strokes, toStroke(live)] : strokes;
   const busy = save.state === 'saving';
   const drawnHere = (icon: string) => owner ? Boolean(saved?.site[icon]?.length || saved?.defaults[icon]?.length) : mine.includes(icon);
@@ -302,9 +303,9 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false, 
             </g>
           ))}
           {/* The icon it replaces, faint, to keep the proportions */}
-          {Current && drawing.length === 0 && (
+          {hasNamedIcon(name) && drawing.length === 0 && (
             <g opacity={0.18} style={{ color: 'var(--foreground)' }}>
-              <Current size={24} />
+              <NamedIcon name={name} size={24} />
             </g>
           )}
           <g fill="none" stroke={colorValue} strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
@@ -326,7 +327,7 @@ export default function IconDrawPad({ mode = 'visitor', icons, compact = false, 
             <div>
               <p className={`${LABEL} mb-2`}>now</p>
               <div className="flex items-end gap-3 text-[var(--foreground)]">
-                {Current && [16, 24, 48].map((s) => <Current key={s} size={s} />)}
+                {hasNamedIcon(name) && [16, 24, 48].map((s) => <NamedIcon key={s} name={name} size={s} />)}
               </div>
             </div>
             <div>

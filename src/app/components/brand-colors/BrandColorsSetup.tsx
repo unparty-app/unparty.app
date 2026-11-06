@@ -68,7 +68,8 @@ export default function BrandColorsSetup({ placement = 'brand-colors' }: { place
   const { user, isLoaded } = useUser();
   // The same label the server's checkRole('admin') reads; the route still decides
   const maybeOwner = user?.publicMetadata?.role === 'admin';
-  const [owner, setOwner] = useState<boolean | null>(null);
+  // Whether /api/admin/brand-colors answered (asked only for an admin)
+  const [fetchedOwner, setOwner] = useState<boolean | null>(null);
   const [saved, setSaved] = useState<string[]>(BRAND_COLOR_SLOTS);
   const [slots, setSlots] = useState<string[]>(BRAND_COLOR_SLOTS);
   const [active, setActive] = useState(0);
@@ -81,11 +82,7 @@ export default function BrandColorsSetup({ placement = 'brand-colors' }: { place
   // Owner or not: only an admin can read the saved colors (anyone else is a
   // visitor without asking, so their console stays clean)
   useEffect(() => {
-    if (!isLoaded) return;
-    if (!maybeOwner) {
-      setOwner(false);
-      return;
-    }
+    if (!isLoaded || !maybeOwner) return;
     let cancelled = false;
     fetch('/api/admin/brand-colors')
       .then(async (res) => {
@@ -101,6 +98,8 @@ export default function BrandColorsSetup({ placement = 'brand-colors' }: { place
       cancelled = true;
     };
   }, [isLoaded, maybeOwner]);
+  // Not an admin is known without asking: a visitor
+  const owner = !isLoaded ? null : !maybeOwner ? false : fetchedOwner;
 
   // The rings draw themselves in once they're on screen
   useEffect(() => {

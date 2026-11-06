@@ -141,7 +141,8 @@ function GoalBudgetInner() {
   const choice = useMemo(() => readStackParams(new URLSearchParams(params.toString())), [params]);
   const hasStack = params.has('lens') || params.has('on');
   const saved = parse(useLocalStorageValue(KEY));
-  const goal: Goal = findGoal(saved.goalId) ?? firstGoal(choice);
+  // Kept between renders, so the goal's path below isn't worked out again each time
+  const goal: Goal = useMemo(() => findGoal(saved.goalId) ?? firstGoal(choice), [saved.goalId, choice]);
   const nameOf = (g: Goal) => saved.names?.[g.id] || g.name;
   const path = useMemo(() => goalPath(goal, choice), [goal, choice]);
   const save = (next: Saved) => writeLocalStorage(KEY, JSON.stringify({ ...parse(localStorageNow()), ...next }));

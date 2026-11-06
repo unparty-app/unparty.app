@@ -301,7 +301,8 @@ export async function commitArticleFile(
  */
 export async function commitJsonFile(
   filePath: string,
-  content: string,
+  // Text, or the bytes of a file that isn't (an image: /admin → Your avatar)
+  content: string | Buffer,
   message: string,
   branch: string
 ): Promise<void> {
@@ -325,7 +326,7 @@ export async function commitJsonFile(
     repo,
     path: filePath,
     message,
-    content: Buffer.from(content, 'utf8').toString('base64'),
+    content: (Buffer.isBuffer(content) ? content : Buffer.from(content, 'utf8')).toString('base64'),
     branch,
     ...(sha ? { sha } : {}),
   });

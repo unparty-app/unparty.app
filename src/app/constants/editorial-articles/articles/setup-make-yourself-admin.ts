@@ -1,7 +1,7 @@
 import type { EditorialArticle } from '../types';
 
 // SETUP. curriculum step 7 (prisma/setup-steps.ts, #1094)
-// Admin checks read sessionClaims.metadata.role (src/utils/roles.ts, src/middleware.ts),
+// Admin checks read sessionClaims.metadata.role (src/utils/roles.ts, src/proxy.ts),
 // which needs the session token claim from the sign-in step. FOUNDER_USER_ID is read by
 // prisma/setup-steps.ts (SETUP. access) and /api/founders/responses.
 export const SETUP_MAKE_YOURSELF_ADMIN_ARTICLE: EditorialArticle = {
@@ -11,7 +11,7 @@ export const SETUP_MAKE_YOURSELF_ADMIN_ARTICLE: EditorialArticle = {
   description: 'How non-technical founders make themselves the admin of their own Next.js site: add role admin to your Clerk public metadata, save your Clerk user ID as FOUNDER_USER_ID in .env, re-run the setup seed, and confirm it worked. Plus how to make sure .env is never committed to git.',
   category: 'SETUP.',
   date: '2026-09-28',
-  updated: '2026-11-02',
+  updated: '2026-11-05',
   published: true,
   author: 'justin-murry',
   readTime: '6 min',
@@ -174,7 +174,7 @@ export const SETUP_MAKE_YOURSELF_ADMIN_ARTICLE: EditorialArticle = {
     {
       id: 'llm-prompts',
       type: 'code',
-      content: 'I set "role": "admin" in my Clerk public metadata and signed in\nagain, but [describe what happens]. Read src/middleware.ts and\nsrc/utils/roles.ts and tell me what my site checks. Do not change\nanything, and do not ask me for my keys.\n\nRun git check-ignore .env and git ls-files .env in this project\nand tell me in plain words whether my .env file is safe from\nbeing committed.',
+      content: 'I set "role": "admin" in my Clerk public metadata and signed in\nagain, but [describe what happens]. Read src/proxy.ts and\nsrc/utils/roles.ts and tell me what my site checks. Do not change\nanything, and do not ask me for my keys.\n\nRun git check-ignore .env and git ls-files .env in this project\nand tell me in plain words whether my .env file is safe from\nbeing committed.',
       metadata: { language: 'prompt', emphasis: true, caption: 'Your user ID is not a secret, but your keys are. Describe them; never paste them' }
     },
     {

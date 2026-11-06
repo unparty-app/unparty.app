@@ -4,7 +4,7 @@
  *
  * Why: a page that calls notFound() gets an empty HTML shell from Next.js (the
  * 404 shows only after JavaScript runs; vercel/next.js#99793, still open on
- * 16.4). An unmatched URL gets the full not-found page. src/middleware.ts uses
+ * 16.4). An unmatched URL gets the full not-found page. src/proxy.ts uses
  * this list to send a missing slug down the unmatched path instead, see
  * src/lib/known-routes.ts.
  *
@@ -13,7 +13,7 @@
  *
  * .cts on purpose: the article registry loads JSON and MD articles with
  * require(), which an ES module run doesn't have. It would warn and return
- * only the TS articles, and the middleware would then 404 every other one.
+ * only the TS articles, and the proxy would then 404 every other one.
  */
 import { readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';

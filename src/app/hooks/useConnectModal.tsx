@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import { track } from '@vercel/analytics';
 import Chat from '../components/Chat';
 import AuthorAvatar from '../components/editorial/AuthorAvatar';
+import { FOUNDER } from '../constants/organization';
+import { authorImageOf } from '@/lib/author-image';
 import { useTheme } from '../contexts/ThemeContext';
 
 /**
@@ -137,7 +139,8 @@ export const useConnectModal = () => {
                         className="size-12 overflow-hidden rounded-full border-2 transition-transform duration-200 hover:scale-105"
                         style={{ borderColor: colorValue }}
                       >
-                        <AuthorAvatar src="/covers/cover-001.png" alt="" />
+                        {/* The owner's avatar (/admin → Your avatar), as on /connect */}
+                        <AuthorAvatar src={authorImageOf(undefined) ?? '/logo.png'} alt={FOUNDER.name} />
                       </div>
                     </div>
                     <h2

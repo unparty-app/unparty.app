@@ -3,7 +3,7 @@ import createMDX from '@next/mdx';
 import { existsSync, readFileSync } from 'fs';
 
 // The slugs each dynamic route serves (src/lib/known-routes.ts), handed to
-// the middleware at build time instead of imported, so a missing file can't
+// the proxy at build time instead of imported, so a missing file can't
 // break dev or tsc. `npm run build` always makes it first; without it the list
 // is empty and missing slugs fall back to the page's own notFound()
 const routeManifestPath = 'src/data/routeManifest.json';

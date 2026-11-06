@@ -26,6 +26,8 @@ import { getDependItems, findPlan } from '../../../utils/dependCosts';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import FounderCta from '../../founders/components/FounderCta';
+import ActionPill from '../build-yours/ActionPill';
+import { MessageSquare } from '../icons';
 import BuildYoursCard from '../build-yours/BuildYoursCard';
 import { DEPLOY_URL } from '../../constants/organization';
 import BuildYourStack from '../depend/BuildYourStack';
@@ -328,16 +330,26 @@ export const EmbeddableFormulaDisplay: React.FC<Record<string, unknown>> = (prop
  * The same pill as /founders and the Fab (FounderCta: theme ring, theme-color
  * pill, arrow), and the same consent-gated `cta_clicked` { cta, placement }
  * event, so one funnel compares every ask. placement defaults to the page's
- * path (e.g. /story/personal-mission).
+ * path (e.g. /story/personal-mission). `hand`: the hand-drawn pill instead
+ * (ActionPill, like "price yours"), its label written on when it's one of
+ * the phrases in build-yours/phrases.ts ("work with me", /founders' ask).
  */
 export const EmbeddableCta: React.FC<Record<string, unknown>> = (props) => {
   const pathname = usePathname();
-  const { label, href, placement } = props as { label?: string; href?: string; placement?: string };
+  const { colorValue } = useTheme();
+  const { label, href, placement, hand } = props as { label?: string; href?: string; placement?: string; hand?: boolean };
   if (!label || !href) {
     return (
       <span className="font-google-sans-code text-sm" style={{ color: 'var(--text-muted)' }}>
         [Cta needs a label and an href]
       </span>
+    );
+  }
+  if (hand) {
+    return (
+      <div className="my-6">
+        <ActionPill verb={label} href={href} icon={MessageSquare} color={colorValue} label={label} />
+      </div>
     );
   }
   return <FounderCta cta={{ label, href }} placement={placement || pathname || 'article'} />;

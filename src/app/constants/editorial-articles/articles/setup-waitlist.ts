@@ -3,7 +3,7 @@ import type { EditorialArticle } from '../types';
 // SETUP. curriculum, optional step `waitlist` (prisma/setup-steps.ts, #1106)
 // Off unless FoundersConfig.json says `"waitlist": true` (#914); /admin's Your site
 // group switches it (the file locally, a pull request on a deployed copy).
-// src/middleware.ts opens /party only when the session's metadata has role 'admin'
+// src/proxy.ts opens /party only when the session's metadata has role 'admin'
 // or waitlistStatus 'approved' (the claim from setup-sign-in). Sign-up lands on
 // /waitlist/apply (ProblemWorksheet → UserSubmission PENDING via /api/problem/send);
 // everyone else is sent to /waitlist/pending. approveSubmission() in src/lib/waitlist.ts

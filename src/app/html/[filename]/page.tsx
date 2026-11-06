@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readdir, readFile } from 'fs/promises';
 import { join } from 'path';
 import { notFound } from 'next/navigation';
 
@@ -30,20 +30,9 @@ export default async function HtmlPage({ params }: Props) {
   );
 }
 
-// Generate static params for known HTML files
+// Every report in public/, the same rule as the route manifest
+// (scripts/generate-route-manifest.cts), so a copy prerenders only what it ships
 export async function generateStaticParams() {
-  // Add your HTML filenames here (without .html extension)
-  const htmlFiles = [
-    'claude_analytics',
-    'natural_topic_discovery_dashboard',
-    'repo-metadata-dashboard',
-    'sprint_research',
-    'sprintbrain',
-    'techdebtproposal',
-    'welcome-colors'
-  ];
-  
-  return htmlFiles.map((filename) => ({
-    filename: filename,
-  }));
+  const files = await readdir(join(process.cwd(), 'public'));
+  return files.filter((file) => file.endsWith('.html')).map((file) => ({ filename: file.replace(/\.html$/, '') }));
 }

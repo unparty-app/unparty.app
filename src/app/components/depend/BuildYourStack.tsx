@@ -135,6 +135,7 @@ function useTween(value: number, ms = 650) {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       from.current = value;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reduced motion is a browser setting the server can't read: the count jumps to the value once mounted
       setShown(value);
       return;
     }

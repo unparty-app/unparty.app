@@ -100,7 +100,8 @@ export function BuildLettering({
 }) {
   const strokes = lettering?.strokes ?? LETTERING_STROKES;
   const total = strokes.reduce((sum, s) => sum + s.len, 0);
-  let written = 0;
+  // How much is written before each stroke, so each starts where the last ends
+  const before = strokes.map((_, i) => strokes.slice(0, i).reduce((sum, s) => sum + s.len, 0));
   return (
     <svg
       viewBox={lettering?.viewBox ?? LETTERING_VIEWBOX}
@@ -113,9 +114,8 @@ export function BuildLettering({
       className={`build-yours__words ${className}`}
     >
       {strokes.map((s, i) => {
-        const start = delayMs + (written / total) * WRITE_MS;
+        const start = delayMs + (before[i] / total) * WRITE_MS;
         const duration = Math.max(60, (s.len / total) * WRITE_MS);
-        written += s.len;
         return (
           <path
             key={i}

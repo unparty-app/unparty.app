@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## This is your copy
+This app began as unparty's site. Whoever runs this copy owns it, and what they ask for overrides anything below. Some content is still unparty's until they replace it: `/admin/unparty` lists what's left, and `npm run check:identity` flags identity values still set to unparty's. The SETUP. steps are the guided path, starting at `/article/setup-github`. It runs with no `.env`; sign-in and a database are optional.
+
+## How this was built
+These explain why the code looks the way it does. Follow them unless the owner wants something else.
+- **The site runs on its own content.** Articles, stories and many pages render through `EditorialArticle`, so a new page usually means mapping data into sections, not writing new layout.
+- **One place for who the site is.** Identity, projects and settings live in `FoundersConfig.json`, so an owner edits one file instead of hunting through code.
+- **Nothing required up front.** Every integration is optional, and a feature with no key or database stays quiet instead of breaking.
+- **Reuse before building.** Look for an existing component first, and read two comparable pages before adding a new pattern. Ask before introducing a UI pattern the app doesn't already use, such as a tab row.
+- **Plain words.** Copy talks to the person reading it, and says what something does for them.
+
+## Git and scope rules
+Never commit directly to main; use a feature branch and a PR unless the owner works differently. When asked to review or suggest, report findings without editing files. Stay within the named component or issue, and ask before expanding the scope. Never print the contents of .env files; check only whether variable names exist.
+
 ## Commands
 
 Requires Node 24 (see `.nvmrc`; matches the Vercel project setting).
@@ -38,12 +52,14 @@ Requires Node 24 (see `.nvmrc`; matches the Vercel project setting).
 - `npm run generate-icons` - Regenerate `src/data/iconManifest.json`
 - `npm run generate-images` - Regenerate `src/data/imageManifest.json`
 - `npm run generate-unparty-refs` - Regenerate `src/data/unpartyRefsManifest.json`, the brand-reference list behind the `/admin/unparty` button (also runs before `npm run dev` via `predev`)
-- `npm run generate-route-manifest` - Regenerate `src/data/routeManifest.json`, the slugs each dynamic route serves, which the middleware uses to give a missing one the full 404 page (also runs via `predev`; see Authentication)
+- `npm run generate-route-manifest` - Regenerate `src/data/routeManifest.json`, the slugs each dynamic route serves, which the proxy uses to give a missing one the full 404 page (also runs via `predev`; see Authentication)
 - `npm run normalize-data` - Normalize page data across the site
 - `npm run generate-focus` - Measure where the owner's hours went (`src/data/focus.json`, kept out of `public/` so it's never served): the last 12 weeks of commits on each of the owner's repos, through the same GitHub sign-in as `generate-releases` (`scripts/lib/owner-github.mjs`), counted as work sessions by the baseline's rule (commits <2h apart are one session, +15 min, at most 4h). Private repos only with `"privateRepos": true` in `FoundersConfig.json` (the switch in `/admin#features`). Keeps the last file without credentials. `next.config.ts` hands it over as `FOCUS_JSON`; `src/lib/focus.ts` shapes it for `RepoFocus` (served as `/api/resume?part=focus`) and prices the hours at the baseline's rate. Nothing measured is committed
 - `npm run generate-releases` - Publish the owner's releases (`public/releases.json` + each prefix's latest files under `public/releases/`): every release of the owner's repos whose tag reads `<prefix>-v<version>`, read through the GitHub App (or `GITHUB_TOKEN` locally). Without either it keeps the last list and never fails the build. `src/lib/releases.ts` pairs a prefix with a component (`presents.release`, else the component's name in kebab case); `next.config.ts` hands the file to the app as `RELEASES_JSON`, so nothing reads `public/` at request time. They show on `/releases` (one chapter each, `src/lib/releases-article.ts`), in `/llms.txt` for agents (start here, every release with its summary, files and component, every published component; `src/app/llms.txt/route.ts`); a click on any released file sends the consent-gated `release_downloaded` event (`ReleaseDownloads` in the root layout); and on each component's home article, right under the component, as a RELEASES. row (`ReleaseRow`: one written *take it* pill to the release's chapter, a chip per file that saves it; added by `withReleaseRow` in `src/app/article/[slug]/page.tsx`) and on each project page's belt (`ProjectBelt`, via `StatsLayoutWrapper`: stage, the baseline's hours, its repo's releases, the ask; `src/lib/project-belt.ts`)
 
 ### Utility Scripts
+- `./create-article` - Interactive: write and register a new TS editorial article
+- `./create-page` - Create a project page at `src/app/<name>/page.tsx` wrapped in `UnpppPageShell`
 - `./scripts/investigate init <area> <name>` / `sit` / `tir` / `complete` - Investigation CLI for build issues; records findings under `investigations/`
 - `npm run effort` / `npm run effort:sprint` / `npm run effort:month` - Sprint effort analysis
 - `npm run frontmatter:check` - Validate frontmatter on all pages
@@ -58,6 +74,9 @@ Requires Node 24 (see `.nvmrc`; matches the Vercel project setting).
 
 There is no test runner configured in this repo (no Jest/Vitest/Playwright). The `test:*` npm scripts (`test:user-progress`, `test:vercel-queries`, etc.) are not unit tests. They are ad-hoc `tsx` scripts that connect to the real database through `@/lib/prisma`, so don't run them as a verification step. Verification relies on `npx tsc --noEmit`, `npm run audit:imports`, and manual/browser checks (see the `verify` skill).
 
+## Verification and reporting
+Treat issue text as a claim to verify against current code and pull the latest main before auditing or measuring. Trace a helper's callers and purpose before removing it. Don't dismiss a report based on grep alone; reproduce it when possible. Test every entry point before claiming that all of them work, including mobile and signed-in flows. Report anything untested as untested.
+
 ## Setup & Configuration
 
 ### Required Environment Variables
@@ -71,7 +90,7 @@ A copy runs with no `.env` at all, the same with `npm run dev` and live: with no
 - `CLERK_SECRET_KEY` - Clerk authentication
 
 **Once there's a database:**
-- `CRON_SECRET` - Authenticates Vercel cron job requests (with none, the daily jobs answer Unauthorized, and have nothing to do)
+- `CRON_SECRET` - Authenticates Vercel cron job requests (with none, the daily jobs in `vercel.json` and `src/app/api/cron/` answer Unauthorized, and have nothing to do)
 
 **Optional integrations:**
 - `BLOB_STORE_ID` or `BLOB_READ_WRITE_TOKEN` - Vercel Blob (public store) for photo-upload steps and the admin `/blobupload` page. `@vercel/blob` 2.x signs in with OIDC + `BLOB_STORE_ID` (what Vercel adds when it connects a store) and falls back to the token (local `.env`). `blobStoreConnected()` (`src/lib/blob-store.ts`) checks for either: with neither, the upload routes answer 503 `uploads-off` and the prompt shows the setup link to an admin, the "build yours" ask to a visitor. Uploads go through a function, so 4.5 MB max (`src/lib/upload-limits.ts`)
@@ -93,11 +112,11 @@ All keys go in `.env`, which the site, the Prisma CLI and the seed scripts all r
 ## Architecture
 
 ### Tech Stack
-- **Framework**: Next.js 16 (App Router), React 19, TypeScript. Request interception still lives in `src/middleware.ts`; it has not been renamed to `proxy.ts`
+- **Framework**: Next.js 16 (App Router), React 19, TypeScript. Request interception lives in `src/proxy.ts`, Next 16's name for middleware (it still exports Clerk's `clerkMiddleware` and a `config` matcher)
 - **Database**: PostgreSQL + Prisma ORM (singleton at `src/lib/prisma.ts`, imported everywhere as `@/lib/prisma` — `@/*` maps to `./src/*`)
 - **Authentication**: Clerk — import from `src/lib/auth-stub.server.ts` (server) or `src/lib/auth-stub.client.tsx` (client), not directly from `@clerk/nextjs`
 - **Styling**: Tailwind CSS with a CSS variable theme system (`--theme-color`)
-- **Content**: MDX for articles and embedded component demos
+- **Content**: Typed editorial articles and markdown stories (see Content below); MDX only for a few component demos
 - **Payments**: Polar. A project with a `polarProductId` gets a buy pill on its page (`BuyPill`, via `StatsLayoutWrapper`). `"checkout": false` in `FoundersConfig.json` (`CHECKOUT_ON`; unparty's own setting, on when missing) turns every pill into the site's "build yours" and makes `/api/checkout` answer 403; `/api/checkout` creates the embedded session and `/api/webhook/polar` records paid orders in the buyer's Clerk `publicMetadata.purchasedProductIds`
 - **File Storage**: Vercel Blob
 - **Observability**: Vercel Analytics drain + trace drain (stored in DB), OpenTelemetry via `@vercel/otel`
@@ -111,7 +130,7 @@ Note: `src/app/lib/` also exists but only holds a handful of feature-local utili
 **Product/feature routes** — concrete app features:
 - `/admin/*` - Protected admin panel (horizontal nav layout)
 - `/party/*` - Authenticated user area
-- `/article/[slug]` - Article content with MDX
+- `/article/[slug]` - Editorial articles
 - `/story/[slug]` - Story viewer
 - `/sprint/[slug]` - Sprint pages
 - `/books` - Book inventory and claiming
@@ -122,16 +141,26 @@ Note: `src/app/lib/` also exists but only holds a handful of feature-local utili
 **Showcase/concept pages** (`/theunparty*`) — individual product concept showcases for each sub-product. These are named without a hyphen (e.g. `/theunpartybuilder`, `/theunpartychat`). The `theunparty-` hyphenated prefix is reserved exclusively for UNPPP program pages.
 
 The default shell for these showcase pages is `src/app/components/UnpppPageShell.tsx`. Prefer that shared wrapper over repeating `mx-auto w-full max-w-5xl` in each `src/app/theunparty*/page.tsx`, and keep page-specific spacing/layout tweaks in the shell's `className` prop instead of introducing new outer containers.
-**API routes** (`src/app/api/**`) — see the [API Routes Map & Audit](/article/theunpartyapp-api-routes-map) article (source: `src/app/theunpartyapp/api-routes-map.md`) for a visual map and audit of the endpoints (methods, purpose, auth, and which routes are unwired). The article can fall behind the code (it lists 84 endpoints; there are now ~110 `route.ts` files), so grep `src/app/api` to check the current set.
+**API routes** (`src/app/api/**`) — see the [API Routes Map & Audit](/article/theunpartyapp-api-routes-map) article (source: `src/app/theunpartyapp/api-routes-map.md`) for a visual map and audit of the endpoints (methods, purpose, auth, and which routes are unwired). The article can fall behind the code (it lists 84 endpoints; there are now over 120 `route.ts` files), so grep `src/app/api` to check the current set.
+
+### Content
+Articles and stories both render through `EditorialArticle` (`src/app/components/editorial/`) as a list of typed sections (`EditorialSection` in `src/app/constants/editorial-articles/types.ts`). A `component` section draws from `componentRegistry` in `EditorialSection.tsx`.
+
+`getEditorialArticle()` in `src/app/constants/editorial-articles/registry.ts` looks up a slug in this order:
+1. `content/articles/<slug>.json` - what the in-app article writer saves through the GitHub App, so an edited slug overrides its source. Read from disk at request time; the folder is empty until someone saves one
+2. `src/app/constants/editorial-articles/articles/<slug>.ts` - where articles normally live. `./create-article` writes and registers one (see [ARTICLE_CREATION.md](./docs/guides/ARTICLE_CREATION.md))
+3. `.md` files directly inside a `src/app/theunparty*/` folder (`src/app/utils/mdArticleUtils.ts`)
+
+Stories are markdown in `public/covers/stories/story-*.md`, tied to a cover and converted to the same sections by `src/app/utils/storyToEditorialConverter.ts`.
 
 ### Authentication
-Every route is public unless the Clerk middleware (`src/middleware.ts`) gates it. `clerkMiddleware` protects nothing by default. Only two groups are gated: `isProtectedRoute` (`/party/*`, `/admin/*`, `/blobupload/*`) requires sign-in through `auth.protect()`, and `isAdminApiRoute` (`/api/admin/*`) answers 401 when signed out. A new public page needs no middleware entry. The middleware still has an `isPublicRoute` list, but it gates nothing (#1359). Its check runs *before* the gates and returns early, so a pattern there that also matches a gated path (`'/a(.*)'`, `'/api(.*)'`) would skip sign-in for it. Don't add to it.
+Every route is public unless the proxy (`src/proxy.ts`, built on Clerk's `clerkMiddleware`) gates it. `clerkMiddleware` protects nothing by default. Only two groups are gated: `isProtectedRoute` (`/party/*`, `/admin/*`, `/blobupload/*`) requires sign-in through `auth.protect()`, and `isAdminApiRoute` (`/api/admin/*`) answers 401 when signed out. A new public page needs no middleware entry. The proxy still has an `isPublicRoute` list, but it gates nothing (#1359). Its check runs *before* the gates and returns early, so a pattern there that also matches a gated path (`'/a(.*)'`, `'/api(.*)'`) would skip sign-in for it. Don't add to it.
 
-A page that calls `notFound()` gets an empty HTML shell from Next.js, and its 404 only appears after JavaScript runs ([vercel/next.js#99793](https://github.com/vercel/next.js/issues/99793), still open on 16.4). A URL that matches no route gets the full page. So in production the middleware rewrites a slug that `/article`, `/story`, `/watch`, `/html` and `/unppp/[type]` don't serve to an unmatched path (`src/lib/known-routes.ts`, slugs from `scripts/generate-route-manifest.cts`). A new dynamic route that calls `notFound()` goes in both files. `/steps/[stepId]` is database-backed, so the middleware asks `GET /api/steps/exists` one id at a time instead and caches each answer (`isMissingStep`; full page loads only, since client navigations open steps in the `@modal` slot).
+A page that calls `notFound()` gets an empty HTML shell from Next.js, and its 404 only appears after JavaScript runs ([vercel/next.js#99793](https://github.com/vercel/next.js/issues/99793), still open on 16.4). A URL that matches no route gets the full page. So in production the proxy rewrites a slug that `/article`, `/story`, `/watch`, `/html` and `/unppp/[type]` don't serve to an unmatched path (`src/lib/known-routes.ts`, slugs from `scripts/generate-route-manifest.cts`). A new dynamic route that calls `notFound()` goes in both files. `/steps/[stepId]` is database-backed, so the proxy asks `GET /api/steps/exists` one id at a time instead and caches each answer (`isMissingStep`; full page loads only, since client navigations open steps in the `@modal` slot).
 
 When the owner runs a waitlist (`"waitlist": true` in `FoundersConfig.json`, read as `WAITLIST_ON` from `organization.ts`; off by default), `/party/*` has a second gate on top of sign-in: `isWaitlistGatedRoute` checks the session's `metadata.role === 'admin'` or `metadata.waitlistStatus === 'approved'`, redirecting unapproved signed-in users to `/waitlist/pending`. `/admin/*` requires sign-in but is not waitlist-gated. Approving someone means setting that Clerk label: `approveSubmission()` in `src/lib/waitlist.ts` does it for both the **Approve** button in `/admin/submissions` and the GitHub Discussion webhook. Changing a `UserSubmission` row's status alone does not let anyone in.
 
-Every `/api/admin/*` handler starts with `adminGuard()` from `src/lib/admin.ts` (401 signed out, 403 not an admin); the middleware also requires sign-in there, but sign-in alone is not enough, since anyone can sign up.
+Every `/api/admin/*` handler starts with `adminGuard()` from `src/lib/admin.ts` (401 signed out, 403 not an admin); the proxy also requires sign-in there, but sign-in alone is not enough, since anyone can sign up.
 
 Auth functions go through stub files, which answer signed out when no sign-in is connected. Always import from those, never directly from `@clerk/nextjs` or `@clerk/nextjs/server`, since Clerk's own hooks throw without its provider:
 - Server Components / API routes: `src/lib/auth-stub.server.ts`
@@ -150,6 +179,10 @@ Defined in `prisma/schema.prisma`. Notable ones:
 - **UserProfile** / **IdeaProgression** / **UserMilestone** / **UserSession** / **ChallengeResponse** / **Thought** — founder/user journey tracking
 - **VercelPageview** / **VercelEvent** — analytics drain events (pruned after 30 days by cron)
 - **VercelTrace** / **VercelTraceSpan** — trace drain data for performance monitoring
+- **Build** — builds reported by copies of the site (`/api/builds`, shown on `/builds`)
+- **ConnectMessage** — chat messages (`/api/chat/send`)
+- **NotFoundHit** — 404 counts (`src/lib/not-found.ts`)
+- **AppSetting** — key/value site settings (`src/lib/appSettings.ts`)
 
 ### Theme System
 Global `ThemeContext` (`src/app/contexts/ThemeContext.tsx`) exposes `selectedColor` / `colorValue` backed by `localStorage`. The active color is written to `--theme-color` on `document.documentElement`. Color definitions live in `src/app/constants/colors.ts`.
@@ -180,7 +213,7 @@ Track a generated file only when it can't be regenerated. Ignore it when every c
 - `src/data/imageManifest.json` — `npm run generate-images`
 - `src/data/normalizedPageMedia.json` — `npm run normalize-data`
 - `public/data/story-repo-mappings.json` — `npm run analyze-story-repo-mentions` (read with a fallback, so a fresh copy works before its first build)
-- `src/data/routeManifest.json` — `npm run generate-route-manifest` (every build and `npm run dev`). Optional: `next.config.ts` hands it to the middleware as `ROUTE_MANIFEST` instead of an import, so dev and `tsc` work without it (missing slugs then fall back to the page's `notFound()`)
+- `src/data/routeManifest.json` — `npm run generate-route-manifest` (every build and `npm run dev`). Optional: `next.config.ts` hands it to the proxy as `ROUTE_MANIFEST` instead of an import, so dev and `tsc` work without it (missing slugs then fall back to the page's `notFound()`)
 - `src/data/focus.json` — `npm run generate-focus` (every build). Read with a fallback (no focus until a build makes it)
 - `public/releases.json`, `public/releases/` — `npm run generate-releases` (every build). Read with a fallback (no releases until a build makes it); `tsconfig` and ESLint skip the copied files
 - `src/data/unpartyRefsManifest.json` — `npm run generate-unparty-refs` (every build and `npm run dev`): every remaining brand reference a buyer still has to replace, categorized for the `/admin/unparty` button. `unppp` is frame vocabulary, and the allowlist in the generating script marks the frame files that never count
@@ -190,6 +223,7 @@ Track a generated file only when it can't be regenerated. Ignore it when every c
 - `src/data/videoMetadata.json` — `npm run generate-video-metadata` (needs `ffprobe`)
 - `public/raw-repo-metadata.csv`, `public/data/unppp-scores.*` and related CSV files — repo analysis scripts run on the owner's machine
 - `src/app/covers/cover-extensions.json`, `src/data/articleCoversManifest.json` — the build regenerates them, but code imports them, and `npm run dev` doesn't make them first
+- `src/data/comparisons.json` — `npm run measure:comparisons` (needs the GitHub CLI signed in): the site's repo next to public repos of a similar scale, pull requests and issues month by month over a year, for /founders' comparison chart (`src/lib/comparisons.ts`). The snapshot empties it, so a copy measures its own
 
 ### Key Lib Files (all in `src/lib/`, not `src/app/lib/`)
 - `prisma.ts` — Prisma singleton (dev-safe global)

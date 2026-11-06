@@ -83,6 +83,7 @@ export const COMPONENT_NAMES = [
   'ValuesBadge',
   'YourWords',
   'ArticleList',
+  'ComponentTable',
 ] as const;
 
 export type ComponentName = (typeof COMPONENT_NAMES)[number];

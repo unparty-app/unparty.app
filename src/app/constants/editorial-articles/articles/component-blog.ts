@@ -5,10 +5,11 @@ import type { EditorialArticle } from '../types';
 export const COMPONENT_BLOG_ARTICLE: EditorialArticle = {
   slug: 'component-blog',
   title: 'BLOG.',
-  subtitle: 'the first product card.',
-  description: 'The card that announced unppp., the iOS app unparty started as: a phone-frame screenshot, a TestFlight link, and every keyword lit in your theme color. A piece of the site from april 2025, kept working.',
+  subtitle: 'one project, told as a card.',
+  description: 'One of your projects as a card: its cover, its name linked to where it lives, its tagline, and its description with your keywords lit in your theme color.',
   category: 'MAKE.',
   date: '2026-10-14',
+  updated: '2026-11-06',
   published: true,
   coverColor: 'theme',
   coverStyle: 'kaleidoscope',
@@ -25,7 +26,7 @@ export const COMPONENT_BLOG_ARTICLE: EditorialArticle = {
     {
       id: 'what-it-does',
       type: 'paragraph',
-      content: 'one product, told as a card: name, pitch, a description with its keywords lit in your theme color, platform and audience pills, and a phone-frame screenshot. it announced unppp., the iOS app unparty began as, back when the whole ask was a TestFlight link.'
+      content: 'one project, told as a card: its cover, its name linked to where it lives, its tagline, and its description with the words you keep coming back to lit in your theme color. it started in april 2025 announcing unppp., the iOS app unparty began as, back when the whole ask was a TestFlight link.'
     },
     {
       id: 'component',
@@ -40,7 +41,7 @@ export const COMPONENT_BLOG_ARTICLE: EditorialArticle = {
     {
       id: 'how-to-use',
       type: 'paragraph',
-      content: "the post lives in the component's own `posts` array: swap in your product's name, description, screenshot and link, and the keyword highlighting (KeywordsConfig) keeps working on your words. it reads best announcing one thing, not listing many — it isn't mounted on any page today, so this article is where it lives."
+      content: "it shows your first project in `FoundersConfig.json`: its `name`, `tagline`, `description`, `cover` and `url`. pass `projectId` to show a different one. the lit words are your keywords (KeywordsConfig). with no projects yet, it shows nothing."
     },
     {
       id: 'embed',

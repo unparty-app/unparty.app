@@ -9,7 +9,7 @@ import type { FounderCta as FounderCtaType } from '../constants/organization';
 import type { NotFoundSuggestion } from '@/lib/not-found';
 
 interface NotFoundViewProps {
-  path: string; // The missing path ('' when the middleware didn't pass it)
+  path: string; // The missing path ('' when the proxy didn't pass it)
   line: string; // One line from 404-errors.json, picked on the server
   suggestions: NotFoundSuggestion[];
   cta: FounderCtaType | null; // The site's one ask; null for scanner probes

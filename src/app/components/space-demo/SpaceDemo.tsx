@@ -25,6 +25,7 @@ function useBeats(last: number): number {
   const [beat, setBeat] = useState(0);
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reduced motion is a browser setting the server can't read: the demo jumps to its last beat once mounted
       setBeat(last);
       return;
     }

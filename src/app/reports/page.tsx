@@ -1,3 +1,5 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '../utils/ogMetadata';
 import ReportGallery from '../components/ReportGallery';
@@ -12,11 +14,15 @@ export const metadata: Metadata = generatePageMetadata({
   path: '/reports',
 });
 
+// Only the reports this copy has in public/: the list names unparty's, and a
+// copy ships some of them
+const reports = HTML_REPORTS.filter((report) => existsSync(join(process.cwd(), 'public', `${report.filename}.html`)));
+
 const ReportsPage = () => {
   return (
     <main className="w-full max-w-5xl mx-auto">
       <div className="flex flex-col gap-6">
-        <ReportGallery reports={HTML_REPORTS} />
+        <ReportGallery reports={reports} />
       </div>
     </main>
   );

@@ -10,7 +10,7 @@ export const SETUP_FIRST_RUN_ARTICLE: EditorialArticle = {
   description: 'How non-technical founders check their own Next.js site on their computer: start it, walk the pages anyone can open, and see that /admin and /party stay locked until they add sign-in.',
   category: 'SETUP.',
   date: '2026-09-29',
-  updated: '2026-11-02',
+  updated: '2026-11-05',
   published: true,
   author: 'justin-murry',
   readTime: '5 min',
@@ -142,7 +142,7 @@ export const SETUP_FIRST_RUN_ARTICLE: EditorialArticle = {
     {
       id: 'llm-prompts',
       type: 'code',
-      content: 'I am running my copy of a Next.js site with npm run dev. When I\nopen [the page] I see [describe it], and the terminal printed:\n[paste it]. Is this normal for a brand-new site, or is something\nmisconfigured? Do not change anything, and do not ask me for my keys.\n\nRead src/middleware.ts in this project and list, in plain words,\nwhich pages anyone can open and which ones need sign-in or admin.',
+      content: 'I am running my copy of a Next.js site with npm run dev. When I\nopen [the page] I see [describe it], and the terminal printed:\n[paste it]. Is this normal for a brand-new site, or is something\nmisconfigured? Do not change anything, and do not ask me for my keys.\n\nRead src/proxy.ts in this project and list, in plain words,\nwhich pages anyone can open and which ones need sign-in or admin.',
       metadata: { language: 'prompt', emphasis: true, caption: 'Paste what the terminal says. Never paste what is in .env' }
     },
     {

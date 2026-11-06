@@ -1,8 +1,7 @@
 'use client';
 
-import { Poem } from '@/app/components/icons';
-import { iconByName } from '@/app/components/icons/byName';
 import { ICON_DEFAULTS } from '@/app/constants/organization';
+import NamedIcon from '../icons/NamedIcon';
 
 /**
  * PoemVerse - a poem as its artist wrote it: its hand-drawn icon drawing
@@ -14,10 +13,9 @@ import { ICON_DEFAULTS } from '@/app/constants/organization';
  */
 export default function PoemVerse({ verseHtml, icon, ink, hideIcon }: { verseHtml: string; icon?: string; ink?: string; hideIcon?: boolean }) {
   // The poem's own icon (```poem Heart), the owner's default (#589), then Poem
-  const Icon = iconByName(icon) ?? iconByName(ICON_DEFAULTS.poem) ?? Poem;
   return (
     <>
-      {!hideIcon && <Icon size={56} themed className="poem-viewer-icon mb-8" />}
+      {!hideIcon && <NamedIcon name={icon} fallback={[ICON_DEFAULTS.poem, 'Poem']} size={56} themed className="poem-viewer-icon mb-8" />}
       {ink && (
         // The ink is a mask over the page's foreground, so the hand reads on
         // light and dark alike; the invisible copy gives it its proportions

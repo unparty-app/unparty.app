@@ -62,3 +62,4 @@ export * from './articles/component-repo-focus';
 export * from './articles/component-type-statline';
 export * from './articles/component-build-rhythm';
 export * from './articles/component-ink-system';
+export * from './articles/component-component-table';

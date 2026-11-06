@@ -1,10 +1,10 @@
 /**
- * Which dynamic URLs exist, for src/middleware.ts.
+ * Which dynamic URLs exist, for src/proxy.ts.
  *
  * A page that calls notFound() gets an empty HTML shell from Next.js: the 404
  * page only appears after JavaScript runs, so crawlers, link previews and
  * no-JS visitors see a blank page (vercel/next.js#99793, still open on 16.4).
- * A URL that matches no route gets the full not-found page. So the middleware
+ * A URL that matches no route gets the full not-found page. So the proxy
  * rewrites a slug these routes don't serve to an unmatched path before the
  * page runs; the page's own notFound() stays as the backstop.
  *
@@ -52,7 +52,7 @@ export function isMissingRoute(pathname: string): boolean {
 // --- /steps/[stepId] (#1390) ------------------------------------------------
 //
 // Steps are database rows that change without a deploy, so they can't be in
-// the build-time list above. The middleware asks GET /api/steps/exists for
+// the build-time list above. The proxy asks GET /api/steps/exists for
 // one id at a time instead, and remembers each answer: a step that exists
 // for 10 minutes, a missing one for 1 minute, so a step created a moment ago
 // is found on the next check. Any doubt (timeout, error) counts as "exists",

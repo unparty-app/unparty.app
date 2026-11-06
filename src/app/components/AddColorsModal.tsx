@@ -75,7 +75,7 @@ const AddColorsModal: React.FC<AddColorsModalProps> = ({ isOpen, onClose, onImpo
     setTyped('');
   };
 
-  const usePalette = (paletteColors: string[]) => {
+  const applyPalette = (paletteColors: string[]) => {
     setSelectedColors([...paletteColors]);
     setBrand({});
   };
@@ -162,7 +162,7 @@ const AddColorsModal: React.FC<AddColorsModalProps> = ({ isOpen, onClose, onImpo
                   <li key={id}>
                     <button
                       type="button"
-                      onClick={() => usePalette(paletteColors)}
+                      onClick={() => applyPalette(paletteColors)}
                       aria-pressed={inUse}
                       aria-label={`Use the colors of ${id}`}
                       className="relative flex min-h-12 w-full items-center gap-3 rounded py-1 text-left outline-none transition-opacity duration-150 hover:opacity-80 focus-visible:ring-2"

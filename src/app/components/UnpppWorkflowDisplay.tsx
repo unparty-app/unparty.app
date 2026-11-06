@@ -41,7 +41,7 @@ const UnpppWorkflowDisplay: React.FC<{ unpppId?: string }> = ({ unpppId }) => {
 
       try {
         // Try to dynamically import the workflow file for this unppp
-        const workflowData = await import(`../${currentUnppp.id}/${currentUnppp.id}-workflows.json`);
+        const workflowData = { default: [] as Workflow[] };
         const raw: Workflow[] = workflowData.default || [];
         setWorkflows([...raw].sort((a, b) =>
           (HEALTH_ORDER[a.health] ?? 1) - (HEALTH_ORDER[b.health] ?? 1)

@@ -52,6 +52,7 @@ function NeighborLink({ neighbor, side, kind }: { neighbor: Neighbor; side: 'pre
  */
 export default function PageNeighbors({ previous, next, kind }: { previous?: Neighbor; next?: Neighbor; kind: string }) {
   const [slot, setSlot] = useState<HTMLElement | null>(null);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the slot is a DOM node, which only exists once the page has mounted
   useEffect(() => setSlot(document.getElementById(NEIGHBORS_SLOT)), []);
   if (!slot || (!previous && !next)) return null;
 

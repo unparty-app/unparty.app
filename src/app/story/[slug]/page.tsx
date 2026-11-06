@@ -7,6 +7,7 @@ import JsonLd from '../../components/JsonLd';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '../../utils/structuredData';
 import { SITE_NAME, SITE_URL } from '../../constants/organization';
 import { ogImageUrl } from '../../utils/ogMetadata';
+import { authorImageOf } from '@/lib/author-image';
 import storiesManifest from '@/data/storiesManifest.json';
 
 interface StoryPageProps {
@@ -66,6 +67,7 @@ export async function generateMetadata({ params }: StoryPageProps): Promise<Meta
     title: story.metadata.title,
     subtitle: story.metadata.subtitle,
     author: story.metadata.author,
+    authorImage: authorImageOf(story.metadata.authorImage),
     category: story.metadata.category || 'STORY',
     cover: coverId,
   });

@@ -12,6 +12,7 @@ import type { Metadata } from 'next';
 import type { EditorialArticle } from '@/app/constants/editorial-articles';
 import type { VideoRegistryEntry } from '@/app/constants/video-registry/types';
 import { SITE_URL, SITE_TITLE } from '@/app/constants/organization';
+import { authorImageOf } from '@/lib/author-image';
 
 /**
  * The link preview (/api/og) for any page. Leave out author and the image is
@@ -121,7 +122,7 @@ export function getOGImageUrl(article: EditorialArticle, baseUrl: string = proce
     title: article.title,
     subtitle: article.subtitle,
     author: article.author,
-    authorImage: article.authorImage,
+    authorImage: authorImageOf(article.authorImage),
     category: article.category,
     // The article's own cover; else one its sections show; else the brand colors
     cover: article.cover ?? extractCoverIdFromArticle(article),

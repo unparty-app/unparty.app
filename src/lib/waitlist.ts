@@ -3,7 +3,7 @@ import { clerkClient } from '@/lib/auth-stub.server'
 
 export type ApprovedVia = 'github_ui' | 'admin' | 'slack'
 
-/** labelSet: whether Clerk took waitlistStatus: 'approved', the label the middleware
+/** labelSet: whether Clerk took waitlistStatus: 'approved', the label the proxy
  * checks. false means the decision is recorded but they still can't open /party (#752) */
 export type ApproveResult =
   | { outcome: 'approved'; labelSet: boolean; submission: Awaited<ReturnType<typeof prisma.userSubmission.update>> }
@@ -54,7 +54,7 @@ async function setApprovedLabel(userId: string): Promise<boolean> {
  *
  * 1. Marks the UserSubmission APPROVED (the record of the decision)
  * 2. Sets Clerk publicMetadata.waitlistStatus = 'approved', which is what
- *    src/middleware.ts actually checks to open /party
+ *    src/proxy.ts actually checks to open /party
  * 3. Emails them through Loops when LOOPS_API_KEY and LOOPS_WAITLIST_APPROVED_ID are set
  *
  * Steps 2 and 3 are best-effort: the decision is recorded even if they fail.

@@ -14,7 +14,6 @@ import { setReaderAnswer, useReaderAnswers } from '@/lib/challenge-answers';
 import { OwnerAnswersSave, useOwnerAnswers } from '../YourAnswers';
 import { WordField, wordField } from '../YourWords';
 import { InkCircle, InkUnderline } from '../depend/ink';
-import { iconByName } from '../icons/byName';
 import { wordsOf } from '@/lib/words';
 import { RankingDone } from './RankingParts';
 import { parseMarkdownText } from '../../utils/textParsing';
@@ -23,6 +22,7 @@ import UnpppCircle from '../UnpppCircle';
 import CoverImageBackground from './CoverImageBackground';
 import StepNumberOverlay from './StepNumberOverlay';
 import SleekTabs from '../SleekTabs';
+import NamedIcon, { hasNamedIcon } from '../icons/NamedIcon';
 
 /**
  * Challenge steps as borderless cards: the step's cover on top (when it has
@@ -69,8 +69,8 @@ const StepCard: React.FC<{ step: Shown; index: number; colorValue: string; done?
   onTick,
   answerBox,
 }) => {
-  const StepIcon = iconByName(step.icon);
-  const emoji = !StepIcon && step.emoji && !KEYCAP.test(step.emoji.trim()) ? step.emoji : null;
+  const stepIcon = hasNamedIcon(step.icon);
+  const emoji = !stepIcon && step.emoji && !KEYCAP.test(step.emoji.trim()) ? step.emoji : null;
   const action = step.action || step.setup?.title || '';
   const description = step.description || step.setup?.blurb || '';
   const href = step.setup?.href;
@@ -89,9 +89,9 @@ const StepCard: React.FC<{ step: Shown; index: number; colorValue: string; done?
         </div>
       )}
       <div className="flex items-start gap-3">
-        {StepIcon ? (
+        {stepIcon ? (
           <span className="relative grid size-7 shrink-0 place-items-center" data-answered={answerBox?.value.trim() ? '' : undefined}>
-            <StepIcon size={answerBox?.value.trim() ? 18 : 28} color={colorValue} className="transition-all duration-300" />
+            <NamedIcon name={step.icon} size={answerBox?.value.trim() ? 18 : 28} color={colorValue} className="transition-all duration-300" />
             {answerBox?.value.trim() && <InkCircle color={colorValue} className="absolute -left-1 -top-1 size-9" />}
           </span>
         ) : onTick ? (

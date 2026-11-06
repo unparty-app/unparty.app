@@ -35,6 +35,24 @@ export interface FounderCta {
   pitch?: string;
 }
 
+/** One line of what the founder offers: a short title and the rest of the line */
+export interface FounderOfferLine {
+  title: string;
+  text: string;
+  /** Where its proof is (a site path, https://): the line links there */
+  href?: string;
+  /** The hand-drawn icon that leads the line (an export name: "Layers") */
+  icon?: string;
+}
+
+/** What the founder offers, opening /founders under their bio (set in /admin → Your offer) */
+export interface FounderOffer {
+  /** "what I do.": a line a skill, each with its proof */
+  does?: FounderOfferLine[];
+  /** "how it translates.": what the work means for each kind of reader, the title naming who */
+  translates?: FounderOfferLine[];
+}
+
 export interface FounderResume {
   /** Article or story slugs shown in WORK., in this order */
   articles?: string[];
@@ -87,6 +105,12 @@ export interface FoundersConfig {
     why?: string;
     /** What /founders shows as the founder's resume */
     resume?: FounderResume;
+    /** What the founder does and how it translates, under their bio on /founders */
+    offer?: FounderOffer;
+    /** A second ask beside "build yours", for people who want the founder
+     * themselves: a label and where it goes (a site path, https:// or
+     * mailto:). Missing, /founders asks only for the copy */
+    hire?: FounderCta;
   };
   brandColors: string[];
   /** Whether new sign-ups wait for the owner's approval before /party (a
@@ -191,6 +215,9 @@ export const ORGANIZATION_DESCRIPTION = config.site.description;
 
 export const FOUNDER = config.founder;
 export const FOUNDER_RESUME: FounderResume = config.founder.resume ?? {};
+export const FOUNDER_OFFER: FounderOffer = config.founder.offer ?? {};
+/** The ask for the founder themselves, when they've set one with somewhere to go */
+export const FOUNDER_HIRE: FounderCta | null = config.founder.hire?.label && config.founder.hire.href ? config.founder.hire : null;
 /** The founder's "why build your own?" story, as a story id, or null before they write it */
 export const FOUNDER_WHY: string | null = /^story-\d+$/.test(config.founder.why ?? '') ? config.founder.why! : null;
 
@@ -207,7 +234,7 @@ export const ORGANIZATION_SAME_AS = config.founder.links.map(link => link.url);
 
 // The site owner's palette, up to five. The first is the site's color
 // (BRAND_COLOR in colors.ts); all lead the visitor color picker
-/** The waitlist is on: src/middleware.ts sends unapproved sign-ups to
+/** The waitlist is on: src/proxy.ts sends unapproved sign-ups to
  * /waitlist/pending, and worksheets open a review. Off, /party is open to anyone
  * signed in and a worksheet is just the owner's own problem */
 export const WAITLIST_ON = config.waitlist === true;
