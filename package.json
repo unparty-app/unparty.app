@@ -105,7 +105,7 @@
     "@vercel/blob": "^2.8.2",
     "@vercel/otel": "^2.1.1",
     "@vercel/speed-insights": "^1.0.14",
-    "ai": "^7.0.138",
+    "ai": "^7.0.162",
     "autoprefixer": "^10.4.21",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
