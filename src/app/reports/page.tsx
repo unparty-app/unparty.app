@@ -1,10 +1,9 @@
-import { existsSync } from 'fs';
-import { join } from 'path';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '../utils/ogMetadata';
 import ReportGallery from '../components/ReportGallery';
 import { HTML_REPORTS } from '../constants/htmlReports';
 import { SITE_TITLE } from '../constants/organization';
+import { knownSlugs } from '@/lib/known-routes';
 
 export const metadata: Metadata = generatePageMetadata({
   title: `REPORTS | ${SITE_TITLE}`,
@@ -14,9 +13,11 @@ export const metadata: Metadata = generatePageMetadata({
   path: '/reports',
 });
 
-// Only the reports this copy has in public/: the list names unparty's, and a
-// copy ships some of them
-const reports = HTML_REPORTS.filter((report) => existsSync(join(process.cwd(), 'public', `${report.filename}.html`)));
+// Only the reports this copy has in public/ (the route manifest lists them at
+// build time): the list names unparty's, and a copy ships some of them. With
+// no manifest, all of them
+const shipped = knownSlugs('html');
+const reports = shipped ? HTML_REPORTS.filter((report) => shipped.includes(report.filename)) : HTML_REPORTS;
 
 const ReportsPage = () => {
   return (

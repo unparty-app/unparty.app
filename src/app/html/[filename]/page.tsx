@@ -1,6 +1,7 @@
-import { readdir, readFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { notFound } from 'next/navigation';
+import { knownSlugs } from '@/lib/known-routes';
 
 type Props = {
   params: Promise<{ filename: string }>
@@ -30,9 +31,10 @@ export default async function HtmlPage({ params }: Props) {
   );
 }
 
-// Every report in public/, the same rule as the route manifest
-// (scripts/generate-route-manifest.cts), so a copy prerenders only what it ships
+// Every report in public/, from the route manifest, which lists them at
+// build time (scripts/generate-route-manifest.cts), so a copy prerenders only
+// what it ships. Never a readdir here: Vercel would bundle all of public/ into
+// this function
 export async function generateStaticParams() {
-  const files = await readdir(join(process.cwd(), 'public'));
-  return files.filter((file) => file.endsWith('.html')).map((file) => ({ filename: file.replace(/\.html$/, '') }));
+  return (knownSlugs('html') ?? []).map((filename) => ({ filename }));
 }

@@ -27,6 +27,16 @@ const SUB_PAGES: Record<string, string[]> = {
 const routeManifest: Record<string, string[]> = JSON.parse(process.env.ROUTE_MANIFEST || '{}');
 const known = new Map(Object.entries(routeManifest).map(([route, slugs]) => [route, new Set(slugs)]));
 
+/**
+ * The slugs a route serves, or undefined with no manifest (dev before
+ * predev, tsc). Pages read this instead of listing files themselves: a
+ * function that lists a folder at runtime makes Vercel bundle the whole
+ * folder (/html/[filename] reading public/ hit 498 MB, past its 250 MB limit).
+ */
+export function knownSlugs(route: string): string[] | undefined {
+  return routeManifest[route];
+}
+
 const ROUTE = /^\/([^/]+)\/([^/]+)(\/[^/]+)?$/;
 
 function safeDecode(segment: string): string {
